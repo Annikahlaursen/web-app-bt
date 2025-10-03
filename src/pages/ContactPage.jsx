@@ -4,7 +4,7 @@ export default function ContactPage() {
       <h1>Contact Page</h1>
       <p>Get in touch, or swing by for a cup of coffee ☕️</p>
       <p>I am one arm away 🤷🏼‍♂️</p>
-      <p>Hej</p>
+      <p>Hej Hallo</p>
     </section>
   );
 }
