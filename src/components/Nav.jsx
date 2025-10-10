@@ -6,13 +6,13 @@ export default function Nav() {
   return (
     <nav>
       <NavLink className="navcircle" to="/">
-        <FontAwesomeIcon icon={faHome} />
+        <FontAwesomeIcon icon={faHome} className="nav-icon" />
       </NavLink>
       <NavLink className="navcircle" to="/about">
-        <FontAwesomeIcon icon={faCalendar} />
+        <FontAwesomeIcon icon={faCalendar} className="nav-icon" />
       </NavLink>
       <NavLink className="navcircle" to="/contact">
-        <FontAwesomeIcon icon={faBars} />
+        <FontAwesomeIcon icon={faBars} className="nav-icon" />
       </NavLink>
     </nav>
   );

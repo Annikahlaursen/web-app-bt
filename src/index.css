@@ -1,13 +1,15 @@
 /* ---------- Root Variables ---------- */
 :root {
-  --green: rgb(38, 76, 89);
-  --dark-green: rgb(9, 47, 59);
-  --light-green: rgb(172, 198, 201);
-  --light-grey: #f1f1f4;
-  --text-color-danger: #f44250;
-  --text-color-dark: #333;
-  --text-color-light: #f1f1f1;
+  --lightred: #bb1717;
+  --darkred: #960404;
   --white: #f1f1f1;
+  --black: #000;
+  --lightblue: #def2ff;
+  --babyblue: #bbe5ff;
+  --blue: #035183;
+  --darkgrey: #a19f9f;
+  --grey: #e4e4e4;
+  --light-green: #f1f1f1;
 }
 
 /* ---------- Global Styling ---------- */
@@ -157,27 +159,25 @@ form {
 
 /* ---------- Navigation Styling ---------- */
 nav {
-  background-color: var(--green);
   display: grid;
   left: 0;
   position: fixed;
   right: 0;
   text-align: center;
   bottom: 0;
-  padding: 1em 2em;
+  padding: 1.5em 3em;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 1em;
 }
 
 nav a {
+  background-color: var(--darkred);
   display: inline-block;
-  color: var(--text-color-light);
   text-align: center;
   padding: 20px 16px;
   text-decoration: none;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  border: 2px solid var(--green);
   font-weight: 500;
   font-size: 1.2em;
   border-radius: 50%;
@@ -185,13 +185,16 @@ nav a {
 }
 
 nav a:hover {
-  background-color: var(--light-green);
-  color: var(--green);
+  background-color: var(--darkred);
 }
 
 nav a.active {
-  background-color: var(--light-green);
-  color: var(--green);
+  background-color: var(--darkgrey);
+}
+
+nav a .nav-icon {
+  font-size: 2em;
+  color: var(--white);
 }
 
 /* ---------- Page Styling ---------- */
