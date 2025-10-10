@@ -350,3 +350,38 @@ nav a.active {
     opacity: 1;
   }
 }
+
+.kamp-card {
+  background-color: #bb1717;
+  width: 80%;
+  border-radius: 30px;
+  color: #fff;
+  border: 2px solid pink;
+}
+
+.kamp-container {
+  display: flex;
+  justify-content: space-between;
+  padding-right: 1rem;
+  padding-left: 1rem;
+  border: 2px solid rgb(128, 239, 108);
+}
+
+.kamp-hold {
+  width: 40%;
+  text-align: center;
+  border: 2px solid rgb(142, 120, 241);
+}
+
+.kamp-vs {
+  width: 20%;
+  text-align: center;
+  border: 2px solid rgb(142, 120, 241);
+}
+
+.del-notifikationer {
+  display: flex;
+  justify-content: space-around;
+  width: 50%;
+  border: 2px solid burlywood;
+}

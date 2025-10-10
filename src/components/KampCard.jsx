@@ -10,8 +10,10 @@ export default function KampCard() {
           <img src="logo.img" alt="" />
           <p>Hold 1</p>
         </div>
-        <p>VS</p>
-        <p>20:00</p>
+        <div className="kamp-vs">
+          <p>VS</p>
+          <p>20:00</p>
+        </div>
         <div className="kamp-hold">
           <img src="" alt="" />
           <p>Hold 2</p>
