@@ -1,3 +1,5 @@
+
+
 export default function HomePage() {
   return (
     <section className="page">
@@ -8,6 +10,8 @@ export default function HomePage() {
       <h1>Hej verden</h1>
 
       {/* <p>https://web-app-bt-124b8-default-rtdb.firebaseio.com/</p> */}
+
+
     </section>
   );
 }
