@@ -1,7 +1,14 @@
 import { Fragment } from "react";
 import { NavLink } from "react-router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHome, faUser, faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import {
+  faHome,
+  faUser,
+  faEnvelope,
+  faImage,
+  faArrowRight,
+  faSignOut,
+} from "@fortawesome/free-solid-svg-icons";
 
 export default function Overlay({ isOpen, onClose }) {
   return (
@@ -10,12 +17,18 @@ export default function Overlay({ isOpen, onClose }) {
         <div className="overlay">
           <div className="overlay__background" onClick={onClose} />
           <div className="overlay__container">
-            <div className="overlay__controls">
-              <button
-                className="overlay__close"
-                type="button"
-                onClick={onClose}
-              ></button>
+            <div className="navprofil">
+              <div>
+                <FontAwesomeIcon icon={faImage} />
+              </div>
+              <div>
+                <h3>Bruger</h3>
+                <p>Rating</p>
+                <a href="/">
+                  Se profil
+                  <FontAwesomeIcon icon={faArrowRight} />
+                </a>
+              </div>
             </div>
             <nav className="overlay__nav">
               <NavLink to="/" className="overlay__link" onClick={onClose}>
@@ -35,6 +48,17 @@ export default function Overlay({ isOpen, onClose }) {
                 <span>Contact</span>
               </NavLink>
             </nav>
+            <div className="overlay__controls">
+              <a href="/">
+                <FontAwesomeIcon icon={faSignOut} />
+                Log ud
+              </a>
+              <button
+                className="navcircle menu-button overlay__close"
+                type="button"
+                onClick={onClose}
+              ></button>
+            </div>
           </div>
         </div>
       )}

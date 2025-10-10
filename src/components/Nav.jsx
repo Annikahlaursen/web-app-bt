@@ -20,7 +20,11 @@ export default function Nav() {
         <FontAwesomeIcon icon={faCalendar} className="nav-icon" />
       </NavLink>
       <button className="navcircle menu-button" onClick={toggleOverlay}>
-        <FontAwesomeIcon icon={faBars} className="nav-icon" />
+        <FontAwesomeIcon
+          icon={faBars}
+          className="nav-icon"
+          style={{ fontSize: "2rem", color: "white" }}
+        />
       </button>
 
       <Overlay isOpen={isOpen} onClose={toggleOverlay} />
