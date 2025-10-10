@@ -170,7 +170,7 @@ nav {
   gap: 1em;
 }
 
-nav a {
+.navcircle {
   background-color: var(--darkred);
   display: inline-block;
   text-align: center;
@@ -194,6 +194,96 @@ nav a.active {
 
 nav a .nav-icon {
   font-size: 2em;
+  color: var(--white);
+}
+
+/* ---------- Overlay Styling ---------- */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlay__background {
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  cursor: pointer;
+  z-index: 9;
+}
+
+.overlay__container {
+  background-color: white;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  padding: 30px;
+  width: 80%;
+}
+
+.overlay__controls {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.overlay__close {
+  border: none;
+  background-color: transparent;
+  font-size: 36px;
+  cursor: pointer;
+}
+
+.overlay__close:hover {
+  background-color: var(--light-grey);
+  color: var(--green);
+}
+
+.overlay__close:after {
+  display: inline-block;
+  content: "\00d7";
+}
+
+.overlay__nav {
+  right: 0;
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.overlay__link {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  text-decoration: none;
+  color: var(--text-color-dark);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.overlay__link:hover {
+  background-color: var(--light-green);
+  color: var(--green);
+  transform: translateX(5px);
+}
+
+.overlay__link.active {
+  background-color: var(--green);
   color: var(--white);
 }
 
@@ -348,8 +438,18 @@ nav a .nav-icon {
   from {
     opacity: 0;
   }
-
   to {
     opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-30px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
