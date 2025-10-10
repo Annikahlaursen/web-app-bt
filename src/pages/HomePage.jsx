@@ -1,5 +1,6 @@
 import KampCard from "../components/KampCard";
 
+
 export default function HomePage() {
   return (
     <section className="page">
@@ -11,6 +12,8 @@ export default function HomePage() {
       <KampCard />
 
       {/* <p>https://web-app-bt-124b8-default-rtdb.firebaseio.com/</p> */}
+
+
     </section>
   );
 }
