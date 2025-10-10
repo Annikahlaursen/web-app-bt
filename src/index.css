@@ -386,3 +386,46 @@ overflow: hidden;
     opacity: 1;
   }
 }
+
+.kamp-card {
+  background-color: #bb1717;
+  width: 90%;
+  border-radius: 30px;
+  color: #fff;
+}
+
+.kamp-container {
+  display: flex;
+  justify-content: space-between;
+  padding-right: 1rem;
+  padding-left: 1rem;
+}
+
+.kamp-hold {
+  width: 40%;
+  text-align: center;
+}
+
+.kamp-hold p {
+  margin-top: 0;
+}
+
+.kamp-vs {
+  width: 20%;
+  text-align: center;
+  align-self: center;
+}
+
+.del-notifikationer {
+  display: flex;
+  justify-content: space-around;
+  width: 50%;
+}
+
+#streg {
+  border-top: 2px solid rgb(158, 192, 235);
+}
+
+#streg-midt {
+  border-right: 2px solid rgb(158, 192, 235);
+}
