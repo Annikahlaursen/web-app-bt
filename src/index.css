@@ -163,7 +163,7 @@ nav {
   position: fixed;
   right: 0;
   text-align: center;
-  top: 0;
+  bottom: 0;
   padding: 1em 2em;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 1em;
@@ -180,7 +180,7 @@ nav a {
   border: 2px solid var(--green);
   font-weight: 500;
   font-size: 1.2em;
-  border-radius: 8px;
+  border-radius: 50%;
   transition: 0.5s;
 }
 
