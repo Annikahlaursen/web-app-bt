@@ -2,12 +2,16 @@ import { Fragment } from "react";
 import { NavLink } from "react-router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faHome,
-  faUser,
-  faEnvelope,
-  faImage,
   faArrowRight,
   faSignOut,
+  faTimes,
+  faUser,
+  faHeart,
+  faPen,
+  faUsers,
+  faCalendar,
+  faNewspaper,
+  faStarHalf,
 } from "@fortawesome/free-solid-svg-icons";
 
 export default function Overlay({ isOpen, onClose }) {
@@ -17,11 +21,15 @@ export default function Overlay({ isOpen, onClose }) {
         <div className="overlay">
           <div className="overlay__background" onClick={onClose} />
           <div className="overlay__container">
-            <div className="navprofil">
+            <div className="navprofile">
               <div>
-                <FontAwesomeIcon icon={faImage} />
+                <FontAwesomeIcon
+                  icon={faUser}
+                  className="profile__image"
+                  style={{ fontSize: "2rem", color: "white" }}
+                />
               </div>
-              <div>
+              <div className="profileinfo">
                 <h3>Bruger</h3>
                 <p>Rating</p>
                 <a href="/">
@@ -31,21 +39,49 @@ export default function Overlay({ isOpen, onClose }) {
               </div>
             </div>
             <nav className="overlay__nav">
-              <NavLink to="/" className="overlay__link" onClick={onClose}>
-                <FontAwesomeIcon icon={faHome} />
-                <span>Home</span>
-              </NavLink>
-              <NavLink to="/about" className="overlay__link" onClick={onClose}>
-                <FontAwesomeIcon icon={faUser} />
-                <span>About</span>
-              </NavLink>
               <NavLink
-                to="/contact"
-                className="overlay__link"
+                to="/"
+                className="overlay__link overlay__linkcolorchange"
                 onClick={onClose}
               >
-                <FontAwesomeIcon icon={faEnvelope} />
-                <span>Contact</span>
+                <FontAwesomeIcon icon={faHeart} />
+                <span>Favorit</span>
+              </NavLink>
+              <NavLink to="/" className="overlay__link" onClick={onClose}>
+                <FontAwesomeIcon icon={faPen} />
+                <span>Indskriv Kampresultat</span>
+              </NavLink>
+              <NavLink
+                to="/"
+                className="overlay__link overlay__linkcolorchange"
+                onClick={onClose}
+              >
+                <FontAwesomeIcon icon={faUsers} />
+                <span>Find Hold</span>
+              </NavLink>
+              <NavLink to="/" className="overlay__link" onClick={onClose}>
+                <FontAwesomeIcon icon={faCalendar} />
+                <span>Find Stævne</span>
+              </NavLink>
+              <NavLink
+                to="/"
+                className="overlay__link overlay__linkcolorchange"
+                onClick={onClose}
+              >
+                <FontAwesomeIcon icon={faNewspaper} />
+                <span>Nyheder</span>
+              </NavLink>
+              <NavLink to="/" className="overlay__link" onClick={onClose}>
+                <FontAwesomeIcon icon={faStarHalf} />
+                <span>Ratings</span>
+              </NavLink>
+              <NavLink
+                to="/"
+                className="overlay__link overlay__linkcolorchange"
+                onClick={onClose}
+              >
+                <FontAwesomeIcon icon={faCalendar} />
+                <span>Kalender</span>
               </NavLink>
             </nav>
             <div className="overlay__controls">
@@ -57,7 +93,12 @@ export default function Overlay({ isOpen, onClose }) {
                 className="navcircle menu-button overlay__close"
                 type="button"
                 onClick={onClose}
-              ></button>
+              >
+                <FontAwesomeIcon
+                  icon={faTimes}
+                  style={{ fontSize: "2rem", color: "white" }}
+                />
+              </button>
             </div>
           </div>
         </div>

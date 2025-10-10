@@ -12,14 +12,22 @@ export default function Nav() {
   };
 
   return (
-    <nav>
+    <nav className="navbtns">
       <NavLink className="navcircle" to="/">
-        <FontAwesomeIcon icon={faHome} className="nav-icon" />
+        <FontAwesomeIcon
+          icon={faHome}
+          className="nav-icon"
+          style={{ fontSize: "2rem", color: "white" }}
+        />
       </NavLink>
       <NavLink className="navcircle" to="/about">
-        <FontAwesomeIcon icon={faCalendar} className="nav-icon" />
+        <FontAwesomeIcon
+          icon={faCalendar}
+          className="nav-icon"
+          style={{ fontSize: "2rem", color: "white" }}
+        />
       </NavLink>
-      <button className="navcircle menu-button" onClick={toggleOverlay}>
+      <button className="navcircle" onClick={toggleOverlay}>
         <FontAwesomeIcon
           icon={faBars}
           className="nav-icon"
