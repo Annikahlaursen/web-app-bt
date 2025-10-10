@@ -85,8 +85,11 @@ export default function Overlay({ isOpen, onClose }) {
               </NavLink>
             </nav>
             <div className="overlay__controls">
-              <a href="/">
-                <FontAwesomeIcon icon={faSignOut} />
+              <a href="/" className="signout">
+                <FontAwesomeIcon
+                  icon={faSignOut}
+                  style={{ fontSize: "2rem", color: "white" }}
+                />
                 Log ud
               </a>
               <button
