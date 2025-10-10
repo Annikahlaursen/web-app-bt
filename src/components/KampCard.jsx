@@ -1,3 +1,6 @@
+import btLogo1 from "/public/btLogo1.png";
+import btLogo2 from "/public/btLogo2.png";
+
 export default function KampCard() {
   return (
     <div className="kamp-card">
@@ -7,7 +10,7 @@ export default function KampCard() {
       </div>
       <div className="kamp-container">
         <div className="kamp-hold">
-          <img src="logo.img" alt="" />
+          <img src={btLogo1} alt="" />
           <p>Hold 1</p>
         </div>
         <div className="kamp-vs">
@@ -15,12 +18,12 @@ export default function KampCard() {
           <p>20:00</p>
         </div>
         <div className="kamp-hold">
-          <img src="" alt="" />
+          <img src={btLogo2} alt="" />
           <p>Hold 2</p>
         </div>
       </div>
-      <div className="kamp-container">
-        <div className="del-notifikationer">
+      <div className="kamp-container" id="streg">
+        <div className="del-notifikationer" id="streg-midt">
           <img src="" alt="" />
           <p>Del</p>
         </div>

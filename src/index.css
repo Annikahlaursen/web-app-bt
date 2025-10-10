@@ -353,10 +353,9 @@ nav a.active {
 
 .kamp-card {
   background-color: #bb1717;
-  width: 80%;
+  width: 90%;
   border-radius: 30px;
   color: #fff;
-  border: 2px solid pink;
 }
 
 .kamp-container {
@@ -364,24 +363,33 @@ nav a.active {
   justify-content: space-between;
   padding-right: 1rem;
   padding-left: 1rem;
-  border: 2px solid rgb(128, 239, 108);
 }
 
 .kamp-hold {
   width: 40%;
   text-align: center;
-  border: 2px solid rgb(142, 120, 241);
+}
+
+.kamp-hold p {
+  margin-top: 0;
 }
 
 .kamp-vs {
   width: 20%;
   text-align: center;
-  border: 2px solid rgb(142, 120, 241);
+  align-self: center;
 }
 
 .del-notifikationer {
   display: flex;
   justify-content: space-around;
   width: 50%;
-  border: 2px solid burlywood;
+}
+
+#streg {
+  border-top: 2px solid rgb(158, 192, 235);
+}
+
+#streg-midt {
+  border-right: 2px solid rgb(158, 192, 235);
 }
