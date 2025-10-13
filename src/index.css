@@ -613,6 +613,49 @@ form {
   margin: 1rem 0 0.5rem 0.5rem;
 }
 
+/*-------------Kalender Filter Styling------------*/
+.kalender-filter-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background-color: #f3f3f3;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+
+.kalender-filter-button {
+  position: relative;
+  border: none;
+  background: none;
+  font-size: 1.1rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  z-index: 2;
+  color: #000;
+}
+
+.active-pill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: var(--border-radius);
+  z-index: 1;
+}
+
+.filter-label {
+  position: relative;
+  z-index: 3;
+  transition: color 0.2s ease;
+}
+
+.filter-label.active-label {
+  color: #fff;
+}
+
 /* ---------- Animations ---------- */
 @keyframes fadeIn {
   from {
