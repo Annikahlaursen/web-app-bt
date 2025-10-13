@@ -42,6 +42,11 @@ h1 {
   line-height: 1.1;
 }
 
+h5 {
+  line-height: 1.1;
+  margin: 0.5em 0 0;
+}
+
 /* ---------- Link Styling ---------- */
 a {
   color: var(--green);
@@ -53,7 +58,7 @@ a:hover {
   color: var(--dark-green);
 }
 
-/* ---------- Form Specific Styling ---------- */
+/* ---------- Form Specific Styling ---------- 
 form input {
   width: 100%;
 }
@@ -65,7 +70,6 @@ form .btns {
 form img {
   max-width: 100%;
   border-radius: 8px;
-  box-shadow: 0 0px 1px hsla(0, 0%, 0%, 0.2), 0 1px 2px hsla(0, 0%, 0%, 0.2);
 }
 
 form {
@@ -73,7 +77,6 @@ form {
   grid-template-columns: 1fr 2fr;
   gap: 1em;
   align-items: center;
-  box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.25);
   padding: 1.5em;
   background-color: var(--white);
   transition: 0.5s;
@@ -85,6 +88,8 @@ form {
 #sign-up-form {
   width: 35rem;
 }
+
+*/
 
 /* ---------- Navigation Styling ---------- */
 .navbtns {
@@ -175,6 +180,80 @@ form {
 
 .profileinfo a {
   text-decoration: underline;
+}
+
+/* ---------- Profile Styling ---------- */
+.profile {
+  background: linear-gradient(
+    to bottom,
+    var(--white) 0%,
+    var(--white) 30%,
+    var(--lightred) 20%,
+    var(--lightred) 100%
+  );
+}
+
+.profile-placeholder {
+  max-width: 50%;
+  margin: auto;
+  display: flex;
+  padding: 1rem 0 0;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-card {
+  background-color: var(--white);
+  color: var(--text-color-dark);
+  align-self: center;
+  z-index: 2002;
+  border-radius: 20px;
+  padding: 1.5rem;
+}
+
+.profile-text {
+  background-color: var(--grey);
+  width: 90%;
+  justify-self: center;
+  border-radius: 20px;
+  text-align: center;
+  line-height: 0.5rem;
+  padding: 2% 0 2% 0;
+}
+
+.profile-btns {
+  display: flex;
+  justify-content: space-around;
+  gap: 1rem;
+  padding: 1rem 0;
+}
+
+.profile-btns-seperate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--white);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 1rem;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.profile-btns-seperate.active {
+  text-decoration: underline solid 2px;
+}
+
+.profile-btns-seperate h5 {
+  margin: 0.5rem 0 0 0;
+  font-size: 0.9rem;
+}
+
+.profile-content {
+  padding: 1rem;
+  animation: fadeIn 0.3s ease-in-out;
 }
 
 /* ---------- Overlay Styling ---------- */
