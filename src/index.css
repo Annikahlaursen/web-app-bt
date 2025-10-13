@@ -11,6 +11,7 @@
   --grey: #e4e4e4;
   --light-green: #f1f1f1;
   --border-radius: 30px;
+  --display-font: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
 /* ---------- Global Styling ---------- */
@@ -28,7 +29,7 @@ body,
 html {
   background-color: var(--white);
   color: var(--text-color-dark);
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: var(--display-font);
   font-weight: 400;
   height: 100%;
   line-height: 1.5;
@@ -536,4 +537,44 @@ form {
 
 #streg-midt {
   border-right: 2px solid var(--darkred);
+}
+
+/*---------- kampPage Styling ----------*/
+.red-background {
+  background-color: var(--lightred);
+  color: var(--white);
+  height: 20rem;
+}
+
+.arrow {
+  width: 10%;
+  margin: 1rem;
+}
+
+.kamp-info-section {
+  margin-top: -4rem;
+  background-color: var(--white);
+  border-radius: var(--border-radius);
+  padding: 2rem;
+}
+.kamp-info {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.kamp-info img {
+  width: 7%;
+}
+
+/* ---------- Button Styling ---------- */
+.btn {
+  background-color: var(--lightred);
+  color: var(--white);
+  border-radius: var(--border-radius);
+  border: none;
+  padding: 1rem;
+  font-size: 1rem;
+  font-family: var(--display-font);
+  display: block;
+  margin: auto;
 }

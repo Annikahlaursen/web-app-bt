@@ -7,7 +7,7 @@ import { Link } from "react-router";
 export default function KampCard() {
   return (
     <div className="kamp-card">
-      <Link to="/VSVisning">
+      <Link to="/kamp">
         <div className="kamp-container">
           <p>KampID</p>
           <p>Dato</p>
