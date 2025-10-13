@@ -1,6 +1,6 @@
 import { NavLink } from "react-router";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faHome, faCalendar } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fontawesome/react-fontawesome";
+import { faBars, faHome, faCalendar } from "@fontawesome/free-solid-svg-icons";
 import { useState } from "react";
 import Overlay from "./Overlay";
 
