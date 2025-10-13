@@ -11,7 +11,6 @@ export default function VSVisning() {
         </div>
         <div className="kamp-vs">
           <p>VS</p>
-          <p>20:00</p>
         </div>
         <div className="kamp-hold">
           <img src={btLogo2} alt="" />
