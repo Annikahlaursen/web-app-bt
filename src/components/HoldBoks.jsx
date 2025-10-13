@@ -16,7 +16,7 @@ export default function HoldBoks() {
           <p>Holdnavn</p>
         </div>
         <img
-          src={isFilled ? "/img/star-solid.svg" : "/img/star.svg"}
+          src={isFilled ? "/star-solid.svg" : "/star.svg"}
           onClick={handleStarClick}
           alt="star"
           className="star"

@@ -84,7 +84,7 @@ export default function Overlay({ isOpen, onClose }) {
               >
                 <span>Nyheder</span>
               </NavLink>
-              <NavLink to="/" className="overlay-link" onClick={handleClose}>
+              <NavLink to="/rating" className="overlay-link" onClick={handleClose}>
                 <span>Ratings</span>
               </NavLink>
               <NavLink
