@@ -21,6 +21,11 @@ export default function App() {
           <Route path="/rating" element={<RatingPage/>} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="*" element={<Navigate to="/error" />} />
+          <Route path="/kamp" element={<KampPage />} />
+          <Route path="/kamp/resultat" element={<KampResultatPage />} />
+          <Route path="/stevne" element={<StevnePage />} />
+          <Route path="/error" element={<Error />} />
           <Route path="/kamp" element={<KampPage />} />
           <Route path="/kamp/resultat" element={<KampResultatPage />} />
           <Route path="/stevne" element={<StevnePage />} />
