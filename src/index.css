@@ -376,7 +376,7 @@ form {
   cursor: pointer;
 }
 
-/*------------ Blåboks Styling -------------*/
+/*------------ Blåboks (HoldBoks + RatingBoks) Styling -------------*/
 
 .blaa-boks{
   display: flex;
@@ -429,6 +429,8 @@ overflow: hidden;
     transform: translateY(0) scale(1);
   }
 }
+
+/*---------- Kamp Card Styling ----------*/
 
 .kamp-card {
   background-color: #bb1717;
