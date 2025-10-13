@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import VSVisning from "../components/VSVisning";
 import arrowWhite from "/public/arrow-left-white.svg";
 import clock from "/public/clock.svg";
@@ -7,6 +7,14 @@ import location from "/public/location-dot.svg";
 import tableTennis from "/public/table-tennis-icon.svg";
 
 export default function KampPage() {
+  const navigate = useNavigate();
+
+  function clicked(event) {
+    event.preventDefault();
+    console.log("Button clicked");
+    navigate("/kamp/resultat");
+  }
+
   return (
     <>
       <div className="red-background">
@@ -40,6 +48,9 @@ export default function KampPage() {
         <p>Kamp resultat: Afventer</p>
         <p>Spillere: Afventer</p>
       </section>
+      <button className="btn" onClick={clicked}>
+        Skriv kampresultat
+      </button>
     </>
   );
 }

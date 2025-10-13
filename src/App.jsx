@@ -4,6 +4,7 @@ import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
 import KampPage from "./pages/KampPage";
+import KampResultatPage from "./pages/KampResultatPage";
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
           <Route path="/contact" element={<ContactPage />} />
           <Route path="*" element={<Navigate to="/" />} />
           <Route path="/kamp" element={<KampPage />} />
+          <Route path="/kamp/resultat" element={<KampResultatPage />} />
         </Routes>
       </main>
     </>
