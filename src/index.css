@@ -2,6 +2,7 @@
 :root {
   --lightred: #bb1717;
   --darkred: #960404;
+  --darkestRed: #5e0505;
   --white: #ffffff;
   --black: #000;
   --lightblue: #def2ff;
@@ -857,4 +858,26 @@ form {
   top: 42rem;
   margin: 0 auto;
   display: block;
+}
+
+.error {
+  background-color: var(--lightred);
+  color: var(--white);
+  text-align: center;
+  padding: 10rem 2rem;
+  min-height: 100vh;
+}
+
+.error #red-color {
+  color: var(--darkestRed);
+}
+
+.tilbage a {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.tilbage img {
+  width: 8%;
 }
