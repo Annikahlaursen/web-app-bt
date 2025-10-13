@@ -483,3 +483,14 @@ form {
 #streg-midt {
   border-right: 2px solid var(--darkred);
 }
+
+/*---------- kampPage Styling ----------*/
+.red-background {
+  background-color: var(--lightred);
+  color: var(--white);
+}
+
+.arrow {
+  width: 10%;
+  margin: 2rem;
+}
