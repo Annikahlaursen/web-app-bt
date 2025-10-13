@@ -488,9 +488,25 @@ form {
 .red-background {
   background-color: var(--lightred);
   color: var(--white);
+  height: 20rem;
 }
 
 .arrow {
   width: 10%;
-  margin: 2rem;
+  margin: 1rem;
+}
+
+.kamp-info-section {
+  margin-top: -4rem;
+  background-color: var(--white);
+  border-radius: var(--border-radius);
+  padding: 2rem;
+}
+.kamp-info {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.kamp-info img {
+  width: 7%;
 }
