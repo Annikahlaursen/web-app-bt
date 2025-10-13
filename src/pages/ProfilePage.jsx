@@ -15,7 +15,6 @@ export default function Profile() {
         </div>
         <div className="profile-text">
           <h4>Heidi Astrup</h4>
-          <h4>Spiller ID:</h4>
           <h4>Rating:</h4>
         </div>
       </div>
