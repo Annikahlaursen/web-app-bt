@@ -8,6 +8,7 @@ import KampPage from "./pages/KampPage";
 import KampResultatPage from "./pages/KampResultatPage";
 import StevnePage from "./pages/StevnePage";
 import Error from "./pages/ErrorPage";
+import RatingPage from "./pages/RatingPage";
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<AboutPage />} />
+          <Route path="/rating" element={<RatingPage/>} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="*" element={<Navigate to="/error" />} />
@@ -24,6 +26,11 @@ export default function App() {
           <Route path="/kamp/resultat" element={<KampResultatPage />} />
           <Route path="/stevne" element={<StevnePage />} />
           <Route path="/error" element={<Error />} />
+          <Route path="/kamp" element={<KampPage />} />
+          <Route path="/kamp/resultat" element={<KampResultatPage />} />
+          <Route path="/stevne" element={<StevnePage />} />
+          <Route path="/stevne/tilmeld" element={<Error />} />
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </main>
     </>
