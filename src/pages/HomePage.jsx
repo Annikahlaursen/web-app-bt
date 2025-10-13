@@ -1,4 +1,5 @@
 import KampCard from "../components/KampCard";
+import RatingBoks from "../components/RatingBoks";
 
 
 export default function HomePage() {
@@ -10,7 +11,7 @@ export default function HomePage() {
       <p>Hej ændringer</p>
       <h1>Hej verden</h1>
       <KampCard />
-
+<RatingBoks />
       {/* <p>https://web-app-bt-124b8-default-rtdb.firebaseio.com/</p> */}
 
 
