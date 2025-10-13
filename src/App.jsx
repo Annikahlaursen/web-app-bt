@@ -6,6 +6,7 @@ import ContactPage from "./pages/ContactPage";
 import ProfilePage from "./pages/ProfilePage";
 import KampPage from "./pages/KampPage";
 import KampResultatPage from "./pages/KampResultatPage";
+import StevnePage from "./pages/StevnePage";
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
           <Route path="*" element={<Navigate to="/" />} />
           <Route path="/kamp" element={<KampPage />} />
           <Route path="/kamp/resultat" element={<KampResultatPage />} />
+          <Route path="/stevne" element={<StevnePage />} />
         </Routes>
       </main>
     </>
