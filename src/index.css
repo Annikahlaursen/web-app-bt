@@ -255,6 +255,7 @@ form {
   padding: 1rem;
   animation: fadeIn 0.3s ease-in-out;
   background-color: var(--grey);
+  border-radius: 20px;
 }
 
 /* ---------- Overlay Styling ---------- */

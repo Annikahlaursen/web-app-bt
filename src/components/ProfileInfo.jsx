@@ -63,7 +63,7 @@ export default function ProfileInfo() {
               />
             </form>
           </div>
-          <div className="profile-info-actions">
+          <div className="profile-btns-actions">
             <button className="plus-parent">Gem</button>
             <br />
             <button className="plus-parent">Log ud</button>
