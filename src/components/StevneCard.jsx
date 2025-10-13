@@ -6,7 +6,7 @@ import { Link } from "react-router";
 export default function StevneCard() {
   return (
     <div className="stevne-card">
-      <Link to="/kamp">
+      <Link to="/stevne">
         <div className="kamp-container">
           <h3>Stævne Navn</h3>
           <p>Dato</p>
