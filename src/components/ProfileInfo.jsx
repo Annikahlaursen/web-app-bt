@@ -16,11 +16,11 @@ export default function ProfileInfo() {
           </div>
           <div className="profile-card-actions">
             <a id="profile-card-actions-seperat">
-              <img src={Pen} alt="Edit icon" style={{ width: "2rem" }} />
+              <img src={Pen} alt="Edit icon" style={{ width: "1.5rem" }} />
               Rediger
             </a>
             <a id="profile-card-actions-seperat">
-              <img src={Trash} alt="Delete icon" style={{ width: "2rem" }} />
+              <img src={Trash} alt="Delete icon" style={{ width: "1.5rem" }} />
               Fjern
             </a>
           </div>
@@ -51,9 +51,9 @@ export default function ProfileInfo() {
                 name="gender"
                 className="profile-form-content"
               >
-                <option value="au">Kvinde</option>
-                <option value="ca">Mand</option>
-                <option value="usa">Andet</option>
+                <option value="women">Kvinde</option>
+                <option value="men">Mand</option>
+                <option value="other">Andet</option>
               </select>
               <input
                 type="date"

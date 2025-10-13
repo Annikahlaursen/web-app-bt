@@ -183,7 +183,7 @@ form {
   text-decoration: underline;
 }
 
-/* ---------- Profile Styling ---------- */
+/* ---------- Profile Page Styling ---------- */
 .profile {
   background-color: var(--darkred);
 }
@@ -223,7 +223,6 @@ form {
   align-items: center;
   border-top: solid var(--grey) 2px;
   padding-top: 10px;
-  border-inline-end: solid var(--grey) 2px;
 }
 
 .profile-card-oneaction {
@@ -239,7 +238,7 @@ form {
 }
 
 .profile-card-content {
-  margin: 2rem 0 2rem;
+  margin: 1rem 0 2rem;
   justify-self: center;
 }
 
@@ -319,14 +318,11 @@ form {
 
 .profile-form-content {
   border: 2px solid var(--grey);
+  color: var(--black) !important;
   display: flex;
   gap: 1rem;
   padding: 1rem 1rem;
   border-radius: 20px;
-}
-
-.profile-form form {
-  width: 100%;
 }
 
 /* ---------- Overlay Styling ---------- */
