@@ -2,6 +2,7 @@ import KampCard from "../components/KampCard";
 import HoldBoks from "../components/HoldBoks";
 
 import StevneCard from "../components/StevneCard";
+import NyhedsCard from "../components/NyhedsCard";
 
 export default function HomePage() {
   return (
@@ -15,6 +16,10 @@ export default function HomePage() {
       <StevneCard />
 
       <KampCard />
+
+      <section>
+        <NyhedsCard />
+      </section>
 
       {/* <p>https://web-app-bt-124b8-default-rtdb.firebaseio.com/</p> */}
     </section>
