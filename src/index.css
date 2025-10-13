@@ -787,6 +787,14 @@ form {
   width: 7%;
 }
 
+/*---------- Stævne Page Styling ----------*/
+
+.blue-background {
+  background-color: var(--blue);
+  color: var(--white);
+  height: 20rem;
+}
+
 /* ---------- Button Styling ---------- */
 .btn {
   background-color: var(--lightred);
@@ -796,6 +804,8 @@ form {
   padding: 1rem;
   font-size: 1rem;
   font-family: var(--display-font);
-  display: block;
-  margin: auto;
+  position: absolute;
+  top: 80%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
