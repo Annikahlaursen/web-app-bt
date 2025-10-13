@@ -2,7 +2,7 @@
 :root {
   --lightred: #bb1717;
   --darkred: #960404;
-  --white: #f1f1f1;
+  --white: #ffffff;
   --black: #000;
   --lightblue: #def2ff;
   --babyblue: #bbe5ff;
@@ -26,7 +26,7 @@ html {
 
 body,
 html {
-  background-color: var(--light-green);
+  background-color: var(--white);
   color: var(--text-color-dark);
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-weight: 400;
@@ -450,6 +450,18 @@ form {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+}
+
+
+
+/*-------------Rating Liste Styling------------*/
+.rating-liste > :nth-child(2n) {
+  background-color: var(--babyblue);
+}
+
+.rating-categories p{
+  text-align: left;
+  margin: 1rem 0 0.5rem 0.5rem;
 }
 
 /* ---------- Animations ---------- */
