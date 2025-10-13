@@ -820,7 +820,9 @@ form {
   background-color: var(--white);
   border-radius: var(--border-radius);
   padding: 2rem;
+  min-height: 50rem;
 }
+
 .kamp-info {
   display: flex;
   gap: 0.5rem;
@@ -838,6 +840,10 @@ form {
   height: 20rem;
 }
 
+.blue-background h2 {
+  text-align: center;
+}
+
 /* ---------- Button Styling ---------- */
 .btn {
   background-color: var(--lightred);
@@ -847,8 +853,8 @@ form {
   padding: 1rem;
   font-size: 1rem;
   font-family: var(--display-font);
-  position: absolute;
-  top: 80%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: sticky;
+  top: 2rem;
+  margin: 0 auto;
+  display: block;
 }
