@@ -1,15 +1,13 @@
 
 
-export default function HoldBoks() {
+export default function RatingBoks() {
 
   return (
-    <div className="blaa-boks">
-      <div className="blaa-boks-holdnavn">
-        <div className="klublogo-container">
-          <img src="klublogo" alt="klubnavn(AABT)"></img>
-        </div>
-        <p>Holdnavn</p>
-      </div>
+    <div className="blaa-boks rating-boks-grid">
+      <p>802</p>
+      <p className="rating-navn">Mick Øgendahl larsen</p>
+      <p>677</p>
+      <p>9</p>
     </div>
   );
 }
