@@ -2,10 +2,13 @@ import btLogo1 from "/public/btLogo1.png";
 import btLogo2 from "/public/btLogo2.png";
 import bell from "/public/bell.svg";
 import share from "/public/share.svg";
+import VSVisning from "./VSVisning";
+import { Link } from "react-router";
 
 export default function KampCard() {
   return (
     <div className="kamp-card">
+      <Link to="/VSVisning"></Link>
       <div className="kamp-container">
         <p>KampID</p>
         <p>Dato</p>
