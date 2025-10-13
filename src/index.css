@@ -2,7 +2,7 @@
 :root {
   --lightred: #bb1717;
   --darkred: #960404;
-  --white: #f1f1f1;
+  --white: #ffffff;
   --black: #000;
   --lightblue: #def2ff;
   --babyblue: #bbe5ff;
@@ -11,6 +11,7 @@
   --grey: #e4e4e4;
   --light-green: #f1f1f1;
   --border-radius: 30px;
+  --display-font: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
 /* ---------- Global Styling ---------- */
@@ -26,9 +27,9 @@ html {
 
 body,
 html {
-  background-color: var(--light-green);
+  background-color: var(--white);
   color: var(--text-color-dark);
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: var(--display-font);
   font-weight: 400;
   height: 100%;
   line-height: 1.5;
@@ -527,19 +528,38 @@ form {
   cursor: pointer;
 }
 
-/*------------ Blåboks (HoldBoks + RatingBoks) Styling -------------*/
+/*------------ Blåboks Styling -------------*/
 
 .blaa-boks {
-  display: flex;
-  flex-direction: row;
   border-radius: var(--border-radius);
-  background-color: var(--light-blue);
-  align-items: center;
-  justify-content: space-between;
-  padding: 3px 20px 3px 10px;
+  background-color: var(--lightblue);
+  padding: 3px 15px 3px;
+  margin-top: 8px;
+  height: 50px;
 }
 
-.blaa-boks-holdnavn {
+.blaa-boks p {
+  margin: 0;
+  font-size: 0.9em;
+}
+
+.blaa-boks > * {
+  align-self: center;
+}
+
+/*-------------Hold Boks Styling------------*/
+
+.hold-boks-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+}
+
+.hold-boks-grid :nth-child(2) {
+  justify-self: end;
+}
+
+.hold-boks-holdnavn {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -549,8 +569,8 @@ form {
 .klublogo-container {
   width: 40px;
   height: 40px;
-  border: solid 2px var(--green);
-  border-radius: var(--circle-radius);
+  border: solid 2px var(--darkred);
+  border-radius: var(--border-radius);
   overflow: hidden;
 }
 
@@ -558,6 +578,41 @@ form {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.blaa-boks .star{
+  width:30px;
+  height: auto;
+}
+
+/*------------Rating boks styling------------*/
+.rating-boks-grid {
+  display: grid;
+  grid-template-columns: 1fr 4fr 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+}
+
+.rating-boks-grid p {
+  text-align: center;
+}
+
+.rating-navn {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+
+
+/*-------------Rating Liste Styling------------*/
+.rating-liste > :nth-child(2n) {
+  background-color: var(--babyblue);
+}
+
+.rating-categories p{
+  text-align: left;
+  margin: 1rem 0 0.5rem 0.5rem;
 }
 
 /* ---------- Animations ---------- */
@@ -630,7 +685,6 @@ form {
 
 .kamp-card {
   background-color: var(--lightred);
-  width: 90%;
   border-radius: var(--border-radius);
   color: #fff;
 }
@@ -651,6 +705,10 @@ form {
   margin-top: 0;
 }
 
+.kamp-hold img {
+  border-radius: var(--border-radius);
+}
+
 .kamp-vs {
   width: 20%;
   text-align: center;
@@ -659,14 +717,59 @@ form {
 
 .del-notifikationer {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+  gap: 0.4rem;
   width: 50%;
 }
 
+.del-notifikationer img {
+  width: 20%;
+}
+
 #streg {
-  border-top: 2px solid rgb(158, 192, 235);
+  border-top: 2px solid var(--darkred);
 }
 
 #streg-midt {
-  border-right: 2px solid rgb(158, 192, 235);
+  border-right: 2px solid var(--darkred);
+}
+
+/*---------- kampPage Styling ----------*/
+.red-background {
+  background-color: var(--lightred);
+  color: var(--white);
+  height: 20rem;
+}
+
+.arrow {
+  width: 10%;
+  margin: 1rem;
+}
+
+.kamp-info-section {
+  margin-top: -4rem;
+  background-color: var(--white);
+  border-radius: var(--border-radius);
+  padding: 2rem;
+}
+.kamp-info {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.kamp-info img {
+  width: 7%;
+}
+
+/* ---------- Button Styling ---------- */
+.btn {
+  background-color: var(--lightred);
+  color: var(--white);
+  border-radius: var(--border-radius);
+  border: none;
+  padding: 1rem;
+  font-size: 1rem;
+  font-family: var(--display-font);
+  display: block;
+  margin: auto;
 }
