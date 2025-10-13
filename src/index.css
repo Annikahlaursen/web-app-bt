@@ -377,19 +377,38 @@ form {
   cursor: pointer;
 }
 
-/*------------ Blåboks (HoldBoks + RatingBoks) Styling -------------*/
+/*------------ Blåboks Styling -------------*/
 
 .blaa-boks {
-  display: flex;
-  flex-direction: row;
   border-radius: var(--border-radius);
-  background-color: var(--light-blue);
-  align-items: center;
-  justify-content: space-between;
-  padding: 3px 20px 3px 10px;
+  background-color: var(--lightblue);
+  padding: 3px 15px 3px;
+  margin-top: 8px;
+  height: 50px;
 }
 
-.blaa-boks-holdnavn {
+.blaa-boks p {
+  margin: 0;
+  font-size: 0.9em;
+}
+
+.blaa-boks > * {
+  align-self: center;
+}
+
+/*-------------Hold Boks Styling------------*/
+
+.hold-boks-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+}
+
+.hold-boks-grid :nth-child(2) {
+  justify-self: end;
+}
+
+.hold-boks-holdnavn {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -399,8 +418,8 @@ form {
 .klublogo-container {
   width: 40px;
   height: 40px;
-  border: solid 2px var(--green);
-  border-radius: var(--circle-radius);
+  border: solid 2px var(--darkred);
+  border-radius: var(--border-radius);
   overflow: hidden;
 }
 
@@ -408,6 +427,29 @@ form {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.blaa-boks .star{
+  width:30px;
+  height: auto;
+}
+
+/*------------Rating boks styling------------*/
+.rating-boks-grid {
+  display: grid;
+  grid-template-columns: 1fr 4fr 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+}
+
+.rating-boks-grid p {
+  text-align: center;
+}
+
+.rating-navn {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 /* ---------- Animations ---------- */
