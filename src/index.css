@@ -10,6 +10,7 @@
   --darkgrey: #a19f9f;
   --grey: #e4e4e4;
   --light-green: #f1f1f1;
+  --border-radius: 30px;
 }
 
 /* ---------- Global Styling ---------- */
@@ -376,6 +377,39 @@ form {
   cursor: pointer;
 }
 
+/*------------ Blåboks (HoldBoks + RatingBoks) Styling -------------*/
+
+.blaa-boks {
+  display: flex;
+  flex-direction: row;
+  border-radius: var(--border-radius);
+  background-color: var(--light-blue);
+  align-items: center;
+  justify-content: space-between;
+  padding: 3px 20px 3px 10px;
+}
+
+.blaa-boks-holdnavn {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.klublogo-container {
+  width: 40px;
+  height: 40px;
+  border: solid 2px var(--green);
+  border-radius: var(--circle-radius);
+  overflow: hidden;
+}
+
+.klublogo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 /* ---------- Animations ---------- */
 @keyframes fadeIn {
   from {
@@ -395,4 +429,49 @@ form {
     opacity: 1;
     transform: translateY(0) scale(1);
   }
+}
+
+/*---------- Kamp Card Styling ----------*/
+
+.kamp-card {
+  background-color: var(--lightred);
+  width: 90%;
+  border-radius: var(--border-radius);
+  color: #fff;
+}
+
+.kamp-container {
+  display: flex;
+  justify-content: space-between;
+  padding-right: 1rem;
+  padding-left: 1rem;
+}
+
+.kamp-hold {
+  width: 40%;
+  text-align: center;
+}
+
+.kamp-hold p {
+  margin-top: 0;
+}
+
+.kamp-vs {
+  width: 20%;
+  text-align: center;
+  align-self: center;
+}
+
+.del-notifikationer {
+  display: flex;
+  justify-content: space-around;
+  width: 50%;
+}
+
+#streg {
+  border-top: 2px solid rgb(158, 192, 235);
+}
+
+#streg-midt {
+  border-right: 2px solid rgb(158, 192, 235);
 }
