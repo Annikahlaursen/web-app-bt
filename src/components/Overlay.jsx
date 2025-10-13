@@ -1,18 +1,9 @@
 import { Fragment } from "react";
 import { NavLink } from "react-router";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faArrowRight,
-  faSignOut,
-  faTimes,
-  faUser,
-  faHeart,
-  faPen,
-  faUsers,
-  faCalendar,
-  faNewspaper,
-  faStarHalf,
-} from "@fortawesome/free-solid-svg-icons";
+import Profile from "../assets/icons/user-solid-full.svg";
+import Arrow from "../assets/icons/arrow-right-solid-full.svg";
+import SignOut from "../assets/icons/right-from-bracket-solid-full.svg";
+import Close from "../assets/icons/xmark-solid-full.svg";
 
 export default function Overlay({ isOpen, onClose }) {
   return (
@@ -23,10 +14,11 @@ export default function Overlay({ isOpen, onClose }) {
           <div className="overlay__container">
             <div className="navprofile">
               <div>
-                <FontAwesomeIcon
-                  icon={faUser}
+                <img
+                  src={Profile}
+                  alt="Profile"
                   className="profile__image"
-                  style={{ fontSize: "2rem", color: "white" }}
+                  style={{ fontSize: "2rem" }}
                 />
               </div>
               <div className="profileinfo">
@@ -34,7 +26,12 @@ export default function Overlay({ isOpen, onClose }) {
                 <p>Rating</p>
                 <a href="/">
                   Se profil
-                  <FontAwesomeIcon icon={faArrowRight} />
+                  <img
+                    src={Arrow}
+                    alt="Arrow"
+                    className="arrow__image"
+                    style={{ fontSize: "1rem" }}
+                  />
                 </a>
               </div>
             </div>
@@ -44,11 +41,9 @@ export default function Overlay({ isOpen, onClose }) {
                 className="overlay__link overlay__linkcolorchange"
                 onClick={onClose}
               >
-                <FontAwesomeIcon icon={faHeart} />
                 <span>Favorit</span>
               </NavLink>
               <NavLink to="/" className="overlay__link" onClick={onClose}>
-                <FontAwesomeIcon icon={faPen} />
                 <span>Indskriv Kampresultat</span>
               </NavLink>
               <NavLink
@@ -56,11 +51,9 @@ export default function Overlay({ isOpen, onClose }) {
                 className="overlay__link overlay__linkcolorchange"
                 onClick={onClose}
               >
-                <FontAwesomeIcon icon={faUsers} />
                 <span>Find Hold</span>
               </NavLink>
               <NavLink to="/" className="overlay__link" onClick={onClose}>
-                <FontAwesomeIcon icon={faCalendar} />
                 <span>Find Stævne</span>
               </NavLink>
               <NavLink
@@ -68,11 +61,9 @@ export default function Overlay({ isOpen, onClose }) {
                 className="overlay__link overlay__linkcolorchange"
                 onClick={onClose}
               >
-                <FontAwesomeIcon icon={faNewspaper} />
                 <span>Nyheder</span>
               </NavLink>
               <NavLink to="/" className="overlay__link" onClick={onClose}>
-                <FontAwesomeIcon icon={faStarHalf} />
                 <span>Ratings</span>
               </NavLink>
               <NavLink
@@ -80,15 +71,16 @@ export default function Overlay({ isOpen, onClose }) {
                 className="overlay__link overlay__linkcolorchange"
                 onClick={onClose}
               >
-                <FontAwesomeIcon icon={faCalendar} />
                 <span>Kalender</span>
               </NavLink>
             </nav>
             <div className="overlay__controls">
               <a href="/" className="signout">
-                <FontAwesomeIcon
-                  icon={faSignOut}
-                  style={{ fontSize: "2rem", color: "white" }}
+                <img
+                  src={SignOut}
+                  alt="Sign Out"
+                  className="signout__image"
+                  style={{ fontSize: "2rem" }}
                 />
                 Log ud
               </a>
@@ -97,9 +89,11 @@ export default function Overlay({ isOpen, onClose }) {
                 type="button"
                 onClick={onClose}
               >
-                <FontAwesomeIcon
-                  icon={faTimes}
-                  style={{ fontSize: "2rem", color: "white" }}
+                <img
+                  src={Close}
+                  alt="Close"
+                  className="close__image"
+                  style={{ fontSize: "2rem" }}
                 />
               </button>
             </div>
