@@ -9,7 +9,7 @@ export default function Profile() {
   const [activeView, setActiveView] = useState("info"); // 'info' eller 'kontakt'
   return (
     <div className="profile">
-      <div>
+      <div className="profile-background">
         <div className="profile-placeholder">
           <img src={Placeholder} alt="Placeholder image" />
         </div>

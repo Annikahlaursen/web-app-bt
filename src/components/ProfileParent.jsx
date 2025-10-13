@@ -30,7 +30,7 @@ export default function ProfileParent() {
               du tilføje via tilføj.
             </p>
           </div>
-          <div className="profile-card-actions">
+          <div className="profile-card-actions profile-card-oneaction">
             <a className="plus-parent">Tilføj</a>
           </div>
         </div>
