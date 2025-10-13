@@ -3,6 +3,7 @@ import { NavLink } from "react-router";
 import Profile from "../assets/icons/user-solid-full.svg";
 import SignOut from "../assets/icons/right-from-bracket-solid-full.svg";
 import Close from "../assets/icons/xmark-solid-full.svg";
+import SignOutCard from "./SignOutCard";
 
 export default function Overlay({ isOpen, onClose }) {
   const [isClosing, setIsClosing] = useState(false);
@@ -85,7 +86,7 @@ export default function Overlay({ isOpen, onClose }) {
               </NavLink>
             </nav>
             <div className="overlay-controls">
-              <a href="/" className="signout">
+              <a href={SignOutCard} className="signout">
                 <img
                   src={SignOut}
                   alt="Sign Out"
