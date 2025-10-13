@@ -7,6 +7,7 @@ import SignOutCard from "./SignOutCard";
 
 export default function Overlay({ isOpen, onClose }) {
   const [isClosing, setIsClosing] = useState(false);
+  const [showSignOutCard, setShowSignOutCard] = useState(false);
 
   const handleClose = () => {
     setIsClosing(true);
@@ -14,6 +15,15 @@ export default function Overlay({ isOpen, onClose }) {
       setIsClosing(false);
       onClose();
     }, 300); // Match animation duration
+  };
+
+  const handleShowSignOut = (e) => {
+    e.preventDefault();
+    setShowSignOutCard(true);
+  };
+
+  const handleCloseSignOut = () => {
+    setShowSignOutCard(false);
   };
 
   useEffect(() => {
@@ -86,7 +96,7 @@ export default function Overlay({ isOpen, onClose }) {
               </NavLink>
             </nav>
             <div className="overlay-controls">
-              <a href={SignOutCard} className="signout">
+              <button onClick={handleShowSignOut} className="signout">
                 <img
                   src={SignOut}
                   alt="Sign Out"
@@ -94,7 +104,7 @@ export default function Overlay({ isOpen, onClose }) {
                   style={{ height: "70%" }}
                 />
                 Log ud
-              </a>
+              </button>
               <button
                 className="navcircle menu-button overlay-close"
                 type="button"
@@ -106,6 +116,7 @@ export default function Overlay({ isOpen, onClose }) {
           </div>
         </div>
       )}
+      <SignOutCard isOpen={showSignOutCard} onClose={handleCloseSignOut} />
     </Fragment>
   );
 }

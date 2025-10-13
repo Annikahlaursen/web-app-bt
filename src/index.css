@@ -163,12 +163,6 @@ form {
   text-decoration: underline;
 }
 
-.signout {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-}
-
 /* ---------- Overlay Styling ---------- */
 .overlay {
   position: fixed;
@@ -251,6 +245,132 @@ form {
 
 .overlay-linkcolorchange {
   background-color: var(--lightred);
+}
+
+/* ---------- SignOut Card Styling ---------- */
+.signout {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font-size: inherit;
+  font-family: inherit;
+}
+
+.signout-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 2000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.signout-background {
+  background-color: rgba(0, 0, 0, 0.6);
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  cursor: pointer;
+  z-index: 2001;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.signout-background--closing {
+  animation: fadeOut 0.3s ease-in;
+}
+
+.signout-card {
+  background-color: var(--white);
+  color: var(--text-color-dark);
+  position: fixed;
+  width: 90%;
+  align-self: center;
+  z-index: 2002;
+  border-radius: 20px;
+  padding: 1.5rem;
+  animation: slideUpFromBottom 0.3s ease-out;
+}
+
+.signout-card--closing {
+  animation: slideDownToBottom 0.3s ease-in;
+}
+
+.signout-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--light-grey);
+  padding-bottom: 1rem;
+}
+
+.signout-card__header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.signout-card__close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+}
+
+.signout-card__close:hover {
+  background-color: var(--light-grey);
+}
+
+.signout-card__content {
+  margin-bottom: 1.5rem;
+}
+
+.signout-card__content p {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--text-color-dark);
+}
+
+.signout-card__actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.signout-card__cancel,
+.signout-card__confirm {
+  flex: 1;
+  padding: 0.8rem 1rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.signout-card__cancel {
+  background-color: var(--light-grey);
+  color: var(--text-color-dark);
+}
+
+.signout-card__cancel:hover {
+  background-color: #e0e0e0;
+}
+
+.signout-card__confirm {
+  background-color: var(--darkred);
+  color: var(--white);
 }
 
 /* ---------- Page Styling ---------- */
@@ -471,6 +591,24 @@ form {
   }
   to {
     opacity: 0;
+  }
+}
+
+@keyframes slideUpFromBottom {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDownToBottom {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100%);
   }
 }
 
