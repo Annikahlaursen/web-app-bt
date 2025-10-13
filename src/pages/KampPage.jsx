@@ -28,6 +28,9 @@ export default function KampPage() {
         <VSVisning />
       </div>
       <section className="kamp-info-section">
+        <button className="btn" onClick={clicked}>
+          Skriv kampresultat
+        </button>
         <div className="kamp-info">
           <img src={tableTennis} alt="TableTennis icon" />
           <p>Kamp ID</p>
@@ -48,9 +51,6 @@ export default function KampPage() {
         <p>Kamp resultat: Afventer</p>
         <p>Spillere: Afventer</p>
       </section>
-      <button className="btn" onClick={clicked}>
-        Skriv kampresultat
-      </button>
     </>
   );
 }
