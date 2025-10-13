@@ -135,6 +135,20 @@ form {
   gap: 1.3rem;
   text-align: left;
   padding-bottom: 2rem;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border-radius: 12px;
+}
+
+.navprofile:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateX(5px);
+}
+
+.navprofile:active {
+  transform: translateX(3px) scale(0.98);
 }
 
 .profile-image {

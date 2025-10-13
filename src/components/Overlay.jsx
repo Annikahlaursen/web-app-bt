@@ -46,16 +46,16 @@ export default function Overlay({ isOpen, onClose }) {
               isClosing ? "overlay-container-closing" : ""
             }`}
           >
-            <div className="navprofile">
+            <NavLink to="/profile" className="navprofile" onClick={handleClose}>
               <div>
                 <img src={Profile} alt="Profile" className="profile-image" />
               </div>
               <div className="profileinfo">
                 <h3>Heidi Astrup</h3>
                 <p>Rating</p>
-                <a href="/">Se profil →</a>
+                <span style={{ textDecoration: "underline" }}>Se profil →</span>
               </div>
-            </div>
+            </NavLink>
             <nav className="overlay-nav">
               <NavLink
                 to="/"
