@@ -24,6 +24,9 @@ export default function StevnePage() {
         <h2>Stævne Navn</h2>
       </div>
       <section className="kamp-info-section">
+        <button className="btn" onClick={clicked}>
+          Tilmeld stævne
+        </button>
         <div className="kamp-info">
           <img src={calendar} alt="Calendar icon" />
           <p>dato oktober 2025</p>
@@ -50,9 +53,6 @@ export default function StevnePage() {
           <li>Puslinge A</li>
         </ul>
       </section>
-      <button className="btn" onClick={clicked}>
-        Tilmeld stævne
-      </button>
     </>
   );
 }
