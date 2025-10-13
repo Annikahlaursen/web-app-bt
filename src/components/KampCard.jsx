@@ -1,5 +1,7 @@
 import btLogo1 from "/public/btLogo1.png";
 import btLogo2 from "/public/btLogo2.png";
+import bell from "/public/bell.svg";
+import share from "/public/share.svg";
 
 export default function KampCard() {
   return (
@@ -24,11 +26,11 @@ export default function KampCard() {
       </div>
       <div className="kamp-container" id="streg">
         <div className="del-notifikationer" id="streg-midt">
-          <img src="" alt="" />
+          <img src={share} alt="Dele ikon" />
           <p>Del</p>
         </div>
         <div className="del-notifikationer">
-          <img src="" alt="" />
+          <img src={bell} alt="Notifikations klokke ikon" />
           <p>Notifikationer</p>
         </div>
       </div>

@@ -435,7 +435,6 @@ form {
 
 .kamp-card {
   background-color: var(--lightred);
-  width: 90%;
   border-radius: var(--border-radius);
   color: #fff;
 }
@@ -456,6 +455,10 @@ form {
   margin-top: 0;
 }
 
+.kamp-hold img {
+  border-radius: var(--border-radius);
+}
+
 .kamp-vs {
   width: 20%;
   text-align: center;
@@ -464,14 +467,19 @@ form {
 
 .del-notifikationer {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+  gap: 0.4rem;
   width: 50%;
 }
 
+.del-notifikationer img {
+  width: 20%;
+}
+
 #streg {
-  border-top: 2px solid rgb(158, 192, 235);
+  border-top: 2px solid var(--darkred);
 }
 
 #streg-midt {
-  border-right: 2px solid rgb(158, 192, 235);
+  border-right: 2px solid var(--darkred);
 }
