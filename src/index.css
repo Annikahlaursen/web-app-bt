@@ -42,6 +42,7 @@ h1 {
   line-height: 1.1;
 }
 
+h3,
 h5 {
   line-height: 1.1;
   margin: 0.5em 0 0;
@@ -184,12 +185,15 @@ form {
 
 /* ---------- Profile Styling ---------- */
 .profile {
+  background-color: var(--darkred);
+}
+
+.profile-background {
   background: linear-gradient(
-    to bottom,
     var(--white) 0%,
-    var(--white) 30%,
-    var(--lightred) 20%,
-    var(--lightred) 100%
+    var(--white) 85%,
+    var(--darkred) 20%,
+    var(--darkred) 100%
   );
 }
 
@@ -208,13 +212,41 @@ form {
   align-self: center;
   z-index: 2002;
   border-radius: 20px;
-  padding: 1.5rem;
+  padding: 1rem;
+  margin-bottom: 1.3rem;
+}
+
+.profile-card-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-items: center;
+  align-items: center;
+  border-top: solid var(--grey) 2px;
+  padding-top: 10px;
+  border-inline-end: solid var(--grey) 2px;
+}
+
+.profile-card-oneaction {
+  grid-template-columns: 1fr;
+}
+
+.profile-info-card-image {
+  background-color: var(--darkred);
+  width: 6em;
+  height: 6em;
+  border-radius: 50%;
+  padding: 1rem;
+}
+
+.profile-card-content {
+  margin: 2rem 0 2rem;
+  justify-self: center;
 }
 
 .profile-text {
   background-color: var(--grey);
-  width: 90%;
   justify-self: center;
+  width: 85%;
   border-radius: 20px;
   text-align: center;
   line-height: 0.5rem;
@@ -224,8 +256,21 @@ form {
 .profile-btns {
   display: flex;
   justify-content: space-around;
+  margin-bottom: 10px;
+}
+
+.profile-btns-actions-seperat {
+  width: 100%;
+  border: var(--black) solid 2px;
+  border-radius: 20px;
   gap: 1rem;
   padding: 1rem 0;
+}
+
+#save-btn {
+  background-color: var(--lightred);
+  color: var(--white);
+  border: none;
 }
 
 .profile-btns-seperate {
@@ -236,14 +281,20 @@ form {
   background: none;
   border: none;
   cursor: pointer;
-  padding: 1rem;
-  border-radius: 12px;
+  padding: 10px;
+  margin: 10px;
   transition: all 0.3s ease;
   font-family: inherit;
 }
 
+#profile-card-actions-seperat {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
 .profile-btns-seperate.active {
-  text-decoration: underline solid 2px;
+  border-bottom: solid var(--grey) 2px;
 }
 
 .profile-btns-seperate h5 {
@@ -252,10 +303,30 @@ form {
 }
 
 .profile-content {
-  padding: 1rem;
+  padding: 2rem;
   animation: fadeIn 0.3s ease-in-out;
   background-color: var(--grey);
   border-radius: 20px;
+}
+
+.profile-form {
+  max-width: 100vh;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  padding: 1rem 0;
+}
+
+.profile-form-content {
+  border: 2px solid var(--grey);
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 1rem;
+  border-radius: 20px;
+}
+
+.profile-form form {
+  width: 100%;
 }
 
 /* ---------- Overlay Styling ---------- */
