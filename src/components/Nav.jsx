@@ -22,7 +22,7 @@ export default function Nav() {
           style={{ fontSize: "2rem" }}
         />
       </NavLink>
-      <NavLink className="navcircle" to="/about">
+      <NavLink className="navcircle" to="/kalender">
         <img
           src={Calender}
           alt="Calender"
