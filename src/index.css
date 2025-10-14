@@ -624,6 +624,10 @@ form {
   padding: 0 0.5em;
 }
 
+.rating-filter{
+  position: sticky;
+}
+
 .rating-categories p {
   text-align: left;
   margin: 1rem 0 0.5rem 0.5rem;

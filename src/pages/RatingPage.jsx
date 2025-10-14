@@ -39,15 +39,25 @@ export default function RatingPage() {
   return (
     <section className="page">
       <h1>Rating</h1>
-      <div>
-        <input
-          type="text"
-          placeholder="Søg i rating"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          style={{ flex: 1, padding: "10px" }}
-        />
+      <div className="rating-filter">
+        <div>
+          <input
+            type="text"
+            name="search"
+            placeholder="Søg i rating"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            style={{ flex: 1, padding: "10px" }}
+          />
+        </div>
+        <div className="rating-boks-grid rating-categories">
+          <p>Plac.</p>
+          <p>Navn</p>
+          <p>Rating</p>
+          <p>+/-</p>
+        </div>
       </div>
+
       <RatingListe users={filteredUsers} />
     </section>
   );
