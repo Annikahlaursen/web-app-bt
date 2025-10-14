@@ -1,6 +1,6 @@
 import RatingBoks from "./RatingBoks";
 
-export default function RatingListe({ users }) {
+export default function RatingListe({ users = [] }) {
   return (
     <div className="rating-liste">
       <hr />
