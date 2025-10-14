@@ -1,18 +1,40 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import RatingListe from "../components/RatingListe";
 
 export default function RatingPage() {
-    const [searchTerm, setSearchTerm] = useState("");
+  const [users, setUsers] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
-// const filteredPosts = posts.filter((post) => {
-//   const matchesSearch =
-//     post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-//     post.body.toLowerCase().includes(searchTerm.toLowerCase());
-//   const matchesUser =
-//     selectedUserId === "" || post.userId.toString() === selectedUserId;
+  useEffect(() => {
+    async function fetchUsers() {
+      const url =
+        "https://web-app-bt-124b8-default-rtdb.firebaseio.com/users.json";
+      const response = await fetch(url);
+      const data = await response.json();
 
-//   return matchesSearch && matchesUser;
-// });
+      const usersArray = Object.keys(data).map((key) => ({
+        id: key,
+        ...data[key],
+      }));
+
+      usersArray.sort((a, b) => b.rating - a.rating);
+
+      // tilføjer global placering på ratinglisten til hvert userobject
+      usersArray.forEach((user, index) => {
+        user.placering = index + 1;
+      });
+
+      setUsers(usersArray);
+    }
+    fetchUsers();
+  }, []);
+
+    const filteredUsers = users.filter((user) =>
+      `${user.fornavn} ${user.efternavn}`
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase())
+    );
+
 
   return (
     <section className="page">
@@ -25,9 +47,8 @@ export default function RatingPage() {
           onChange={(e) => setSearchTerm(e.target.value)}
           style={{ flex: 1, padding: "10px" }}
         />
-        
       </div>
-      <RatingListe />
+      <RatingListe users={filteredUsers} />
     </section>
   );
 }

@@ -1,29 +1,8 @@
-import { useState, useEffect } from "react";
+
 
 import RatingBoks from "./RatingBoks";
 
-export default function RatingListe() {
-  const [users, setUsers] = useState([]);
-
-  useEffect(() => {
-    async function fetchUsers() {
-      const url =
-        "https://web-app-bt-124b8-default-rtdb.firebaseio.com/users.json";
-      const response = await fetch(url);
-      const data = await response.json();
-
-      const usersArray = Object.keys(data).map((key) => ({
-        id: key,
-        ...data[key],
-      }));
-
-      usersArray.sort((a, b) => b.rating - a.rating);
-
-      setUsers(usersArray);
-      console.log(usersArray);
-    }
-    fetchUsers();
-  }, []);
+export default function RatingListe({ users }) {
 
   return (
     <>
@@ -35,8 +14,8 @@ export default function RatingListe() {
       </div>
       <div className="rating-liste">
         <hr />
-        {users.map((user, index) => (
-          <RatingBoks user={user} key={user.id} placering={index + 1} />
+        {users.map((user) => (
+          <RatingBoks user={user} key={user.id} placering={user.placering} />
         ))}
       </div>
     </>
