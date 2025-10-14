@@ -1,7 +1,7 @@
 import { useState } from "react";
-import Placeholder from "../assets/icons/image-solid-full.svg";
-import ProfilePic from "../assets/icons/user-solid-full.svg";
-import Users from "../assets/icons/users-solid-full.svg";
+import Placeholder from "/image-solid-full.svg";
+import ProfilePic from "/user-solid-full.svg";
+import Users from "/users-solid-full.svg";
 import ProfileInfo from "../components/ProfileInfo";
 import ProfileParent from "../components/ProfileParent";
 

@@ -1,7 +1,7 @@
 import { Fragment } from "react";
-import Image from "../assets/icons/image-solid-full.svg";
-import Pen from "../assets/icons/pen-solid-full.svg";
-import Trash from "../assets/icons/trash-solid-full.svg";
+import image from "/image-solid-full.svg";
+import pen from "/pen-solid-full.svg";
+import trash from "/trash-solid-full.svg";
 
 export default function ProfileInfo() {
   return (
@@ -12,15 +12,15 @@ export default function ProfileInfo() {
             <h3>Profilbillede</h3>
           </div>
           <div className="profile-info-card-image profile-card-content">
-            <img src={Image} alt="Placeholder image" />
+            <img src={image} alt="Placeholder image" />
           </div>
           <div className="profile-card-actions">
             <a id="profile-card-actions-seperat">
-              <img src={Pen} alt="Edit icon" style={{ width: "1.5rem" }} />
+              <img src={pen} alt="Edit icon" style={{ width: "1.5rem" }} />
               Rediger
             </a>
             <a id="profile-card-actions-seperat">
-              <img src={Trash} alt="Delete icon" style={{ width: "1.5rem" }} />
+              <img src={trash} alt="Delete icon" style={{ width: "1.5rem" }} />
               Fjern
             </a>
           </div>

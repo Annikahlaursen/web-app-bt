@@ -1,8 +1,8 @@
 import { Fragment, useState, useEffect } from "react";
 import { NavLink } from "react-router";
-import Profile from "../assets/icons/user-solid-full.svg";
-import SignOut from "../assets/icons/right-from-bracket-solid-full.svg";
-import Close from "../assets/icons/xmark-solid-full.svg";
+import Profile from "/user-solid-full.svg";
+import SignOut from "/right-from-bracket-solid-full.svg";
+import Close from "/xmark-solid-full.svg";
 import SignOutCard from "./SignOutCard";
 
 export default function Overlay({ isOpen, onClose }) {
