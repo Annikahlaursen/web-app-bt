@@ -1,9 +1,9 @@
 import { NavLink } from "react-router";
 import { useState } from "react";
 import Overlay from "./Overlay";
-import Home from "../assets/icons/house-solid-full.svg";
-import Calender from "../assets/icons/calendar-solid-full.svg";
-import bars from "../assets/icons/bars-solid-full.svg";
+import Home from "/house-solid-full.svg";
+import Calender from "/calendar-solid-full.svg";
+import bars from "/bars-solid-full.svg";
 
 export default function Nav() {
   const [isOpen, setIsOpen] = useState(false);
@@ -22,7 +22,7 @@ export default function Nav() {
           style={{ fontSize: "2rem" }}
         />
       </NavLink>
-      <NavLink className="navcircle" to="/about">
+      <NavLink className="navcircle" to="/kalender">
         <img
           src={Calender}
           alt="Calender"

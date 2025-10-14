@@ -1,5 +1,5 @@
 import { Fragment, useState, useEffect } from "react";
-import Close from "../assets/icons/xmark-solid-full.svg";
+import Close from "/xmark-solid-full.svg";
 
 export default function SignOutCard({ isOpen, onClose }) {
   const [isClosing, setIsClosing] = useState(false);

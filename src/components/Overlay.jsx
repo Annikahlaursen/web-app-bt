@@ -1,8 +1,8 @@
 import { Fragment, useState, useEffect } from "react";
 import { NavLink } from "react-router";
-import Profile from "../assets/icons/user-solid-full.svg";
-import SignOut from "../assets/icons/right-from-bracket-solid-full.svg";
-import Close from "../assets/icons/xmark-solid-full.svg";
+import Profile from "/user-solid-full.svg";
+import SignOut from "/right-from-bracket-solid-full.svg";
+import Close from "/xmark-solid-full.svg";
 import SignOutCard from "./SignOutCard";
 
 export default function Overlay({ isOpen, onClose }) {
@@ -64,7 +64,11 @@ export default function Overlay({ isOpen, onClose }) {
               >
                 <span>Favorit</span>
               </NavLink>
-              <NavLink to="/" className="overlay-link" onClick={handleClose}>
+              <NavLink
+                to="/kamp/resultat"
+                className="overlay-link"
+                onClick={handleClose}
+              >
                 <span>Indskriv Kampresultat</span>
               </NavLink>
               <NavLink
@@ -84,11 +88,15 @@ export default function Overlay({ isOpen, onClose }) {
               >
                 <span>Nyheder</span>
               </NavLink>
-              <NavLink to="/rating" className="overlay-link" onClick={handleClose}>
+              <NavLink
+                to="/rating"
+                className="overlay-link"
+                onClick={handleClose}
+              >
                 <span>Ratings</span>
               </NavLink>
               <NavLink
-                to="/"
+                to="/kalender"
                 className="overlay-link overlay-linkcolorchange"
                 onClick={handleClose}
               >
