@@ -760,9 +760,21 @@ form {
   white-space: nowrap;
 }
 
+.rating-boks-grid .rating-navn {
+  text-align: left;
+}
+
 /*-------------Rating Liste Styling------------*/
 .rating-liste > :nth-child(2n) {
   background-color: var(--babyblue);
+}
+
+.rating-categories {
+  padding: 0 0.5em;
+}
+
+.rating-filter{
+  position: sticky;
 }
 
 .rating-categories p {
