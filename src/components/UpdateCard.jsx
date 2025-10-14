@@ -46,21 +46,21 @@ export default function Update() {
               </select>
             </form>
           </div>
+          <div className="profile-btns-actions">
+            <button
+              className="profile-btns profile-btns-actions-seperat"
+              id="save-btn"
+            >
+              Gem
+            </button>
+          </div>
         </div>
-        <div className="profile-btns-actions">
-          <button
-            className="profile-btns profile-btns-actions-seperat"
-            id="save-btn"
-          >
-            Gem
-          </button>
-          <button
-            className="profile-btns profile-btns-actions-seperat"
-            id="save-btn"
-          >
-            Spring over
-          </button>
-        </div>
+        <button
+          className="profile-btns profile-btns-actions-seperat"
+          id="save-btn"
+        >
+          Spring over
+        </button>
       </div>
     </Fragment>
   );
