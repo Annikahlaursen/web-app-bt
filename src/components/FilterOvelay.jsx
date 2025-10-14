@@ -8,8 +8,27 @@ export default function FilterOverlay({ users, setFilteredUsers, onClose }) {
     placeringMax: "",
   });
 
+  //hjælpefunktion beregner brugernes alder ud fra fødselsdato
+  function calculateAge(birthday) {
+    const today = new Date();
+    const birthDate = new Date(birthday);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+
+    // justerer alderen hvis fødselsdagen i år ikke er passeret endnu
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birthDate.getDate())
+    ) {
+      age--;
+    }
+    return age;
+  }
+
   const applyFilters = () => {
     const filtered = users.filter((user) => {
+      const userAge = calculateAge(user.fødselsdato);
+
       const matchesRating =
         (!filterCriteria.ratingMin ||
           user.rating >= filterCriteria.ratingMin) &&
@@ -19,26 +38,56 @@ export default function FilterOverlay({ users, setFilteredUsers, onClose }) {
           user.placering >= filterCriteria.placeringMin) &&
         (!filterCriteria.placeringMax ||
           user.placering <= filterCriteria.placeringMax);
-      return matchesRating && matchesPlacering;
+      const matchesAge =
+        (!filterCriteria.ageMin || userAge >= filterCriteria.ageMin) &&
+        (!filterCriteria.ageMax || userAge <= filterCriteria.ageMax);
+
+      return matchesRating && matchesPlacering && matchesAge;
+
+     
     });
+
     setFilteredUsers(filtered);
-    onClose(); // Close the overlay after applying filters
+    onClose();
   };
 
   return (
     <div className="filter-overlay">
       <div>
         <select
-          value={filterCriteria.club}
-          onChange={(e) =>
-            setFilterCriteria({ ...filterCriteria, club: e.target.value })
-          }
+          value={filterCriteria.ageInterval}
+          onChange={(e) => {
+            const selectedInterval = e.target.value;
+            let ageMin = "";
+            let ageMax = "";
+
+            if (selectedInterval === "8-15") {
+              ageMin = 8;
+              ageMax = 15;
+            } else if (selectedInterval === "16-21") {
+              ageMin = 16;
+              ageMax = 21;
+            } else if (selectedInterval === "22-45") {
+              ageMin = 22;
+              ageMax = 45;
+            } else if (selectedInterval === "+45") {
+              ageMin = 46;
+              ageMax = "";
+            }
+
+            setFilterCriteria({
+              ...filterCriteria,
+              ageInterval: selectedInterval,
+              ageMin,
+              ageMax,
+            });
+          }}
         >
           <option value="">Alle Aldersgrupper</option>
           <option value="8-15">8-15 år</option>
           <option value="16-21">16-21 år</option>
-          <option value="22-45">22-44 år</option>
-          <option value="22-45">+45 år</option>
+          <option value="22-45">22-45 år</option>
+          <option value="+45">+45 år</option>
         </select>
       </div>
       <div>
@@ -67,7 +116,7 @@ export default function FilterOverlay({ users, setFilteredUsers, onClose }) {
       <div>
         <input
           type="text"
-            placeholder="Spiller"
+          placeholder="Spiller"
           value={filterCriteria.placeringMin}
           onChange={(e) =>
             setFilterCriteria({
@@ -77,7 +126,9 @@ export default function FilterOverlay({ users, setFilteredUsers, onClose }) {
           }
         />
       </div>
-      <button onClick={applyFilters} className="btn" id="save-btn">Søg</button>
+      <button onClick={applyFilters} className="btn" id="save-btn">
+        Søg
+      </button>
       <button onClick={onClose}>Close</button>
     </div>
   );
