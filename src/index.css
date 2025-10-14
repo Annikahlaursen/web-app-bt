@@ -46,7 +46,7 @@ h1 {
 
 /*--------------Search Styling----------*/
 input {
-  background-color: var(--grey);
+  background-color: var(--light-grey);
   border: none;
   border-radius: var(--border-radius);
   width: 100%;
