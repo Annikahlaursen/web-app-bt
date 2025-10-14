@@ -18,17 +18,18 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Simulation af loading tid på 2 sekunder
+    // Simulation af loading tid på 5 sekunder for bedre synlighed
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 2000);
+    }, 5000);
 
     return () => clearTimeout(timer);
   }, []);
 
   if (isLoading) {
+    console.log("Loading screen should be visible");
     return (
-      <div className="loading-screen">
+      <div className="loading-screen" style={{ backgroundColor: "#bb1717" }}>
         <div className="loading-logo">
           <img
             src="/btp-logo.png"
