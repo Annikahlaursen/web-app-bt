@@ -10,6 +10,7 @@ import KampResultatPage from "./pages/KampResultatPage";
 import StevnePage from "./pages/StevnePage";
 import Error from "./pages/ErrorPage";
 import RatingPage from "./pages/RatingPage";
+import KalenderPage from "./pages/KalenderPage";
 
 export default function App() {
   return (
@@ -30,6 +31,7 @@ export default function App() {
           <Route path="/stevne" element={<StevnePage />} />
           <Route path="/error" element={<Error />} />
           <Route path="/stevne/tilmeld" element={<Error />} />
+          <Route path="/kalender" element={<KalenderPage />} />
         </Routes>
       </main>
     </>
