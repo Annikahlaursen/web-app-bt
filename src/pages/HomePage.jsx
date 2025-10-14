@@ -29,9 +29,7 @@ export default function HomePage() {
         </section>
         <section className="forside-del">
           <h1>Nyheder</h1>
-          <NyhedsCard />
-          <NyhedsCard />
-          <NyhedsCard />
+
           <Link className="flex-pil" to="/nyheder">
             <p>Se alle nyheder</p>
             <img src={arrow} alt="Pil til nyheder" />

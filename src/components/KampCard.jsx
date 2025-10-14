@@ -1,4 +1,3 @@
-import btLogo1 from "/public/btLogo1.png";
 import btLogo2 from "/public/btLogo2.png";
 import bell from "/public/bell.svg";
 import share from "/public/share.svg";
@@ -6,7 +5,7 @@ import { Link } from "react-router";
 import { useEffect, useState } from "react";
 
 export default function KampCard() {
-  const [klub, setKlub] = useState("");
+  const [klub, setKlub] = useState({});
 
   useEffect(() => {
     async function getKlub() {
@@ -19,7 +18,7 @@ export default function KampCard() {
       }
     }
     getKlub();
-  }, []);
+  });
 
   return (
     <div className="kamp-card">
@@ -30,8 +29,8 @@ export default function KampCard() {
         </div>
         <div className="kamp-container">
           <div className="kamp-hold">
-            <img src={klub.image} alt="" />
-            <p>Hold 1</p>
+            <img src={klub?.image} alt="" />
+            <p>{klub?.hold}</p>
           </div>
           <div className="kamp-vs">
             <p>VS</p>
