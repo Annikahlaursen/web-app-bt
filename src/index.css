@@ -2,15 +2,17 @@
 :root {
   --lightred: #bb1717;
   --darkred: #960404;
-  --white: #f1f1f1;
+  --darkestRed: #5e0505;
+  --white: #ffffff;
   --black: #000;
   --lightblue: #def2ff;
   --babyblue: #bbe5ff;
   --blue: #035183;
   --darkgrey: #a19f9f;
   --grey: #e4e4e4;
-  --light-green: #f1f1f1;
+  --light-grey: #f1f1f1;
   --border-radius: 30px;
+  --display-font: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
 /* ---------- Global Styling ---------- */
@@ -26,9 +28,9 @@ html {
 
 body,
 html {
-  background-color: var(--light-green);
+  background-color: var(--white);
   color: var(--text-color-dark);
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: var(--display-font);
   font-weight: 400;
   height: 100%;
   line-height: 1.5;
@@ -42,6 +44,12 @@ h1 {
   line-height: 1.1;
 }
 
+/*--------------Search Styling----------*/
+input{
+  background-color: var(--grey);
+  border: none;
+  border-radius: var(--border-radius);
+  width:100%;
 h3,
 h5 {
   line-height: 1.1;
@@ -103,6 +111,7 @@ form {
   padding: 1.5em 3em;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 1em;
+  z-index: 3;
 }
 
 .navcircle {
@@ -538,7 +547,7 @@ form {
 /* ---------- Page Styling ---------- */
 .page {
   animation: fadeIn 0.5s;
-  padding: 140px 2em 2em;
+  padding: 2em 2em 2em;
 }
 
 /* ---------- Container Styling ---------- */
@@ -675,19 +684,38 @@ form {
   cursor: pointer;
 }
 
-/*------------ Blåboks (HoldBoks + RatingBoks) Styling -------------*/
+/*------------ Blåboks Styling -------------*/
 
 .blaa-boks {
-  display: flex;
-  flex-direction: row;
   border-radius: var(--border-radius);
-  background-color: var(--light-blue);
-  align-items: center;
-  justify-content: space-between;
-  padding: 3px 20px 3px 10px;
+  background-color: var(--lightblue);
+  padding: 3px 15px 3px;
+  margin-top: 8px;
+  height: 50px;
 }
 
-.blaa-boks-holdnavn {
+.blaa-boks p {
+  margin: 0;
+  font-size: 0.9em;
+}
+
+.blaa-boks > * {
+  align-self: center;
+}
+
+/*-------------Hold Boks Styling------------*/
+
+.hold-boks-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+}
+
+.hold-boks-grid :nth-child(2) {
+  justify-self: end;
+}
+
+.hold-boks-holdnavn {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -697,8 +725,8 @@ form {
 .klublogo-container {
   width: 40px;
   height: 40px;
-  border: solid 2px var(--green);
-  border-radius: var(--circle-radius);
+  border: solid 2px var(--darkred);
+  border-radius: var(--border-radius);
   overflow: hidden;
 }
 
@@ -706,6 +734,111 @@ form {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.blaa-boks .star {
+  width: 30px;
+  height: auto;
+}
+
+/*------------Rating boks styling------------*/
+.rating-boks-grid {
+  display: grid;
+  grid-template-columns: 1fr 4fr 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+}
+
+.rating-boks-grid p {
+  text-align: center;
+}
+
+.rating-navn {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/*-------------Rating Liste Styling------------*/
+.rating-liste > :nth-child(2n) {
+  background-color: var(--babyblue);
+}
+
+.rating-categories p {
+  text-align: left;
+  margin: 1rem 0 0.5rem 0.5rem;
+}
+
+/*-------------Kalender Filter Styling------------*/
+.kalender-filter-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background-color: #f3f3f3;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+
+.kalender-filter-button {
+  position: relative;
+  border: none;
+  background: none;
+  font-size: 1.1rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  z-index: 2;
+  color: #000;
+}
+
+.active-pill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: var(--border-radius);
+  z-index: 1;
+}
+
+.filter-label {
+  position: relative;
+  z-index: 3;
+  transition: color 0.2s ease;
+}
+
+.filter-label.active-label {
+  color: #fff;
+}
+
+/*-----------NyhedsCard Styling-------------*/
+.nyheds-card {
+  padding: 1.5em;
+  margin-top: 20px;
+  background-color: var(--light-grey);
+  transition: 0.5s;
+  border-radius: var(--border-radius);
+}
+
+.nyheds-card > .img-container {
+  width: 100%;
+  height: 135px;
+  overflow: hidden;
+  border-radius: var(--border-radius);
+  border: solid 2px var(--darkred);
+}
+
+.nyheds-card > .img-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.nyheds-card p {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 /* ---------- Animations ---------- */
@@ -774,11 +907,38 @@ form {
   }
 }
 
+/*---------- Stævne Card Styling ----------*/
+.stevne-card {
+  background-color: var(--blue);
+  border-radius: var(--border-radius);
+  color: #fff;
+}
+
+.stevne-card #streg {
+  border-top: 2px solid var(--lightblue);
+}
+
+.stevne-card #streg-midt {
+  border-right: 2px solid var(--lightblue);
+}
+
+.location {
+  display: flex;
+}
+
+.stevne-card .location img {
+  width: 8%;
+}
+
+.stevne-container {
+  padding-right: 1rem;
+  padding-left: 1rem;
+}
+
 /*---------- Kamp Card Styling ----------*/
 
 .kamp-card {
   background-color: var(--lightred);
-  width: 90%;
   border-radius: var(--border-radius);
   color: #fff;
 }
@@ -799,6 +959,10 @@ form {
   margin-top: 0;
 }
 
+.kamp-hold img {
+  border-radius: var(--border-radius);
+}
+
 .kamp-vs {
   width: 20%;
   text-align: center;
@@ -807,14 +971,122 @@ form {
 
 .del-notifikationer {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+  gap: 0.4rem;
   width: 50%;
 }
 
-#streg {
-  border-top: 2px solid rgb(158, 192, 235);
+.del-notifikationer img {
+  width: 20%;
 }
 
-#streg-midt {
-  border-right: 2px solid rgb(158, 192, 235);
+.kamp-card #streg {
+  border-top: 2px solid var(--darkred);
+}
+
+.kamp-card #streg-midt {
+  border-right: 2px solid var(--darkred);
+}
+
+/*---------- kampPage Styling ----------*/
+.red-background {
+  background-color: var(--lightred);
+  color: var(--white);
+  height: 20rem;
+}
+
+.arrow {
+  width: 10%;
+  margin: 1rem;
+}
+
+.kamp-info-section {
+  margin-top: -4rem;
+  background-color: var(--white);
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  min-height: 50rem;
+}
+
+.kamp-info {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.kamp-info img {
+  width: 7%;
+}
+
+/*---------- Stævne Page Styling ----------*/
+
+.blue-background {
+  background-color: var(--blue);
+  color: var(--white);
+  height: 20rem;
+}
+
+.blue-background h2 {
+  text-align: center;
+}
+
+/* ---------- Button Styling ---------- */
+.btn {
+  background-color: var(--lightred);
+  color: var(--white);
+  border-radius: var(--border-radius);
+  border: none;
+  padding: 1rem;
+  font-size: 1rem;
+  font-family: var(--display-font);
+  position: sticky;
+  top: 42rem;
+  margin: 0 auto;
+  display: block;
+}
+
+.error {
+  background-color: var(--lightred);
+  color: var(--white);
+  text-align: center;
+  padding: 10rem 2rem;
+  min-height: 100vh;
+}
+
+.error #red-color {
+  color: var(--darkestRed);
+}
+
+.tilbage a {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.tilbage img {
+  width: 8%;
+}
+
+/* ---------- Number picker component Styling ---------- */
+.number-picker {
+  display: flex;
+  gap: 2rem;
+}
+
+/* ---------- forside Styling ---------- */
+.forside {
+  padding: 0.5em 2em 2em;
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
+  background-color: var(--white);
+  margin-top: -3rem;
+  position: relative;
+}
+
+.flex-pil {
+  display: flex;
+  justify-content: end;
+  gap: 0.5rem;
+}
+
+.flex-pil img {
+  width: 8%;
 }

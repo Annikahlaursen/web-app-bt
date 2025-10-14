@@ -8,14 +8,19 @@ export default function HoldBoks() {
     }
 
     return (
-      <div className="blaa-boks">
-        <div className="blaa-boks-holdnavn">
+      <div className="blaa-boks hold-boks-grid">
+        <div className="hold-boks-holdnavn">
           <div className="klublogo-container">
             <img src="klublogo" alt="klubnavn(AABT)"></img>
           </div>
           <p>Holdnavn</p>
         </div>
-        <div onClick={handleStarClick}>{isFilled ? "★" : "☆"}</div>
+        <img
+          src={isFilled ? "/star-solid.svg" : "/star.svg"}
+          onClick={handleStarClick}
+          alt="star"
+          className="star"
+        />
       </div>
     );
 }
