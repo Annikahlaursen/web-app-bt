@@ -828,8 +828,8 @@ form {
   object-fit: cover;
 }
 
-.nyheds-card p{
-    text-overflow: ellipsis;
+.nyheds-card p {
+  text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
 }
@@ -1057,4 +1057,10 @@ form {
 
 .tilbage img {
   width: 8%;
+}
+
+/* ---------- Number picker component Styling ---------- */
+.number-picker {
+  display: flex;
+  gap: 2rem;
 }
