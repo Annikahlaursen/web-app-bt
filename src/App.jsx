@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router";
+import { Routes, Route, Navigate, useLocation } from "react-router";
 import Nav from "./components/Nav";
 import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
@@ -7,9 +7,12 @@ import ProfilePage from "./pages/ProfilePage";
 import LogInPage from "./pages/LogInPage";
 
 export default function App() {
+  const location = useLocation();
+  const hideNavRoutes = ["/login"];
+
   return (
     <>
-      <Nav />
+      {!hideNavRoutes.includes(location.pathname) && <Nav />}
       <main>
         <Routes>
           <Route path="/" element={<HomePage />} />
