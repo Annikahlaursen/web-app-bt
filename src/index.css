@@ -802,6 +802,12 @@ form {
   position: sticky;
 }
 
+.rating-filter :nth-child(1){
+  display: grid;
+  grid-template-columns: 6fr 1fr;
+  gap: 1em;
+}
+
 .rating-categories p {
   text-align: left;
   margin: 1rem 0 0.5rem 0.5rem;

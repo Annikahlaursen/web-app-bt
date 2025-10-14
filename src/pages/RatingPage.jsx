@@ -35,7 +35,6 @@ export default function RatingPage() {
         .includes(searchTerm.toLowerCase())
     );
 
-
   return (
     <section className="page">
       <h1>Rating</h1>
