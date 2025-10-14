@@ -1,4 +1,4 @@
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 
 import RatingBoks from "./RatingBoks";
 
@@ -16,7 +16,11 @@ export default function RatingListe() {
         id: key,
         ...data[key],
       }));
+
+      usersArray.sort((a, b) => b.rating - a.rating);
+
       setUsers(usersArray);
+      console.log(usersArray);
     }
     fetchUsers();
   }, []);
@@ -31,8 +35,8 @@ export default function RatingListe() {
       </div>
       <div className="rating-liste">
         <hr />
-        {users.map((user) => (
-          <RatingBoks user={user} key={user.id} />
+        {users.map((user, index) => (
+          <RatingBoks user={user} key={user.id} placering={index + 1} />
         ))}
       </div>
     </>
