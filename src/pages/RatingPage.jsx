@@ -49,6 +49,7 @@ export default function RatingPage() {
             onChange={(e) => setSearchTerm(e.target.value)}
             style={{ flex: 1, padding: "10px" }}
           />
+          <img src="sliders-solid-full.svg"/>
         </div>
         <div className="rating-boks-grid rating-categories">
           <p>Plac.</p>
