@@ -45,11 +45,12 @@ h1 {
 }
 
 /*--------------Search Styling----------*/
-input{
+input {
   background-color: var(--grey);
   border: none;
   border-radius: var(--border-radius);
-  width:100%;
+  width: 100%;
+}
 h3,
 h5 {
   line-height: 1.1;
