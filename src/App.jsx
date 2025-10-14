@@ -1,4 +1,5 @@
 import { Routes, Route, Navigate, useLocation } from "react-router";
+import { useState, useEffect } from "react";
 import Nav from "./components/Nav";
 import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
@@ -13,14 +14,39 @@ import RatingPage from "./pages/RatingPage";
 
 export default function App() {
   const location = useLocation();
-  const hideNavRoutes = ["/login"];
+  const hideNavRoutes = ["/", "/login"];
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulation af loading tid på 2 sekunder
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="loading-screen">
+        <div className="loading-logo">
+          <img
+            src="/btp-logo.png"
+            alt="Bordtennisportalen.dk logo"
+            className="loading-logo-img"
+          />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
       {!hideNavRoutes.includes(location.pathname) && <Nav />}
       <main>
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<LogInPage />} />
+          <Route path="/home" element={<HomePage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/rating" element={<RatingPage />} />
           <Route path="/contact" element={<ContactPage />} />

@@ -7,7 +7,7 @@ export default function Login() {
   const [showCreateCard, setShowCreateCard] = useState(false);
 
   const handleLogin = () => {
-    navigate("/");
+    navigate("/home");
   };
 
   const handleCreateAccount = () => {
