@@ -76,15 +76,11 @@ export default function CreateCard() {
             >
               Gem
             </button>
-            <br />
-            <button className="profile-btns profile-btns-actions-seperat">
-              Log ud
-            </button>
-            <button className="profile-btns profile-btns-actions-seperat">
-              Tilknyt login til FaceBook
-            </button>
           </div>
         </div>
+        <button className="profile-btns profile-btns-actions-seperat">
+          Tilknyt login til FaceBook
+        </button>
       </div>
     </Fragment>
   );
