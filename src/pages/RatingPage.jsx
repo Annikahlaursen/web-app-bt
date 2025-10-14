@@ -28,6 +28,8 @@ export default function RatingPage() {
       });
 
       setUsers(usersArray);
+      setFilteredUsers(usersArray); 
+      console.log(usersArray);
     }
     fetchUsers();
   }, []);

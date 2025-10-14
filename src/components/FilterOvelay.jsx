@@ -27,11 +27,37 @@ export default function FilterOverlay({ users, setFilteredUsers, onClose }) {
 
   return (
     <div className="filter-overlay">
-      <h2>Filter Users</h2>
       <div>
-        <label>Min Rating:</label>
+        <select
+          value={filterCriteria.club}
+          onChange={(e) =>
+            setFilterCriteria({ ...filterCriteria, club: e.target.value })
+          }
+        >
+          <option value="">Alle Aldersgrupper</option>
+          <option value="8-15">8-15 år</option>
+          <option value="16-21">16-21 år</option>
+          <option value="22-45">22-44 år</option>
+          <option value="22-45">+45 år</option>
+        </select>
+      </div>
+      <div>
+        <select
+          value={filterCriteria.club}
+          onChange={(e) =>
+            setFilterCriteria({ ...filterCriteria, club: e.target.value })
+          }
+        >
+          <option value="">Alle Køn</option>
+          <option value="mand">Herre</option>
+          <option value="kvinde">Kvinder</option>
+          <option value="andet">Andet</option>
+        </select>
+      </div>
+      <div>
         <input
-          type="number"
+          type="text"
+          placeholder="Klubnavn"
           value={filterCriteria.ratingMin}
           onChange={(e) =>
             setFilterCriteria({ ...filterCriteria, ratingMin: e.target.value })
@@ -39,17 +65,6 @@ export default function FilterOverlay({ users, setFilteredUsers, onClose }) {
         />
       </div>
       <div>
-        <label>Max Rating:</label>
-        <input
-          type="number"
-          value={filterCriteria.ratingMax}
-          onChange={(e) =>
-            setFilterCriteria({ ...filterCriteria, ratingMax: e.target.value })
-          }
-        />
-      </div>
-      <div>
-        <label>Min Placering:</label>
         <input
           type="number"
           value={filterCriteria.placeringMin}
@@ -61,20 +76,7 @@ export default function FilterOverlay({ users, setFilteredUsers, onClose }) {
           }
         />
       </div>
-      <div>
-        <label>Max Placering:</label>
-        <input
-          type="number"
-          value={filterCriteria.placeringMax}
-          onChange={(e) =>
-            setFilterCriteria({
-              ...filterCriteria,
-              placeringMax: e.target.value,
-            })
-          }
-        />
-      </div>
-      <button onClick={applyFilters}>Apply Filters</button>
+      <button onClick={applyFilters}>Søg</button>
       <button onClick={onClose}>Close</button>
     </div>
   );
