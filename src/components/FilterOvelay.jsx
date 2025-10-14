@@ -66,7 +66,8 @@ export default function FilterOverlay({ users, setFilteredUsers, onClose }) {
       </div>
       <div>
         <input
-          type="number"
+          type="text"
+            placeholder="Spiller"
           value={filterCriteria.placeringMin}
           onChange={(e) =>
             setFilterCriteria({
@@ -76,7 +77,7 @@ export default function FilterOverlay({ users, setFilteredUsers, onClose }) {
           }
         />
       </div>
-      <button onClick={applyFilters}>Søg</button>
+      <button onClick={applyFilters} className="btn" id="save-btn">Søg</button>
       <button onClick={onClose}>Close</button>
     </div>
   );

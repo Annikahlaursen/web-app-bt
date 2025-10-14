@@ -44,6 +44,12 @@ h1 {
   line-height: 1.1;
 }
 
+h3,
+h5 {
+  line-height: 1.1;
+  margin: 0.5em 0 0;
+}
+
 /*--------------Search Styling----------*/
 input {
   background-color: var(--light-grey);
@@ -52,11 +58,12 @@ input {
   width: 100%;
 }
 
-h3,
-h5 {
-  line-height: 1.1;
-  margin: 0.5em 0 0;
+input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--darkgrey);
 }
+
+
 
 /* ---------- Link Styling ---------- */
 a {
@@ -829,12 +836,26 @@ form {
   border-radius: var(--border-radius);
 }
 
-.filter-overlay > * {
+.filter-overlay > *{
   width: 100%;
   margin-top: 1em;
-  background-color: var(--light-grey);
-  border: none;
+  /* border: solid 2px var(--light-grey);
+  border-radius: var(--border-radius); */
+}
+
+.filter-overlay select{
+  width: 100%;
   border-radius: var(--border-radius);
+  padding: 0.5rem 1rem;
+  border:solid 2px var(--light-grey);
+}
+
+.filter-overlay input{
+  width: 100%;
+  border-radius: var(--border-radius);
+  background-color: transparent;
+  padding: 0.5rem 1rem;
+  border:solid 2px var(--light-grey);
 }
 
 /*-------------Kalender Filter Styling------------*/
