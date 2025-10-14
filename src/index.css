@@ -2,6 +2,7 @@
 :root {
   --lightred: #bb1717;
   --darkred: #960404;
+  --darkestRed: #5e0505;
   --white: #ffffff;
   --black: #000;
   --lightblue: #def2ff;
@@ -49,6 +50,10 @@ input{
   border: none;
   border-radius: var(--border-radius);
   width:100%;
+h3,
+h5 {
+  line-height: 1.1;
+  margin: 0.5em 0 0;
 }
 
 /* ---------- Link Styling ---------- */
@@ -62,7 +67,7 @@ a:hover {
   color: var(--dark-green);
 }
 
-/* ---------- Form Specific Styling ---------- */
+/* ---------- Form Specific Styling ---------- 
 form input {
   width: 100%;
 }
@@ -74,7 +79,6 @@ form .btns {
 form img {
   max-width: 100%;
   border-radius: 8px;
-  box-shadow: 0 0px 1px hsla(0, 0%, 0%, 0.2), 0 1px 2px hsla(0, 0%, 0%, 0.2);
 }
 
 form {
@@ -82,7 +86,6 @@ form {
   grid-template-columns: 1fr 2fr;
   gap: 1em;
   align-items: center;
-  box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.25);
   padding: 1.5em;
   background-color: var(--white);
   transition: 0.5s;
@@ -94,6 +97,8 @@ form {
 #sign-up-form {
   width: 35rem;
 }
+
+*/
 
 /* ---------- Navigation Styling ---------- */
 .navbtns {
@@ -184,6 +189,148 @@ form {
 
 .profileinfo a {
   text-decoration: underline;
+}
+
+/* ---------- Profile Page Styling ---------- */
+.profile {
+  background-color: var(--darkred);
+}
+
+.profile-background {
+  background: linear-gradient(
+    var(--white) 0%,
+    var(--white) 85%,
+    var(--darkred) 20%,
+    var(--darkred) 100%
+  );
+}
+
+.profile-placeholder {
+  max-width: 50%;
+  margin: auto;
+  display: flex;
+  padding: 1rem 0 0;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-card {
+  background-color: var(--white);
+  color: var(--text-color-dark);
+  align-self: center;
+  z-index: 2002;
+  border-radius: 20px;
+  padding: 1rem;
+  margin-bottom: 1.3rem;
+}
+
+.profile-card-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-items: center;
+  align-items: center;
+  border-top: solid var(--grey) 2px;
+  padding-top: 10px;
+}
+
+.profile-card-oneaction {
+  grid-template-columns: 1fr;
+}
+
+.profile-info-card-image {
+  background-color: var(--darkred);
+  width: 6em;
+  height: 6em;
+  border-radius: 50%;
+  padding: 1rem;
+}
+
+.profile-card-content {
+  margin: 1rem 0 2rem;
+  justify-self: center;
+}
+
+.profile-text {
+  background-color: var(--grey);
+  justify-self: center;
+  width: 85%;
+  border-radius: 20px;
+  text-align: center;
+  line-height: 0.5rem;
+  padding: 2% 0 2% 0;
+}
+
+.profile-btns {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 10px;
+}
+
+.profile-btns-actions-seperat {
+  width: 100%;
+  border: var(--black) solid 2px;
+  border-radius: 20px;
+  gap: 1rem;
+  padding: 1rem 0;
+}
+
+#save-btn {
+  background-color: var(--lightred);
+  color: var(--white);
+  border: none;
+}
+
+.profile-btns-seperate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--white);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  margin: 10px;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+#profile-card-actions-seperat {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.profile-btns-seperate.active {
+  border-bottom: solid var(--grey) 2px;
+}
+
+.profile-btns-seperate h5 {
+  margin: 0.5rem 0 0 0;
+  font-size: 0.9rem;
+}
+
+.profile-content {
+  padding: 2rem;
+  animation: fadeIn 0.3s ease-in-out;
+  background-color: var(--grey);
+  border-radius: 20px;
+}
+
+.profile-form {
+  max-width: 100vh;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  padding: 1rem 0;
+}
+
+.profile-form-content {
+  border: 2px solid var(--grey);
+  color: var(--black) !important;
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 1rem;
+  border-radius: 20px;
 }
 
 /* ---------- Overlay Styling ---------- */
@@ -687,8 +834,8 @@ form {
   object-fit: cover;
 }
 
-.nyheds-card p{
-    text-overflow: ellipsis;
+.nyheds-card p {
+  text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
 }
@@ -894,4 +1041,32 @@ form {
   top: 42rem;
   margin: 0 auto;
   display: block;
+}
+
+.error {
+  background-color: var(--lightred);
+  color: var(--white);
+  text-align: center;
+  padding: 10rem 2rem;
+  min-height: 100vh;
+}
+
+.error #red-color {
+  color: var(--darkestRed);
+}
+
+.tilbage a {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.tilbage img {
+  width: 8%;
+}
+
+/* ---------- Number picker component Styling ---------- */
+.number-picker {
+  display: flex;
+  gap: 2rem;
 }
