@@ -4,6 +4,7 @@ import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
 import ProfilePage from "./pages/ProfilePage";
+import LogInPage from "./pages/LogInPage";
 import KampPage from "./pages/KampPage";
 import KampResultatPage from "./pages/KampResultatPage";
 import StevnePage from "./pages/StevnePage";
@@ -21,6 +22,8 @@ export default function App() {
           <Route path="/rating" element={<RatingPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/login" element={<LogInPage />} />
+          <Route path="*" element={<Navigate to="/" />} />
           <Route path="*" element={<Navigate to="/error" />} />
           <Route path="/kamp" element={<KampPage />} />
           <Route path="/kamp/resultat" element={<KampResultatPage />} />

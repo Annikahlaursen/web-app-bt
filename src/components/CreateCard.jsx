@@ -1,13 +1,21 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
+import UpdateCard from "./UpdateCard";
 
 export default function CreateCard() {
+  const [showUpdateCard, setShowUpdateCard] = useState(false);
+
+  const handleSave = () => {
+    setShowUpdateCard(true);
+  };
+
+  if (showUpdateCard) {
+    return <UpdateCard />;
+  }
+
   return (
     <Fragment>
       <div className="profile-info-parent">
         <div className="profile-card">
-          <div className="profile-card-header">
-            <h3>Personlige oplysninger</h3>
-          </div>
           <div>
             <form action="ProfileInfo" className="profile-form">
               <input
@@ -64,6 +72,7 @@ export default function CreateCard() {
             <button
               className="profile-btns profile-btns-actions-seperat"
               id="save-btn"
+              onClick={handleSave}
             >
               Gem
             </button>
