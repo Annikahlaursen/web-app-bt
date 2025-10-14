@@ -5,16 +5,18 @@ import { Link } from "react-router";
 import { useEffect, useState } from "react";
 
 export default function KampCard() {
-  const [klub, setKlub] = useState({});
+  const [klub, setKlub] = useState(null);
 
   useEffect(() => {
     async function getKlub() {
       const response = await fetch(
-        `https://web-app-bt-124b8-default-rtdb.firebaseio.com/klubber.json`
+        `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/klubber.json`
       );
       const data = await response.json();
       if (data) {
-        setKlub(data); // set the klub state with the data from firebase
+        // Get the first klub from the object
+        const firstKlub = Object.values(data)[0];
+        setKlub(firstKlub);
       }
     }
     getKlub();
@@ -30,7 +32,7 @@ export default function KampCard() {
         <div className="kamp-container">
           <div className="kamp-hold">
             <img src={klub?.image} alt="" />
-            <p>{klub?.hold}</p>
+            <p>{klub?.hold[0]}</p>
           </div>
           <div className="kamp-vs">
             <p>VS</p>

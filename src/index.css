@@ -797,7 +797,7 @@ form {
   padding: 0 0.5em;
 }
 
-.rating-filter{
+.rating-filter {
   position: sticky;
 }
 
@@ -998,6 +998,7 @@ form {
 
 .kamp-hold img {
   border-radius: var(--border-radius);
+  width: 10vh;
 }
 
 .kamp-vs {
