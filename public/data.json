@@ -390,25 +390,25 @@
       "lokation": "Jernaldervej 5, 8210 Aarhus V",
       "navn": "Aarhus Bordtennis",
       "hold": ["-HnAd4o6AtIlkW2SCf6R", "-HDSqi794AwzkeclR1lv"],
-      "image": "aarhus-logo.png"
+      "image": "https://aarhusbordtennis.dk/wp-content/uploads/2025/06/logo_uden_baggrund.png"
     },
     "-K4O0aPyG0NjMc875nk4": {
       "lokation": "Viborgvej 20, 8800 Viborg",
       "navn": "Viborg Bordtennis",
       "hold": ["-HiOIizyRdCJg8LJf56f", "-HGv2lmeMtURsQHspuZC"],
-      "image": "viborg-logo.png"
+      "image": "https://live-376-viborg-ff.umbraco-proxy.com/media/2088/logo-til-skaerm-nyt.jpg?anchor=center&mode=crop&width=492&height=249&rnd=133018281830000000"
     },
     "-KEiZyGpLmRRPNuXAIW1": {
       "lokation": "Odensevej 15, 5000 Odense",
       "navn": "Odense Bordtennis",
       "hold": ["-Hi2WQJ8YdlU3uWhfttU", "-HcCwVVsyQWhMvH3kfrn"],
-      "image": "odense-logo.png"
+      "image": "https://obbordtennis.dk/cms/Clubobbordtennis/images/meta/1.png"
     },
     "-K20RrNJXDMNNtzZRUGL": {
       "lokation": "Randersvej 10, 8900 Randers",
       "navn": "Randers Bordtennis",
       "hold": ["-H0thTJcPDJV2beGCK0y", "-HgA12nH5Y1XCfxyUvPj"],
-      "image": "randers-logo.png"
+      "image": "https://motivu-uploads.s3.eu-west-1.amazonaws.com/clubs/logos/5537/conversions/randers-badminton-klub-logo-1637494214-thumb.jpg"
     }
   },
   "hold": {
