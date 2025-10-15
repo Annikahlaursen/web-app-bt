@@ -568,5 +568,22 @@
       "tilmeldt": ["Herre junior C", "Herre klasse 2"],
       "harnotifikationer": false
     }
+  },
+  "kampe": {
+    "370439": {
+      "hjemmeklub": "-KeScDIH3JeJ61334gps",
+      "udeklub": "-K4O0aPyG0NjMc875nk4",
+      "hjemmehold": "-HnAd4o6AtIlkW2SCf6R",
+      "udehold": "-HiOIizyRdCJg8LJf56f",
+      "dato": "15-12-2025",
+      "lokation": "Jernaldervej 5, 8210 Aarhus V",
+      "tid": "19:00",
+      "harResultat": false,
+      "serie": 5,
+      "pulje": 2,
+      "harNotifikationer": false,
+      "resultatHjemme": 0,
+      "resultatUde": 0
+    }
   }
 }
