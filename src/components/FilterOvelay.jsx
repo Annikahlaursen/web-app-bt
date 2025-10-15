@@ -129,7 +129,6 @@ export default function FilterOverlay({ users, setFilteredUsers, onClose }) {
       <button onClick={applyFilters} className="btn" id="save-btn">
         Søg
       </button>
-      <button onClick={onClose}>Close</button>
     </div>
   );
 }
