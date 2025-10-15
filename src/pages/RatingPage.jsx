@@ -7,6 +7,7 @@ export default function RatingPage() {
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [showFilter, setShowFilter] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchUsers() {
@@ -28,8 +29,8 @@ export default function RatingPage() {
       });
 
       setUsers(usersArray);
-      setFilteredUsers(usersArray); 
-      console.log(usersArray);
+      setFilteredUsers(usersArray);
+      setLoading(false);
     }
     fetchUsers();
   }, []);
@@ -68,13 +69,14 @@ export default function RatingPage() {
         </div>
       </div>
 
-      <RatingListe users={searchedUsers} />
+      {loading ? <p className="loading-message">Henter Ratingliste...</p> : <RatingListe users={searchedUsers} />}
 
       {showFilter && (
         <FilterOverlay
-        users={users}
-        setFilteredUsers={setFilteredUsers}
-        onClose={() => setShowFilter(false)}/>
+          users={users}
+          setFilteredUsers={setFilteredUsers}
+          onClose={() => setShowFilter(false)}
+        />
       )}
     </section>
   );
