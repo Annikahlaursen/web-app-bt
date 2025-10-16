@@ -1,59 +1,148 @@
-import { useState, useEffect, useRef } from "react";
+import { Fragment, useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router";
 import { auth } from "../firebase-config";
 import { signOut } from "firebase/auth";
 import pen from "/pen-solid-full.svg";
 import trash from "/trash-solid-full.svg";
 
 export default function ProfileInfo() {
+  const navigate = useNavigate();
+
+  // Profile fields
   const [name, setName] = useState("");
-  const [title, setTitle] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [gender, setGender] = useState("");
+  const [birthday, setBirthday] = useState("");
+  const [adress, setAdress] = useState("");
+  const [city, setCity] = useState("");
+  const [zip, setZip] = useState("");
   const [mail, setMail] = useState("");
+  const [phone, setPhone] = useState("");
   const [image, setImage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
 
   const fileInputRef = useRef(null);
 
-  const url = `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/users/${
-    auth.currentUser?.uid
-  }.json`; // replace YOUR-FIREBASE-URL with your Firebase URL
+  // Determine firebase DB URL for the current user (if available)
+  const uid = auth?.currentUser?.uid;
+  const firebaseDbUrlBase = import.meta.env.VITE_FIREBASE_DATABASE_URL;
 
   useEffect(() => {
-    async function getUser() {
-      const response = await fetch(url);
-      const data = await response.json();
+    // Load profile either from Firebase (if logged in) or from localStorage fallback
+    async function loadProfile() {
+      // Reset error
+      setErrorMessage("");
 
-      if (data) {
-        setName(data.name);
-        setTitle(data.title);
-        setMail(data.mail);
-        setImage(data.image);
+      // If a Firebase user id exists, try to load from realtime database
+      if (uid && firebaseDbUrlBase) {
+        try {
+          const url = `${firebaseDbUrlBase}/users/${uid}.json`;
+          const response = await fetch(url);
+          if (!response.ok) throw new Error("Failed to fetch user data");
+          const data = await response.json();
+          if (data) {
+            setName(data.name || "");
+            setLastname(data.lastname || "");
+            setGender(data.gender || "");
+            setBirthday(data.birthday || "");
+            setAdress(data.adress || "");
+            setCity(data.city || "");
+            setZip(data.zip || "");
+            setMail(data.mail || "");
+            setPhone(data.phone || "");
+            setImage(data.image || "");
+          }
+          return;
+        } catch (err) {
+          console.error(err);
+          setErrorMessage("Could not load profile from server");
+        }
       }
-      setIsLoading(false);
+
+      // Fallback: load current user from localStorage (set by login)
+      try {
+        const currentUserRaw = localStorage.getItem("currentUser");
+        if (currentUserRaw) {
+          const currentUser = JSON.parse(currentUserRaw);
+          const p = currentUser.profile || {};
+          setName(p.firstName || "");
+          setLastname(p.lastName || "");
+          setGender(p.gender || "");
+          setBirthday(p.birthday || "");
+          setAdress(p.adress || "");
+          setCity(p.city || "");
+          setZip(p.zip || "");
+          setMail(p.email || "");
+          setPhone(p.phone || "");
+          setImage(p.image || "");
+        }
+      } catch (err) {
+        console.error(err);
+        setErrorMessage("Could not load local profile data");
+      }
     }
-    getUser();
-  }, [url]);
+
+    loadProfile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [uid]);
 
   async function handleSaveUser(event) {
     event.preventDefault();
-    setIsLoading(true);
+
+    setErrorMessage("");
 
     const user = {
       name,
-      title,
+      lastname,
+      gender,
+      birthday,
+      adress,
+      city,
+      zip,
       mail,
+      phone,
       image,
     };
 
-    const response = await fetch(url, {
-      method: "PATCH",
-      body: JSON.stringify(user),
-    });
-
-    if (!response.ok) {
-      setErrorMessage("Sorry, something went wrong. Please try again.");
+    // If we have a Firebase UID and DB base URL, save to Firebase realtime DB
+    if (uid && firebaseDbUrlBase) {
+      try {
+        const url = `${firebaseDbUrlBase}/users/${uid}.json`;
+        const response = await fetch(url, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(user),
+        });
+        if (!response.ok) throw new Error("Failed to save user");
+      } catch (err) {
+        console.error(err);
+        setErrorMessage("Sorry, something went wrong saving to server.");
+        return;
+      }
     }
-    setIsLoading(false);
+
+    // Always update localStorage fallback copy
+    try {
+      const currentUserRaw = localStorage.getItem("currentUser");
+      if (currentUserRaw) {
+        const currentUser = JSON.parse(currentUserRaw);
+        currentUser.profile = {
+          firstName: name,
+          lastName: lastname,
+          gender,
+          birthday,
+          adress,
+          city,
+          zip,
+          email: mail,
+          phone,
+          image,
+        };
+        localStorage.setItem("currentUser", JSON.stringify(currentUser));
+      }
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   /**
@@ -92,8 +181,22 @@ export default function ProfileInfo() {
     return imageUrl; // return the image URL
   }
 
-  function handleSignOut() {
-    signOut(auth); // sign out from firebase/auth
+  async function handleSignOut() {
+    try {
+      await signOut(auth); // sign out from firebase/auth
+    } catch (err) {
+      console.error("Sign out error:", err);
+      setErrorMessage("Could not sign out. Try again.");
+      return;
+    }
+
+    // clear local session and redirect to login
+    try {
+      localStorage.removeItem("currentUser");
+    } catch (err) {
+      console.error(err);
+    }
+    navigate("/");
   }
 
   return (
@@ -104,7 +207,28 @@ export default function ProfileInfo() {
             <h3>Profilbillede</h3>
           </div>
           <div className="profile-info-card-image profile-card-content">
-            <img src={image} alt="Placeholder image" />
+            <input
+              type="file"
+              className="hide"
+              accept="image/*"
+              onChange={handleImageChange}
+              ref={fileInputRef}
+            />
+            <img
+              id="image"
+              className={"image-preview"}
+              src={
+                image
+                  ? image
+                  : "https://placehold.co/600x400?text=Click+here+to+select+an+image"
+              }
+              alt="Choose"
+              onError={(e) =>
+                (e.target.src =
+                  "https://placehold.co/600x400?text=Error+loading+image")
+              }
+              onClick={() => fileInputRef.current.click()}
+            />{" "}
           </div>
           <div className="profile-card-actions">
             <a id="profile-card-actions-seperat">
@@ -133,6 +257,7 @@ export default function ProfileInfo() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
+
               <input
                 type="text"
                 className="profile-form-content"
@@ -142,18 +267,20 @@ export default function ProfileInfo() {
                 value={lastname}
                 onChange={(e) => setLastname(e.target.value)}
               />
+
               <select
                 id="gender"
                 name="gender"
                 className="profile-form-content"
                 value={gender}
-                onChange={(e) => setGender}
+                onChange={(e) => setGender(e.target.value)}
               >
                 <option value="">Vælg køn</option>
                 <option value="Kvinde">Kvinde</option>
                 <option value="Mand">Mand</option>
                 <option value="Andet">Andet</option>
               </select>
+
               <input
                 type="date"
                 className="profile-form-content"
@@ -162,6 +289,7 @@ export default function ProfileInfo() {
                 value={birthday}
                 onChange={(e) => setBirthday(e.target.value)}
               />
+
               <input
                 type="text"
                 className="profile-form-content"
@@ -171,6 +299,7 @@ export default function ProfileInfo() {
                 onChange={(e) => setAdress(e.target.value)}
                 placeholder="Adresse"
               />
+
               <input
                 type="text"
                 className="profile-form-content"
@@ -180,6 +309,7 @@ export default function ProfileInfo() {
                 onChange={(e) => setCity(e.target.value)}
                 placeholder="By"
               />
+
               <input
                 type="text"
                 className="profile-form-content"
@@ -189,6 +319,7 @@ export default function ProfileInfo() {
                 onChange={(e) => setZip(e.target.value)}
                 placeholder="Postnummer"
               />
+
               <input
                 type="email"
                 className="profile-form-content"
@@ -198,6 +329,7 @@ export default function ProfileInfo() {
                 onChange={(e) => setMail(e.target.value)}
                 placeholder="Email"
               />
+
               <input
                 type="phone"
                 className="profile-form-content"
@@ -207,17 +339,24 @@ export default function ProfileInfo() {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
               />
+
+              <div className="error-message" style={{ color: "#c00" }}>
+                {errorMessage && <p>{errorMessage}</p>}
+              </div>
+
+              <div className="profile-btns-actions">
+                <button
+                  type="submit"
+                  className="profile-btns profile-btns-actions-seperat"
+                  id="save-btn"
+                >
+                  Gem
+                </button>
+              </div>
             </form>
           </div>
+
           <div className="profile-btns-actions">
-            <button
-              type="submit"
-              className="profile-btns profile-btns-actions-seperat"
-              id="save-btn"
-            >
-              Gem
-            </button>
-            <br />
             <button
               className="profile-btns profile-btns-actions-seperat"
               onClick={handleSignOut}
