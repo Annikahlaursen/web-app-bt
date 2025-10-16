@@ -1,29 +1,49 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import { auth } from "../firebase-config";
-import SignUp from "./SignUpCard";
 
-export default function SignInPage() {
+export default function SignInCard() {
   const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
 
-  function handleSignIn(event) {
+  async function handleSignIn(event) {
     event.preventDefault();
-    const mail = event.target.mail.value; // mail value from inout field in sign in form
-    const password = event.target.password.value; // password value from inout field in sign in form
+    const mail = event.target.mail.value; // mail value from input field in sign in form
+    const password = event.target.password.value; // password value from input field in sign in form
 
-    signInWithEmailAndPassword(auth, mail, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        console.log(user); // for test purposes: logging the authenticated user
-      })
-      .catch((error) => {
-        let code = error.code; // saving error code in variable
-        code = code.replaceAll("-", " "); // some JS string magic to display error message. See the log above in the console
-        code = code.replaceAll("auth/", "");
-        setErrorMessage(code);
-      });
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        mail,
+        password
+      );
+      const user = userCredential.user;
+      // store minimal user info for later pages (ProfileInfo reads from localStorage fallback)
+      try {
+        localStorage.setItem(
+          "currentUser",
+          JSON.stringify({ uid: user.uid, email: user.email })
+        );
+      } catch (e) {
+        console.warn("Could not write currentUser to localStorage", e);
+      }
+      // navigate to home on success
+      navigate("/home");
+    } catch (error) {
+      let code = error.code || error.message || "Login failed";
+      // normalize known Firebase auth codes
+      if (typeof code === "string") {
+        code = code.replaceAll("-", " ").replaceAll("auth/", "");
+      }
+      setErrorMessage(code);
+    }
   }
+
+  const handleGoToSignUp = () => {
+    navigate("/sign-up");
+  };
+
   return (
     <section id="sign-in-page" className="profile-info-parent">
       <div className="profile-card">
@@ -53,16 +73,16 @@ export default function SignInPage() {
             <button
               className="profile-btns profile-btns-actions-seperat"
               type="submit"
-              href="/home"
             >
               Sign In
             </button>
           </div>
         </form>
+
         <button
           className="profile-btns profile-btns-actions-seperat"
           id="save-btn"
-          onClick={SignUp}
+          onClick={handleGoToSignUp}
         >
           Sign Up
         </button>
