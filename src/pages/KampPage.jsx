@@ -44,7 +44,7 @@ export default function KampPage() {
   function clicked(event) {
     event.preventDefault();
     console.log("Button clicked");
-    navigate("/kamp/resultat");
+    navigate(`/kamp/${kamp.id}/resultat`);
   }
 
   if (kamp.harResultat) {
