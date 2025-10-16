@@ -51,6 +51,7 @@ input {
   border-radius: var(--border-radius);
   width: 100%;
 }
+
 h3,
 h5 {
   line-height: 1.1;
@@ -1127,4 +1128,42 @@ form {
 
 .flex-pil img {
   width: 8%;
+}
+
+/* ---------- Loading Animation ---------- */
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--lightred);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.loading-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: pulse 1.5s ease-in-out infinite alternate;
+}
+
+.loading-logo-img {
+  max-width: 200px;
+  height: auto;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
 }

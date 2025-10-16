@@ -1,8 +1,15 @@
 import { Fragment } from "react";
+import { useNavigate } from "react-router";
 import Image from "/image-solid-full.svg";
 import Pen from "/pen-solid-full.svg";
 
 export default function Update() {
+  const navigate = useNavigate();
+
+  const handleSkip = () => {
+    navigate("/home");
+  };
+
   return (
     <Fragment>
       <div className="profile-info-parent">
@@ -50,6 +57,7 @@ export default function Update() {
             <button
               className="profile-btns profile-btns-actions-seperat"
               id="save-btn"
+              onClick={handleSkip}
             >
               Gem
             </button>
@@ -58,6 +66,7 @@ export default function Update() {
         <button
           className="profile-btns profile-btns-actions-seperat"
           id="save-btn"
+          onClick={handleSkip}
         >
           Spring over
         </button>
