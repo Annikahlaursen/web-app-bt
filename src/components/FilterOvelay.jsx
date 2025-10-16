@@ -43,7 +43,7 @@ export default function FilterOverlay({
     <div className="filter-overlay">
       <div>
         <select
-          value={filterCriteria.ageInterval}
+          value={tempFilters.ageInterval}
           onChange={(e) => handleAgeIntervalChange(e.target.value)}
         >
           <option value="">Alle Aldersgrupper</option>
