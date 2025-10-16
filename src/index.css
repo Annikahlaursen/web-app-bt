@@ -785,6 +785,10 @@ form {
 }
 
 /*-------------Rating Liste Styling------------*/
+.rating-liste.on-rating-page{
+  margin: 0 0 5rem 0;
+}
+
 .rating-liste > :nth-child(2n) {
   background-color: var(--babyblue);
 }
