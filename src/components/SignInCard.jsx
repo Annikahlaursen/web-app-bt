@@ -25,6 +25,8 @@ export default function SignInCard() {
           "currentUser",
           JSON.stringify({ uid: user.uid, email: user.email })
         );
+        // also set auth flag so App can render private routes immediately
+        localStorage.setItem("isAuth", "true");
       } catch (e) {
         console.warn("Could not write currentUser to localStorage", e);
       }
@@ -45,9 +47,9 @@ export default function SignInCard() {
   };
 
   return (
-    <section id="sign-in-page" className="profile-info-parent">
-      <div className="profile-card">
-        <form onSubmit={handleSignIn}>
+    <section className="profile-info-parent">
+      <div>
+        <form className="profile-form" onSubmit={handleSignIn}>
           <input
             id="mail"
             className="profile-form-content"
@@ -74,25 +76,27 @@ export default function SignInCard() {
               className="profile-btns profile-btns-actions-seperat"
               type="submit"
             >
-              Sign In
+              Log på
             </button>
           </div>
         </form>
 
-        <button
-          className="profile-btns profile-btns-actions-seperat"
-          id="save-btn"
-          onClick={handleGoToSignUp}
-        >
-          Sign Up
-        </button>
-        <p>Eller</p>
-        <button className="profile-btns profile-btns-actions-seperat">
-          Log ind med Facebook
-        </button>
-        <button className="profile-btns profile-btns-actions-seperat">
-          Log ind med Google
-        </button>
+        <div className="profile-btns-actions">
+          <button
+            className="profile-btns profile-btns-actions-seperat"
+            id="save-btn"
+            onClick={handleGoToSignUp}
+          >
+            Opret ny konto
+          </button>
+          <p>Eller</p>
+          <button className="profile-btns profile-btns-actions-seperat">
+            Log ind med Facebook
+          </button>
+          <button className="profile-btns profile-btns-actions-seperat">
+            Log ind med Google
+          </button>
+        </div>
       </div>
     </section>
   );

@@ -2,6 +2,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
 import { Link } from "react-router";
 import { auth } from "../firebase-config";
+import Logo from "/btp-logo.png";
 
 export default function SignUpPage() {
   const [errorMessage, setErrorMessage] = useState("");
@@ -46,47 +47,68 @@ export default function SignUpPage() {
   }
 
   return (
-    <section id="sign-up-page" className="page">
-      <h1>Sign Up - hej med dig</h1>
-      <form id="sign-up-form" onSubmit={handleSignUp}>
-        <label htmlFor="name">Name</label>
-        <input
-          id="name"
-          type="text"
-          name="name"
-          placeholder="Type your name..."
-        />
-        <label htmlFor="mail">Mail</label>
-        <input
-          id="mail"
-          type="email"
-          name="mail"
-          aria-label="mail"
-          placeholder="Type your mail..."
-          required
-          autoComplete="off"
-        />
-
-        <label htmlFor="password">Password</label>
-
-        <input
-          id="password"
-          type="password"
-          name="password"
-          aria-label="password"
-          placeholder="Type your password..."
-          autoComplete="current-password"
-        />
-        <div className="error-message">
-          <p>{errorMessage}</p>
+    <div>
+      <div className="login-page">
+        <div className="login-page-logo">
+          <img id="login-logo" src={Logo} alt="Bordtennisportalen.dk logo" />
         </div>
-        <div className="btns">
-          <button>Sign Up</button>
+        <div className="profile-info-parent">
+          <div className="profile-info-parent">
+            <div className="profile-card">
+              <div>
+                <form
+                  action="ProfileInfo"
+                  className="profile-form"
+                  onSubmit={handleSignUp}
+                >
+                  <input
+                    id="name"
+                    type="text"
+                    name="name"
+                    className="profile-form-content"
+                    placeholder="Type your name..."
+                  />
+                  <input
+                    id="mail"
+                    type="email"
+                    name="mail"
+                    className="profile-form-content"
+                    aria-label="mail"
+                    placeholder="Type your mail..."
+                    required
+                    autoComplete="off"
+                  />
+
+                  <input
+                    id="password"
+                    type="password"
+                    name="password"
+                    className="profile-form-content"
+                    aria-label="password"
+                    placeholder="Type your password..."
+                    autoComplete="current-password"
+                  />
+                  <div className="error-message">
+                    <p>{errorMessage}</p>
+                  </div>
+                  <div className="profile-btns-actions">
+                    <button
+                      className="profile-btns profile-btns-actions-seperat"
+                      id="save-btn"
+                    >
+                      Opret konto
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+              <p className="text-center">
+                Har du allerede en konto? <Link to="/sign-in">Log på</Link>
+              </p>
+            </div>
+          </div>
         </div>
-      </form>
-      <p className="text-center">
-        Already have an account? <Link to="/sign-in">Sign In</Link>
-      </p>
-    </section>
+      </div>
+    </div>
   );
 }
