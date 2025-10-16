@@ -52,7 +52,7 @@ export default function KampCard({ kamp }) {
   }, [/*params.id, kampUrl, */ holdUrl, klubUrl]);
 
   function handleClick() {
-    navigate(`/kamp`);
+    navigate(`/kamp/${kamp.id}`);
   }
 
   //get data from hold and klub based on kamp data
