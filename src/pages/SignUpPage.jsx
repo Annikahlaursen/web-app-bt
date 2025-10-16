@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router";
 import { auth } from "../firebase-config";
 import Logo from "/btp-logo.png";
+import Update from "../components/UpdateCard";
 
 export default function SignUpPage() {
   const [errorMessage, setErrorMessage] = useState("");
@@ -92,12 +93,14 @@ export default function SignUpPage() {
                     <p>{errorMessage}</p>
                   </div>
                   <div className="profile-btns-actions">
-                    <button
-                      className="profile-btns profile-btns-actions-seperat"
-                      id="save-btn"
-                    >
-                      Opret konto
-                    </button>
+                    <Link to={Update}>
+                      <button
+                        className="profile-btns profile-btns-actions-seperat"
+                        id="save-btn"
+                      >
+                        Opret konto
+                      </button>
+                    </Link>
                   </div>
                 </form>
               </div>
