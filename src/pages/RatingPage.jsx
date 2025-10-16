@@ -1,44 +1,64 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import RatingListe from "../components/RatingListe";
 
 export default function RatingPage() {
+  const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
-  // const filteredPosts = posts.filter((post) => {
-  //   const matchesSearch =
-  //     post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-  //     post.body.toLowerCase().includes(searchTerm.toLowerCase());
-  //   const matchesUser =
-  //     selectedUserId === "" || post.userId.toString() === selectedUserId;
+  useEffect(() => {
+    async function fetchUsers() {
+      const url =
+        "https://web-app-bt-124b8-default-rtdb.firebaseio.com/users.json";
+      const response = await fetch(url);
+      const data = await response.json();
 
-  //   return matchesSearch && matchesUser;
-  // });
+      const usersArray = Object.keys(data).map((key) => ({
+        id: key,
+        ...data[key],
+      }));
 
-  function generateFirebaseId() {
-    const chars =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    let id = "-S";
-    for (let i = 0; i < 18; i++) {
-      id += chars.charAt(Math.floor(Math.random() * chars.length));
+      usersArray.sort((a, b) => b.rating - a.rating);
+
+      // tilføjer global placering på ratinglisten til hvert userobject
+      usersArray.forEach((user, index) => {
+        user.placering = index + 1;
+      });
+
+      setUsers(usersArray);
     }
-    return id;
-  }
+    fetchUsers();
+  }, []);
 
-  console.log(generateFirebaseId()); // Example: "-Mabc1234567890xyzABC"
+    const filteredUsers = users.filter((user) =>
+      `${user.fornavn} ${user.efternavn}`
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase())
+    );
+
 
   return (
     <section className="page">
       <h1>Rating</h1>
-      <div>
-        <input
-          type="text"
-          placeholder="Søg i rating"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          style={{ flex: 1, padding: "10px" }}
-        />
+      <div className="rating-filter">
+        <div>
+          <input
+            type="text"
+            name="search"
+            placeholder="Søg i rating"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            style={{ flex: 1, padding: "10px" }}
+          />
+        </div>
+        <div className="rating-boks-grid rating-categories">
+          <p>Plac.</p>
+          <p>Navn</p>
+          <p>Rating</p>
+          <p>+/-</p>
+        </div>
       </div>
-      <RatingListe />
+
+      <RatingListe users={filteredUsers} />
     </section>
   );
 }

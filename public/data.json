@@ -390,25 +390,25 @@
       "lokation": "Jernaldervej 5, 8210 Aarhus V",
       "navn": "Aarhus Bordtennis",
       "hold": ["-HnAd4o6AtIlkW2SCf6R", "-HDSqi794AwzkeclR1lv"],
-      "image": "aarhus-logo.png"
+      "image": "https://aarhusbordtennis.dk/wp-content/uploads/2025/06/logo_uden_baggrund.png"
     },
     "-K4O0aPyG0NjMc875nk4": {
       "lokation": "Viborgvej 20, 8800 Viborg",
       "navn": "Viborg Bordtennis",
       "hold": ["-HiOIizyRdCJg8LJf56f", "-HGv2lmeMtURsQHspuZC"],
-      "image": "viborg-logo.png"
+      "image": "https://live-376-viborg-ff.umbraco-proxy.com/media/2088/logo-til-skaerm-nyt.jpg?anchor=center&mode=crop&width=492&height=249&rnd=133018281830000000"
     },
     "-KEiZyGpLmRRPNuXAIW1": {
       "lokation": "Odensevej 15, 5000 Odense",
       "navn": "Odense Bordtennis",
       "hold": ["-Hi2WQJ8YdlU3uWhfttU", "-HcCwVVsyQWhMvH3kfrn"],
-      "image": "odense-logo.png"
+      "image": "https://obbordtennis.dk/cms/Clubobbordtennis/images/meta/1.png"
     },
     "-K20RrNJXDMNNtzZRUGL": {
       "lokation": "Randersvej 10, 8900 Randers",
       "navn": "Randers Bordtennis",
       "hold": ["-H0thTJcPDJV2beGCK0y", "-HgA12nH5Y1XCfxyUvPj"],
-      "image": "randers-logo.png"
+      "image": "https://motivu-uploads.s3.eu-west-1.amazonaws.com/clubs/logos/5537/conversions/randers-badminton-klub-logo-1637494214-thumb.jpg"
     }
   },
   "hold": {
@@ -567,6 +567,158 @@
       "ertilmeldt": true,
       "tilmeldt": ["Herre junior C", "Herre klasse 2"],
       "harnotifikationer": false
+    }
+  },
+  "kampe": {
+    "370439": {
+      "hjemmeklub": "-KeScDIH3JeJ61334gps",
+      "udeklub": "-K4O0aPyG0NjMc875nk4",
+      "hjemmehold": "-HnAd4o6AtIlkW2SCf6R",
+      "udehold": "-HiOIizyRdCJg8LJf56f",
+      "dato": "15-12-2025",
+      "lokation": "Jernaldervej 5, 8210 Aarhus V",
+      "tid": "19:00",
+      "harResultat": false,
+      "serie": 5,
+      "pulje": 2,
+      "harNotifikationer": false,
+      "resultatHjemme": 0,
+      "resultatUde": 0
+    },
+    "370440": {
+      "hjemmeklub": "-K4O0aPyG0NjMc875nk4",
+      "udeklub": "-KEiZyGpLmRRPNuXAIW1",
+      "hjemmehold": "-HiOIizyRdCJg8LJf56f",
+      "udehold": "-Hi2WQJ8YdlU3uWhfttU",
+      "dato": "16-12-2025",
+      "lokation": "Viborgvej 20, 8800 Viborg",
+      "tid": "20:00",
+      "harResultat": false,
+      "serie": 5,
+      "pulje": 2,
+      "harNotifikationer": false,
+      "resultatHjemme": 0,
+      "resultatUde": 0
+    },
+    "370441": {
+      "hjemmeklub": "-K20RrNJXDMNNtzZRUGL",
+      "udeklub": "-KEiZyGpLmRRPNuXAIW1",
+      "hjemmehold": "-Hi2WQJ8YdlU3uWhfttU",
+      "udehold": "-H0thTJcPDJV2beGCK0y",
+      "dato": "18-12-2025",
+      "lokation": "Odensevej 15, 5000 Odense",
+      "tid": "18:30",
+      "harResultat": false,
+      "serie": 5,
+      "pulje": 2,
+      "harNotifikationer": false,
+      "resultatHjemme": 0,
+      "resultatUde": 0
+    },
+    "370442": {
+      "hjemmeklub": "-KEiZyGpLmRRPNuXAIW1",
+      "udeklub": "-KeScDIH3JeJ61334gps",
+      "hjemmehold": "-HgA12nH5Y1XCfxyUvPj",
+      "udehold": "-HDSqi794AwzkeclR1lv",
+      "dato": "18-12-2025",
+      "lokation": "Randersvej 10, 8900 Randers",
+      "tid": "19:30",
+      "harResultat": false,
+      "serie": 5,
+      "pulje": 2,
+      "harNotifikationer": false,
+      "resultatHjemme": 0,
+      "resultatUde": 0
+    },
+    "370443": {
+      "hjemmeklub": "-KeScDIH3JeJ61334gps",
+      "udeklub": "-KEiZyGpLmRRPNuXAIW1",
+      "hjemmehold": "-HDSqi794AwzkeclR1lv",
+      "udehold": "-HcCwVVsyQWhMvH3kfrn",
+      "dato": "04-01-2026",
+      "lokation": "Jernaldervej 5, 8210 Aarhus V",
+      "tid": "20:30",
+      "harResultat": false,
+      "serie": 5,
+      "pulje": 2,
+      "harNotifikationer": false,
+      "resultatHjemme": 0,
+      "resultatUde": 0
+    },
+    "370444": {
+      "hjemmeklub": "-K4O0aPyG0NjMc875nk4",
+      "udeklub": "-KEiZyGpLmRRPNuXAIW1",
+      "hjemmehold": "-HGv2lmeMtURsQHspuZC",
+      "udehold": "-HcCwVVsyQWhMvH3kfrn",
+      "dato": "08-01-2026",
+      "lokation": "Viborgvej 20, 8800 Viborg",
+      "tid": "20:00",
+      "harResultat": false,
+      "serie": 5,
+      "pulje": 2,
+      "harNotifikationer": false,
+      "resultatHjemme": 0,
+      "resultatUde": 0
+    },
+    "370445": {
+      "hjemmeklub": "-KEiZyGpLmRRPNuXAIW1",
+      "udeklub": "-K4O0aPyG0NjMc875nk4",
+      "hjemmehold": "-HcCwVVsyQWhMvH3kfrn",
+      "udehold": "-HiOIizyRdCJg8LJf56f",
+      "dato": "11-01-2026",
+      "lokation": "Odensevej 15, 5000 Odense",
+      "tid": "19:30",
+      "harResultat": false,
+      "serie": 5,
+      "pulje": 2,
+      "harNotifikationer": false,
+      "resultatHjemme": 0,
+      "resultatUde": 0
+    },
+    "370446": {
+      "hjemmeklub": "-K20RrNJXDMNNtzZRUGL",
+      "udeklub": "-KEiZyGpLmRRPNuXAIW1",
+      "hjemmehold": "-HnAd4o6AtIlkW2SCf6R",
+      "udehold": "-HiOIizyRdCJg8LJf56f",
+      "dato": "17-01-2026",
+      "lokation": "Randersvej 10, 8900 Randers",
+      "tid": "19:30",
+      "harResultat": false,
+      "serie": 5,
+      "pulje": 2,
+      "harNotifikationer": false,
+      "resultatHjemme": 0,
+      "resultatUde": 0
+    },
+    "370447": {
+      "hjemmeklub": "-KeScDIH3JeJ61334gps",
+      "udeklub": "-KEiZyGpLmRRPNuXAIW1",
+      "hjemmehold": "-HnAd4o6AtIlkW2SCf6R",
+      "udehold": "-Hi2WQJ8YdlU3uWhfttU",
+      "dato": "22-01-2026",
+      "lokation": "Jernaldervej 5, 8210 Aarhus V",
+      "tid": "19:30",
+      "harResultat": false,
+      "serie": 5,
+      "pulje": 2,
+      "harNotifikationer": false,
+      "resultatHjemme": 0,
+      "resultatUde": 0
+    },
+    "370448": {
+      "hjemmeklub": "-KEiZyGpLmRRPNuXAIW1",
+      "udeklub": "-KeScDIH3JeJ61334gps",
+      "hjemmehold": "-HcCwVVsyQWhMvH3kfrn",
+      "udehold": "-HDSqi794AwzkeclR1lv",
+      "dato": "26-01-2026",
+      "lokation": "Odensevej 15, 5000 Odense",
+      "tid": "20:00",
+      "harResultat": false,
+      "serie": 5,
+      "pulje": 2,
+      "harNotifikationer": false,
+      "resultatHjemme": 0,
+      "resultatUde": 0
     }
   }
 }
