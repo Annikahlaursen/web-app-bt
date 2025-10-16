@@ -1,11 +1,11 @@
 import { Routes, Route, Navigate } from "react-router";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Nav from "./components/Nav";
 import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
 import ProfilePage from "./pages/ProfilePage";
-import LogInPage from "./pages/SignInPage";
+import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
 import KampPage from "./pages/KampPage";
 import KampResultatPage from "./pages/KampResultatPage";
@@ -17,31 +17,6 @@ import { onAuthStateChanged } from "firebase/auth";
 
 export default function App() {
   const [isAuth, setIsAuth] = useState(localStorage.getItem("isAuth")); // default value comes from localStorage
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    // Simulation af loading tid på 5 sekunder for bedre synlighed
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 5000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (isLoading) {
-    console.log("Loading screen should be visible");
-    return (
-      <div className="loading-screen" style={{ backgroundColor: "#bb1717" }}>
-        <div className="loading-logo">
-          <img
-            src="/btp-logo.png"
-            alt="Bordtennisportalen.dk logo"
-            className="loading-logo-img"
-          />
-        </div>
-      </div>
-    );
-  }
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -55,12 +30,12 @@ export default function App() {
     }
   });
 
+  // variable holding all private routes including the nav bar
   const privateRoutes = (
     <>
       <Nav />
       <Routes>
-        <Route path="/" element={<LogInPage />} />
-        <Route path="/home" element={<HomePage />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/rating" element={<RatingPage />} />
         <Route path="/contact" element={<ContactPage />} />
@@ -79,7 +54,7 @@ export default function App() {
   // variable holding all public routes without nav bar
   const publicRoutes = (
     <Routes>
-      <Route path="/login" element={<LogInPage />} />
+      <Route path="/sign-in" element={<SignInPage />} />
       <Route path="/sign-up" element={<SignUpPage />} />
       <Route path="*" element={<Navigate to="/sign-in" />} />
     </Routes>

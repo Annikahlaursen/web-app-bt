@@ -143,6 +143,8 @@ export default function ProfileInfo() {
     } catch (err) {
       console.error(err);
     }
+    // After saving, navigate to the update view so the user can continue
+    navigate("/profile/update");
   }
 
   /**
