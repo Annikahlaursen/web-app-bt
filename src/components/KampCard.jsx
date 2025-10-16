@@ -1,6 +1,6 @@
 import bell from "/public/bell.svg";
 import share from "/public/share.svg";
-import { Link } from "react-router";
+import { Link, Navigate, useParams } from "react-router";
 import { useEffect, useState } from "react";
 
 export default function KampCard() {
@@ -8,20 +8,25 @@ export default function KampCard() {
   const [hold, setHold] = useState(null);
   const [klub, setKlub] = useState(null);
 
-  const kampUrl = `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/kampe.json`;
+  const params = useParams();
+
+  const kampUrl = `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/kampe/${
+    params.id
+  }.json`;
   const holdUrl = `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/hold.json`;
   const klubUrl = `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/klubber.json`;
 
   useEffect(() => {
     async function getKamp() {
       const kampResponse = await fetch(kampUrl);
-
-      const data = await kampResponse.json();
-      if (data) {
-        // Get the first kamp from the object
-        const firstKamp = Object.values(data)[0];
-        setKamp(firstKamp);
-      }
+      const kampData = await kampResponse.json();
+      kampData.id = params.id;
+      setKamp(kampData);
+      //if (data) {
+      // Get the first kamp from the object
+      //const firstKamp = Object.values(data)[0];
+      //setKamp(firstKamp);
+      //}
 
       const holdResponse = await fetch(holdUrl);
       const holdData = await holdResponse.json();
@@ -34,7 +39,11 @@ export default function KampCard() {
       }
     }
     getKamp();
-  }, [kampUrl, holdUrl, klubUrl]);
+  }, [params.id, kampUrl, holdUrl, klubUrl]);
+
+  function navigateToUpdate() {
+    Navigate(`/kamp/${params.id}/update`);
+  }
 
   const hjemmeholdNavn = hold?.[kamp?.hjemmehold]?.navn ?? "Hjemme";
   const udeholdNavn = hold?.[kamp?.udehold]?.navn ?? "Ude";
@@ -46,7 +55,7 @@ export default function KampCard() {
 
   return (
     <div className="kamp-card">
-      <Link to="/kamp">
+      <Link onClick={navigateToUpdate}>
         <div className="kamp-container">
           <p>{kamp?.id}</p>
           <p>{kamp?.dato}</p>
