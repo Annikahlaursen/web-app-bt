@@ -6,7 +6,6 @@ import NyhedsCard from "../components/NyhedsCard";
 import photo from "/public/img/unsplash-photo.svg";
 import arrow from "/public/arrow-right-black.svg";
 import RatingListe from "../components/RatingListe";
-import { useEffect, useState } from "react";
 
 export default function HomePage() {
   const [users, setUsers] = useState([]);
