@@ -1,4 +1,3 @@
-import btLogo2 from "/public/btLogo2.png";
 import bell from "/public/bell.svg";
 import share from "/public/share.svg";
 import { Link } from "react-router";
@@ -35,7 +34,15 @@ export default function KampCard() {
       }
     }
     getKamp();
-  });
+  }, [kampUrl, holdUrl, klubUrl]);
+
+  const hjemmeholdNavn = hold?.[kamp?.hjemmehold]?.navn ?? "Hjemme";
+  const udeholdNavn = hold?.[kamp?.udehold]?.navn ?? "Ude";
+
+  const hjemmeklubLogo =
+    klub?.[kamp?.hjemmeklub]?.image ?? "https://placehold.co/50x50.webp";
+  const udeklubLogo =
+    klub?.[kamp?.udeklub]?.image ?? "https://placehold.co/50x50.webp";
 
   return (
     <div className="kamp-card">
@@ -46,16 +53,16 @@ export default function KampCard() {
         </div>
         <div className="kamp-container">
           <div className="kamp-hold">
-            <img src={klub?.navn} alt="" />
-            <p>{hold[kamp.hjemmehold]?.navn}</p>
+            <img src={hjemmeklubLogo} alt={klub?.navn} />
+            <p>{hjemmeholdNavn}</p>
           </div>
           <div className="kamp-vs">
             <p>VS</p>
             <p>{kamp?.tid}</p>
           </div>
           <div className="kamp-hold">
-            <img src={btLogo2} alt="" />
-            <p>Hold 2</p>
+            <img src={udeklubLogo} alt="" />
+            <p>{udeholdNavn}</p>
           </div>
         </div>
       </Link>
