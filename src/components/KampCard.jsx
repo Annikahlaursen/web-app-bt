@@ -1,6 +1,6 @@
 import bell from "/public/bell.svg";
 import share from "/public/share.svg";
-import { Link, useNavigate, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useEffect, useState } from "react";
 
 export default function KampCard() {
