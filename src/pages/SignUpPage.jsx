@@ -26,7 +26,7 @@ export default function SignUpPage() {
         console.log(code);
         code = code.replaceAll("-", " "); // some JS string magic to display error message. See the log above in the console
         code = code.replaceAll("auth/", "");
-        setErrorMessage(code);
+        //setErrorMessage(code);
       });
   }
 
