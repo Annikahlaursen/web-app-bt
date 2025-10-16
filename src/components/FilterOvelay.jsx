@@ -1,15 +1,10 @@
 import { useState } from "react";
 
-
-export default function FilterOverlay({ users, setFilteredUsers, onClose }) {
-  const [filterCriteria, setFilterCriteria] = useState({
-    ageMin: "",
-    ageMax: "",
-    ageInterval: "",
-    club: "",
-    name: "",
-  });
-
+export default function FilterOverlay({
+  filterCriteria,
+  updateFilterCriteria,
+  closeOverlay,
+}) {
   const ageIntervals = [
     { value: "8-15", label: "8-15 år", ageMin: 8, ageMax: 15 },
     { value: "16-21", label: "16-21 år", ageMin: 16, ageMax: 21 },
@@ -17,34 +12,8 @@ export default function FilterOverlay({ users, setFilteredUsers, onClose }) {
     { value: "+45", label: "+45 år", ageMin: 45, ageMax: "" },
   ];
 
-  const applyFilters = (updatedCriteria) => {
-  console.log("Filtering with criteria:", updatedCriteria);
-    const filtered = users.filter((user) => {
-      const matchesAge =
-        (!updatedCriteria.ageMin || user.age >= updatedCriteria.ageMin) &&
-        (!updatedCriteria.ageMax || user.age <= updatedCriteria.ageMax);
-
-         if (matchesAge) {
-           console.log(
-             `User ${user.fornavn} ${user.efternavn} (age: ${user.age}) matches`
-           );
-         }
-
-      return (
-        matchesAge
-      );
-    });
-
-    setFilteredUsers(filtered);
-  };
-
-
-  const handleFilterChange = (key, value) => {
-    const updatedCriteria = { ...filterCriteria, [key]: value };
-    setFilterCriteria(updatedCriteria);
-      console.log("Updated filterCriteria:", updatedCriteria);
-    applyFilters(updatedCriteria);
-  };
+  // Local state for temporary filters
+  const [tempFilters, setTempFilters] = useState(filterCriteria);
 
   const handleAgeIntervalChange = (selectedInterval) => {
     const interval = ageIntervals.find((i) => i.value === selectedInterval) || {
@@ -52,18 +21,22 @@ export default function FilterOverlay({ users, setFilteredUsers, onClose }) {
       ageMax: "",
     };
 
-    const updatedCriteria = {
-      ...filterCriteria,
+    setTempFilters((prev) => ({
+      ...prev,
       ageInterval: selectedInterval,
       ageMin: interval.ageMin,
       ageMax: interval.ageMax,
-    };
+    }));
+  };
 
-    setFilterCriteria(updatedCriteria);
-      console.log("Updated filterCriteria with age interval:", updatedCriteria);
+  const handleSave = () => {
+    // Save the temporary filters to the global filter state
+    Object.keys(tempFilters).forEach((key) => {
+      updateFilterCriteria(key, tempFilters[key]);
+    });
 
-        applyFilters(updatedCriteria);
-
+    // Close the overlay
+    closeOverlay();
   };
 
   return (
@@ -71,9 +44,7 @@ export default function FilterOverlay({ users, setFilteredUsers, onClose }) {
       <div>
         <select
           value={filterCriteria.ageInterval}
-          onChange={(e) =>
-            handleAgeIntervalChange(e.target.value)
-          }
+          onChange={(e) => handleAgeIntervalChange(e.target.value)}
         >
           <option value="">Alle Aldersgrupper</option>
           {ageIntervals.map((interval) => (
@@ -84,15 +55,25 @@ export default function FilterOverlay({ users, setFilteredUsers, onClose }) {
         </select>
       </div>
       <div>
-        <label>Søg efter spiller:</label>
         <input
           type="text"
           placeholder="Indtast spillerens navn"
           value={filterCriteria.name}
-          onChange={(e) => handleFilterChange("name", e.target.value)}
+          onChange={(e) => updateFilterCriteria("name", e.target.value)}
         />
       </div>
-      <button onClick={onClose}>Close</button>
+      <div>
+        <input
+          type="text"
+          placeholder="Indtast klubnavn"
+          value={filterCriteria.klub}
+          onChange={(e) => updateFilterCriteria("club", e.target.value)}
+        />
+      </div>
+      <div>
+        <button onClick={handleSave}>Gem</button>
+        <button onClick={closeOverlay}>Annuller</button>
+      </div>
     </div>
   );
 }

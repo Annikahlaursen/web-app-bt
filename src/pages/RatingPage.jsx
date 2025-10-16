@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router";
+import useFilters from "../hooks/useFilters";
 import RatingListe from "../components/RatingListe";
 import FilterOverlay from "../components/FilterOvelay";
 
+// Funktion til at beregne alder ud fra fødselsdato
 function calculateAge(fødselsdato) {
   const today = new Date();
   const birthDate = new Date(fødselsdato);
@@ -23,57 +25,50 @@ export default function RatingPage() {
   const location = useLocation();
   const [users, setUsers] = useState([]);
   const [searchedUsers, setSearchedUsers] = useState([]);
-  const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [showFilter, setShowFilter] = useState(false);
+  const [showFilter, setShowOverlay] = useState(false);
   const [loading, setLoading] = useState(true);
 
-   useEffect(() => {
-     async function fetchUsers() {
-       const url =
-         "https://web-app-bt-124b8-default-rtdb.firebaseio.com/users.json";
-       const response = await fetch(url);
-       const data = await response.json();
+  const { filterCriteria, filteredUsers, updateFilterCriteria } =
+    useFilters(users);
 
-       const usersArray = Object.keys(data).map((key) => ({
-         id: key,
-         ...data[key],
-       }));
 
-       usersArray.sort((a, b) => b.rating - a.rating);
+    const openOverlay = () => setShowOverlay(true);
+    const closeOverlay = () => setShowOverlay(false);
 
-       usersArray.forEach((user, index) => {
-         user.placering = index + 1;
-          user.age = calculateAge(user.fødselsdato);
-       });
+  useEffect(() => {
+    async function fetchUsers() {
+      const url =
+        "https://web-app-bt-124b8-default-rtdb.firebaseio.com/users.json";
+      const response = await fetch(url);
+      const data = await response.json();
 
-       setUsers(usersArray);
-       setSearchedUsers(usersArray);
-       setLoading(false);
-     }
+      const usersArray = Object.keys(data).map((key) => ({
+        id: key,
+        ...data[key],
+      }));
 
-// Tjek om brugere er blevet sendt via navigation state
-     if (location.state && location.state.users) {
-       setUsers(location.state.users);
-       setSearchedUsers(location.state.users);
-       setLoading(false);
-     } else {
-       fetchUsers();
-     }
-   }, [location.state]);
+      usersArray.sort((a, b) => b.rating - a.rating);
 
- useEffect(() => {
-   if (searchTerm === "") {
-     setSearchedUsers(users); //Viser alle brugere hvis søgeterm er tom
-   } else {
-     const filtered = users.filter((user) =>
-       `${user.fornavn} ${user.efternavn}`
-         .toLowerCase()
-         .includes(searchTerm.toLowerCase())
-     );
-     setSearchedUsers(filtered);
-   }
- }, [searchTerm, users]);
+      usersArray.forEach((user, index) => {
+        user.placering = index + 1;
+        user.age = calculateAge(user.fødselsdato);
+      });
+
+      setUsers(usersArray);
+      setSearchedUsers(usersArray);
+      setLoading(false);
+    }
+
+    // Tjek om brugere er blevet sendt via navigation state
+    if (location.state && location.state.users) {
+      setUsers(location.state.users);
+      setSearchedUsers(location.state.users);
+      setLoading(false);
+    } else {
+      fetchUsers();
+    }
+  }, [location.state]);
 
   return (
     <section className="page">
@@ -91,7 +86,7 @@ export default function RatingPage() {
           <img
             src="sliders-solid-full.svg"
             alt="Filter"
-            onClick={() => setShowFilter(true)}
+            onClick={openOverlay}
             style={{ cursor: "pointer" }}
           />
         </div>
@@ -108,8 +103,9 @@ export default function RatingPage() {
       {showFilter && (
         <FilterOverlay
           users={searchedUsers}
-          setFilteredUsers={setFilteredUsers}
-          onClose={() => setShowFilter(false)}
+          filterCriteria={filterCriteria}
+          updateFilterCriteria={updateFilterCriteria}
+          closeOverlay={closeOverlay}
         />
       )}
     </section>
