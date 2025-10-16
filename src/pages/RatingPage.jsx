@@ -3,6 +3,22 @@ import { useLocation } from "react-router";
 import RatingListe from "../components/RatingListe";
 import FilterOverlay from "../components/FilterOvelay";
 
+function calculateAge(fødselsdato) {
+  const today = new Date();
+  const birthDate = new Date(fødselsdato);
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+
+  if (
+    monthDiff < 0 ||
+    (monthDiff === 0 && today.getDate() < birthDate.getDate())
+  ) {
+    age--;
+  }
+
+  return age;
+}
+
 export default function RatingPage() {
   const location = useLocation();
   const [users, setUsers] = useState([]);
@@ -28,6 +44,7 @@ export default function RatingPage() {
 
        usersArray.forEach((user, index) => {
          user.placering = index + 1;
+          user.age = calculateAge(user.fødselsdato);
        });
 
        setUsers(usersArray);

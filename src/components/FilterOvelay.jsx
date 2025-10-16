@@ -1,24 +1,8 @@
 import { useState } from "react";
 
-function calculateAge(fødselsdato) {
-  const today = new Date();
-  const birthDate = new Date(fødselsdato);
-  let age = today.getFullYear() - birthDate.getFullYear();
-  const monthDiff = today.getMonth() - birthDate.getMonth();
-
-  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-    age--;
-  }
-
-  return age;
-}
 
 export default function FilterOverlay({ users, setFilteredUsers, onClose }) {
   const [filterCriteria, setFilterCriteria] = useState({
-    ratingMin: "",
-    ratingMax: "",
-    placeringMin: "",
-    placeringMax: "",
     ageMin: "",
     ageMax: "",
     ageInterval: "",
@@ -26,25 +10,17 @@ export default function FilterOverlay({ users, setFilteredUsers, onClose }) {
     name: "",
   });
 
+  const ageIntervals = [
+    { value: "8-15", label: "8-15 år", ageMin: 8, ageMax: 15 },
+    { value: "16-21", label: "16-21 år", ageMin: 16, ageMax: 21 },
+    { value: "22-45", label: "22-45 år", ageMin: 22, ageMax: 45 },
+    { value: "+45", label: "+45 år", ageMin: 46, ageMax: "" },
+  ];
+
   const applyFilters = (updatedCriteria) => {
 
- const usersWithAge = users.map((user) => ({
-   ...user,
-   age: calculateAge(user.fødselsdato),
- }));
+    const filtered = users.filter((user) => {
 
-   console.log("Users with calculated ages:", usersWithAge);
-
-    const filtered = usersWithAge.filter((user) => {
-
-      const matchesRating =
-        (!updatedCriteria.ratingMin || user.rating >= updatedCriteria.ratingMin) &&
-        (!updatedCriteria.ratingMax || user.rating <= updatedCriteria.ratingMax);
-      const matchesPlacering =
-        (!updatedCriteria.placeringMin ||
-          user.placering >= updatedCriteria.placeringMin) &&
-        (!updatedCriteria.placeringMax ||
-          user.placering <= updatedCriteria.placeringMax);
       const matchesAge =
         (!updatedCriteria.ageMin || user.age >= updatedCriteria.ageMin) &&
         (!updatedCriteria.ageMax || user.age <= updatedCriteria.ageMax);
@@ -57,8 +33,6 @@ export default function FilterOverlay({ users, setFilteredUsers, onClose }) {
           .includes(updatedCriteria.name.toLowerCase());
 
       return (
-        matchesRating &&
-        matchesPlacering &&
         matchesAge &&
         matchesClub &&
         matchesName
@@ -74,41 +48,32 @@ export default function FilterOverlay({ users, setFilteredUsers, onClose }) {
     applyFilters(updatedCriteria);
   };
 
+  const handleAgeIntervalChange = (selectedInterval, handleFilterChange) => {
+    const interval = ageIntervals.find((i) => i.value === selectedInterval) || {
+      ageMin: "",
+      ageMax: "",
+    };
+    handleFilterChange("ageInterval", selectedInterval);
+    handleFilterChange("ageMin", interval.ageMin);
+    handleFilterChange("ageMax", interval.ageMax);
+  };
+
   return (
     <div className="filter-overlay">
       <div>
         <label>Aldersinterval:</label>
         <select
           value={filterCriteria.ageInterval}
-          onChange={(e) => {
-            const selectedInterval = e.target.value;
-            let ageMin = "";
-            let ageMax = "";
-
-            if (selectedInterval === "8-15") {
-              ageMin = 8;
-              ageMax = 15;
-            } else if (selectedInterval === "16-21") {
-              ageMin = 16;
-              ageMax = 21;
-            } else if (selectedInterval === "22-45") {
-              ageMin = 22;
-              ageMax = 45;
-            } else if (selectedInterval === "+45") {
-              ageMin = 46;
-              ageMax = "";
-            }
-
-            handleFilterChange("ageInterval", selectedInterval);
-            handleFilterChange("ageMin", ageMin);
-            handleFilterChange("ageMax", ageMax);
-          }}
+          onChange={(e) =>
+            handleAgeIntervalChange(e.target.value, handleFilterChange)
+          }
         >
           <option value="">Alle Aldersgrupper</option>
-          <option value="8-15">8-15 år</option>
-          <option value="16-21">16-21 år</option>
-          <option value="22-45">22-45 år</option>
-          <option value="+45">+45 år</option>
+          {ageIntervals.map((interval) => (
+            <option key={interval.value} value={interval.value}>
+              {interval.label}
+            </option>
+          ))}
         </select>
       </div>
       <div>
