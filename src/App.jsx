@@ -5,13 +5,14 @@ import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
 import ProfilePage from "./pages/ProfilePage";
-import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
 import KampPage from "./pages/KampPage";
+import SignInPage from "./pages/SignInPage";
 import KampResultatPage from "./pages/KampResultatPage";
 import StevnePage from "./pages/StevnePage";
 import Error from "./pages/ErrorPage";
 import RatingPage from "./pages/RatingPage";
+import KalenderPage from "./pages/KalenderPage";
 import { auth } from "./firebase-config";
 import { onAuthStateChanged } from "firebase/auth";
 
@@ -33,7 +34,7 @@ export default function App() {
   // variable holding all private routes including the nav bar
   const privateRoutes = (
     <>
-      {!hideNavRoutes.includes(location.pathname) && <Nav />}
+      <Nav />
       <main>
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -41,7 +42,6 @@ export default function App() {
           <Route path="/rating" element={<RatingPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/login" element={<LogInPage />} />
           <Route path="*" element={<Navigate to="/" />} />
           <Route path="*" element={<Navigate to="/error" />} />
           <Route path="/kamp/:id" element={<KampPage />} />
@@ -52,21 +52,6 @@ export default function App() {
           <Route path="/kalender" element={<KalenderPage />} />
         </Routes>
       </main>
-      <Nav />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/rating" element={<RatingPage />} />
-        <Route path="/contact" element={<ContactPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="*" element={<Navigate to="/" />} />
-        <Route path="*" element={<Navigate to="/error" />} />
-        <Route path="/kamp" element={<KampPage />} />
-        <Route path="/kamp/resultat" element={<KampResultatPage />} />
-        <Route path="/stevne" element={<StevnePage />} />
-        <Route path="/error" element={<Error />} />
-        <Route path="/stevne/tilmeld" element={<Error />} />
-      </Routes>
     </>
   );
 
