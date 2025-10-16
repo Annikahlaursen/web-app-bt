@@ -20,15 +20,17 @@ export default function KampCard() {
   useEffect(() => {
     async function getKamp() {
       const kampResponse = await fetch(kampUrl);
-      const kampData = await kampResponse.json();
-      if (!kamp) {
-        console.warn("Ingen kamp fundet!");
-        return; // stop her, undgå fejl
+      const data = await kampResponse.json();
+      console.log("Params id:", params.id, "data:", data);
+
+      console.log(data);
+      if (data) {
+        data.id = params.id;
+      } else {
+        console.warn(`Ingen kamp fundet med id: ${params.id}`);
       }
-      kampData.id = params.id;
-      console.log(kampData.id);
-      console.log(params.id);
-      setKamp(kampData);
+
+      setKamp(data);
       //if (data) {
       // Get the first kamp from the object
       //const firstKamp = Object.values(data)[0];
@@ -45,43 +47,42 @@ export default function KampCard() {
         setKlub(klubData);
       }
     }
+
     getKamp();
   }, [params.id, kampUrl, holdUrl, klubUrl]);
 
-  function navigateToUpdate() {
-    navigate(`/kamp/${params.id}/update`);
+  function handleClick() {
+    navigate(`/kamp/${params.id}`);
   }
 
+  //get data from hold and klub based on kamp data
   const hjemmeholdNavn = hold?.[kamp?.hjemmehold]?.navn ?? "Hjemme";
   const udeholdNavn = hold?.[kamp?.udehold]?.navn ?? "Ude";
-
   const hjemmeklubLogo =
     klub?.[kamp?.hjemmeklub]?.image ?? "https://placehold.co/50x50.webp";
   const udeklubLogo =
     klub?.[kamp?.udeklub]?.image ?? "https://placehold.co/50x50.webp";
 
   return (
-    <div className="kamp-card">
-      <Link onClick={navigateToUpdate}>
-        <div className="kamp-container">
-          <p>{kamp?.id}</p>
-          <p>{kamp?.dato}</p>
+    <div className="kamp-card" onClick={handleClick}>
+      <div className="kamp-container">
+        <p>{kamp?.id}</p>
+        <p>{kamp?.dato}</p>
+      </div>
+      <div className="kamp-container">
+        <div className="kamp-hold">
+          <img src={hjemmeklubLogo} alt={klub?.navn} />
+          <p>{hjemmeholdNavn}</p>
         </div>
-        <div className="kamp-container">
-          <div className="kamp-hold">
-            <img src={hjemmeklubLogo} alt={klub?.navn} />
-            <p>{hjemmeholdNavn}</p>
-          </div>
-          <div className="kamp-vs">
-            <p>VS</p>
-            <p>{kamp?.tid}</p>
-          </div>
-          <div className="kamp-hold">
-            <img src={udeklubLogo} alt="" />
-            <p>{udeholdNavn}</p>
-          </div>
+        <div className="kamp-vs">
+          <p>VS</p>
+          <p>{kamp?.tid}</p>
         </div>
-      </Link>
+        <div className="kamp-hold">
+          <img src={udeklubLogo} alt="" />
+          <p>{udeholdNavn}</p>
+        </div>
+      </div>
       <div className="kamp-container" id="streg">
         <div className="del-notifikationer" id="streg-midt">
           <img src={share} alt="Dele ikon" />

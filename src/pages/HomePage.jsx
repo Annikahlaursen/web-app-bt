@@ -36,8 +36,9 @@ export default function HomePage() {
   kommendeKampe.sort((a, b) => new Date(a.dato) - new Date(b.dato));
 
   const nextKamp = kommendeKampe[0]; // den næste kamp
-  console.log(nextKamp);
   if (!nextKamp) return <p>Ingen kommende kampe</p>;
+
+  console.log("næste kamp:", nextKamp.id);
 
   return (
     <section>
@@ -45,7 +46,7 @@ export default function HomePage() {
       <section className="forside">
         <section className="forside-del">
           <h1>Din Næste Kamp</h1>
-          <KampCard kamp={nextKamp} />
+          <KampCard key={nextKamp.id} kamp={nextKamp} />
           <Link className="flex-pil" to="/kamp">
             <p>Se alle kampe</p>
             <img src={arrow} alt="Pil til kamp med id" />

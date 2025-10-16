@@ -29,8 +29,8 @@ export default function App() {
           <Route path="/login" element={<LogInPage />} />
           <Route path="*" element={<Navigate to="/" />} />
           <Route path="*" element={<Navigate to="/error" />} />
-          <Route path="/kamp" element={<KampPage />} />
-          <Route path="/kamp/resultat" element={<KampResultatPage />} />
+          <Route path="/kamp/:id" element={<KampPage />} />
+          <Route path="/kamp/:id/resultat" element={<KampResultatPage />} />
           <Route path="/stevne" element={<StevnePage />} />
           <Route path="/error" element={<Error />} />
           <Route path="/stevne/tilmeld" element={<Error />} />
