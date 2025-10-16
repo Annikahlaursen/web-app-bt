@@ -70,7 +70,7 @@ export default function KampPage() {
             alt="Arrow back to previus page"
           />
         </Link>
-        <VSVisning />
+        <VSVisning key={kamp.id} kamp={kamp} />
       </div>
       <section className="kamp-info-section">
         <button className="btn" onClick={clicked}>
@@ -78,23 +78,23 @@ export default function KampPage() {
         </button>
         <div className="kamp-info">
           <img src={tableTennis} alt="TableTennis icon" />
-          <p>{kamp.id}</p>
+          <p>{kamp?.id}</p>
         </div>
         <div className="kamp-info">
           <img src={calendar} alt="Calendar icon" />
-          <p>{kamp.dato}</p>
+          <p>{kamp?.dato}</p>
         </div>
         <div className="kamp-info">
           <img src={clock} alt="Clock icon" />
-          <p>{kamp.tid}</p>
+          <p>{kamp?.tid}</p>
         </div>
         <div className="kamp-info">
           <img src={location} alt="Location pin icon" />
-          <p>{kamp.lokation}</p>
+          <p>{kamp?.lokation}</p>
         </div>
         <br />
         <p>Kamp resultat: {kamp.resultat ?? "Afventer"}</p>
-        <p>Spillere: {kamp.spillere ?? "Afventer"}</p>
+        <p>Spillere: {kamp?.spillere ?? "Afventer"}</p>
       </section>
     </>
   );
