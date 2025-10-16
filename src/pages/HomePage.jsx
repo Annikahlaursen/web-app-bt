@@ -55,7 +55,7 @@ export default function HomePage() {
         <section className="forside-del">
           <h1>Rating</h1>
           <RatingListe />
-          <Link className="flex-pil" to="/kamp">
+          <Link className="flex-pil" to="/rating">
             <p>Se alle ratings</p>
             <img src={arrow} alt="Pil til rating-side" />
           </Link>

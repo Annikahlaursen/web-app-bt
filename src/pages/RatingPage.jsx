@@ -1,9 +1,13 @@
 import { useState, useEffect } from "react";
 import RatingListe from "../components/RatingListe";
+import FilterOverlay from "../components/FilterOvelay";
 
 export default function RatingPage() {
   const [users, setUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [showFilter, setShowFilter] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchUsers() {
@@ -20,21 +24,30 @@ export default function RatingPage() {
       usersArray.sort((a, b) => b.rating - a.rating);
 
       // tilføjer global placering på ratinglisten til hvert userobject
-      usersArray.forEach((user, index) => {
-        user.placering = index + 1;
-      });
+   
 
       setUsers(usersArray);
+      setFilteredUsers(usersArray);
+      setLoading(false);
     }
     fetchUsers();
   }, []);
 
-    const filteredUsers = users.filter((user) =>
-      `${user.fornavn} ${user.efternavn}`
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase())
-    );
+  useEffect(() => {
+    const sortedUsers = [...users].sort((a, b) => b.rating - a.rating);
 
+    sortedUsers.forEach((user, index) => {
+      user.placering = index + 1;
+    });
+
+    setFilteredUsers(sortedUsers);
+  }, [users]);
+
+  const searchedUsers = filteredUsers.filter((user) =>
+    `${user.fornavn} ${user.efternavn}`
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase())
+  );
 
   return (
     <section className="page">
@@ -49,6 +62,12 @@ export default function RatingPage() {
             onChange={(e) => setSearchTerm(e.target.value)}
             style={{ flex: 1, padding: "10px" }}
           />
+          <img
+            src="sliders-solid-full.svg"
+            alt="Filter"
+            onClick={() => setShowFilter(true)}
+            style={{ cursor: "pointer" }}
+          />
         </div>
         <div className="rating-boks-grid rating-categories">
           <p>Plac.</p>
@@ -58,7 +77,15 @@ export default function RatingPage() {
         </div>
       </div>
 
-      <RatingListe users={filteredUsers} />
+      {loading ? <p className="loading-message">Henter Ratingliste...</p> : <RatingListe users={searchedUsers} />}
+
+      {showFilter && (
+        <FilterOverlay
+          users={users}
+          setFilteredUsers={setFilteredUsers}
+          onClose={() => setShowFilter(false)}
+        />
+      )}
     </section>
   );
 }

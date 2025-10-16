@@ -44,17 +44,23 @@ h1 {
   line-height: 1.1;
 }
 
-/*--------------Search Styling----------*/
-input {
-  background-color: var(--grey);
-  border: none;
-  border-radius: var(--border-radius);
-  width: 100%;
-}
 h3,
 h5 {
   line-height: 1.1;
   margin: 0.5em 0 0;
+}
+
+/*--------------Search Styling----------*/
+input {
+  background-color: var(--light-grey);
+  border: none;
+  border-radius: var(--border-radius);
+  width: 100%;
+}
+
+input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--darkgrey);
 }
 
 /* ---------- Link Styling ---------- */
@@ -801,9 +807,57 @@ form {
   position: sticky;
 }
 
+.rating-filter :nth-child(1) {
+  display: grid;
+  grid-template-columns: 6fr 1fr;
+  gap: 1em;
+}
+
 .rating-categories p {
   text-align: left;
   margin: 1rem 0 0.5rem 0.5rem;
+}
+
+.filter-overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 80vw;
+  height: 50vh;
+  padding: 1em;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--white);
+  border-radius: var(--border-radius);
+}
+
+.filter-overlay > *{
+  width: 100%;
+  margin-top: 1em;
+  /* border: solid 2px var(--light-grey);
+  border-radius: var(--border-radius); */
+}
+
+.filter-overlay select{
+  width: 100%;
+  border-radius: var(--border-radius);
+  padding: 0.5rem 1rem;
+  border:solid 2px var(--light-grey);
+}
+
+.filter-overlay input{
+  width: 100%;
+  border-radius: var(--border-radius);
+  background-color: transparent;
+  padding: 0.5rem 1rem;
+  border:solid 2px var(--light-grey);
+}
+
+.loading-message{
+  color: var(--darkgrey);
 }
 
 /*-------------Kalender Filter Styling------------*/
@@ -1127,4 +1181,42 @@ form {
 
 .flex-pil img {
   width: 8%;
+}
+
+/* ---------- Loading Animation ---------- */
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--lightred);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.loading-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: pulse 1.5s ease-in-out infinite alternate;
+}
+
+.loading-logo-img {
+  max-width: 200px;
+  height: auto;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
 }
