@@ -52,21 +52,19 @@ export default function RatingPage() {
        setLoading(false);
      }
 
-     // Check if users are passed via location.state
+// Tjek om brugere er blevet sendt via navigation state
      if (location.state && location.state.users) {
        setUsers(location.state.users);
        setSearchedUsers(location.state.users);
        setLoading(false);
      } else {
-       // If no users are passed, fetch them directly
        fetchUsers();
      }
    }, [location.state]);
 
  useEffect(() => {
-   // Filter users based on the search term
    if (searchTerm === "") {
-     setSearchedUsers(users); // Show all users if search term is empty
+     setSearchedUsers(users); //Viser alle brugere hvis søgeterm er tom
    } else {
      const filtered = users.filter((user) =>
        `${user.fornavn} ${user.efternavn}`
@@ -102,12 +100,14 @@ export default function RatingPage() {
       {loading ? (
         <p className="loading-message">Henter Ratingliste...</p>
       ) : (
-        <RatingListe users={searchedUsers} />
+        <RatingListe
+          users={filteredUsers.length > 0 ? filteredUsers : searchedUsers}
+        />
       )}
 
       {showFilter && (
         <FilterOverlay
-          users={users}
+          users={searchedUsers}
           setFilteredUsers={setFilteredUsers}
           onClose={() => setShowFilter(false)}
         />
