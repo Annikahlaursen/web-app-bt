@@ -1,4 +1,4 @@
-import LoginCard from "../components/LoginCard";
+import LoginCard from "../components/SignInCard";
 import Logo from "/btp-logo.png";
 
 export default function LogInPage() {

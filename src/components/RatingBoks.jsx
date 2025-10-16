@@ -1,8 +1,5 @@
-
-
 export default function RatingBoks({ user, placering }) {
-
-  {/*hvordan regnes ens +/- ud?*/}
+  //{/*hvordan regnes ens +/- ud?* /}
 
   const name = `${user.fornavn} ${user.efternavn}`;
   user.name = name;
