@@ -1,53 +1,53 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router";
 import RatingListe from "../components/RatingListe";
 import FilterOverlay from "../components/FilterOvelay";
 
 export default function RatingPage() {
+  const location = useLocation();
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [showFilter, setShowFilter] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function fetchUsers() {
-      const url =
-        "https://web-app-bt-124b8-default-rtdb.firebaseio.com/users.json";
-      const response = await fetch(url);
-      const data = await response.json();
+   useEffect(() => {
+     async function fetchUsers() {
+       const url =
+         "https://web-app-bt-124b8-default-rtdb.firebaseio.com/users.json";
+       const response = await fetch(url);
+       const data = await response.json();
 
-      const usersArray = Object.keys(data).map((key) => ({
-        id: key,
-        ...data[key],
-      }));
+       const usersArray = Object.keys(data).map((key) => ({
+         id: key,
+         ...data[key],
+       }));
 
-      usersArray.sort((a, b) => b.rating - a.rating);
+       usersArray.sort((a, b) => b.rating - a.rating);
 
-      // tilføjer global placering på ratinglisten til hvert userobject
-   
+       usersArray.forEach((user, index) => {
+         user.placering = index + 1;
+       });
 
-      setUsers(usersArray);
-      setFilteredUsers(usersArray);
-      setLoading(false);
-    }
-    fetchUsers();
-  }, []);
+       setUsers(usersArray);
+       setLoading(false);
+     }
 
-  useEffect(() => {
-    const sortedUsers = [...users].sort((a, b) => b.rating - a.rating);
+     // Check if users are passed via location.state
+     if (location.state && location.state.users) {
+       setUsers(location.state.users);
+       setLoading(false);
+     } else {
+       // If no users are passed, fetch them directly
+       fetchUsers();
+     }
+   }, [location.state]);
 
-    sortedUsers.forEach((user, index) => {
-      user.placering = index + 1;
-    });
-
-    setFilteredUsers(sortedUsers);
-  }, [users]);
-
-  const searchedUsers = filteredUsers.filter((user) =>
-    `${user.fornavn} ${user.efternavn}`
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase())
-  );
+  // const searchedUsers = filteredUsers.filter((user) =>
+  //   `${user.fornavn} ${user.efternavn}`
+  //     .toLowerCase()
+  //     .includes(searchTerm.toLowerCase())
+  // );
 
   return (
     <section className="page">
@@ -69,15 +69,13 @@ export default function RatingPage() {
             style={{ cursor: "pointer" }}
           />
         </div>
-        <div className="rating-boks-grid rating-categories">
-          <p>Plac.</p>
-          <p>Navn</p>
-          <p>Rating</p>
-          <p>+/-</p>
-        </div>
       </div>
 
-      {loading ? <p className="loading-message">Henter Ratingliste...</p> : <RatingListe users={searchedUsers} />}
+      {loading ? (
+        <p className="loading-message">Henter Ratingliste...</p>
+      ) : (
+        <RatingListe users={users} />
+      )}
 
       {showFilter && (
         <FilterOverlay
