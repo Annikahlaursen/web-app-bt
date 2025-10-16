@@ -69,7 +69,6 @@ export default function FilterOverlay({ users, setFilteredUsers, onClose }) {
   return (
     <div className="filter-overlay">
       <div>
-        <label>Aldersinterval:</label>
         <select
           value={filterCriteria.ageInterval}
           onChange={(e) =>
