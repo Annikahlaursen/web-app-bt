@@ -24,9 +24,7 @@ export default function RatingPage() {
       usersArray.sort((a, b) => b.rating - a.rating);
 
       // tilføjer global placering på ratinglisten til hvert userobject
-      usersArray.forEach((user, index) => {
-        user.placering = index + 1;
-      });
+   
 
       setUsers(usersArray);
       setFilteredUsers(usersArray);
@@ -34,6 +32,16 @@ export default function RatingPage() {
     }
     fetchUsers();
   }, []);
+
+  useEffect(() => {
+    const sortedUsers = [...users].sort((a, b) => b.rating - a.rating);
+
+    sortedUsers.forEach((user, index) => {
+      user.placering = index + 1;
+    });
+
+    setFilteredUsers(sortedUsers);
+  }, [users]);
 
   const searchedUsers = filteredUsers.filter((user) =>
     `${user.fornavn} ${user.efternavn}`
