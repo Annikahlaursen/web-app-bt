@@ -1,59 +1,83 @@
 import { useState } from "react";
 
+function calculateAge(fødselsdato) {
+  const today = new Date();
+  const birthDate = new Date(fødselsdato);
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+
+  return age;
+}
+
 export default function FilterOverlay({ users, setFilteredUsers, onClose }) {
   const [filterCriteria, setFilterCriteria] = useState({
     ratingMin: "",
     ratingMax: "",
     placeringMin: "",
     placeringMax: "",
+    ageMin: "",
+    ageMax: "",
+    ageInterval: "",
+    club: "",
+    name: "",
   });
 
-  //hjælpefunktion beregner brugernes alder ud fra fødselsdato
-  function calculateAge(birthday) {
-    const today = new Date();
-    const birthDate = new Date(birthday);
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const monthDiff = today.getMonth() - birthDate.getMonth();
+  const applyFilters = (updatedCriteria) => {
 
-    // justerer alderen hvis fødselsdagen i år ikke er passeret endnu
-    if (
-      monthDiff < 0 ||
-      (monthDiff === 0 && today.getDate() < birthDate.getDate())
-    ) {
-      age--;
-    }
-    return age;
-  }
+ const usersWithAge = users.map((user) => ({
+   ...user,
+   age: calculateAge(user.fødselsdato),
+ }));
 
-  const applyFilters = () => {
-    const filtered = users.filter((user) => {
-      const userAge = calculateAge(user.fødselsdato);
+   console.log("Users with calculated ages:", usersWithAge);
+
+    const filtered = usersWithAge.filter((user) => {
 
       const matchesRating =
-        (!filterCriteria.ratingMin ||
-          user.rating >= filterCriteria.ratingMin) &&
-        (!filterCriteria.ratingMax || user.rating <= filterCriteria.ratingMax);
+        (!updatedCriteria.ratingMin || user.rating >= updatedCriteria.ratingMin) &&
+        (!updatedCriteria.ratingMax || user.rating <= updatedCriteria.ratingMax);
       const matchesPlacering =
-        (!filterCriteria.placeringMin ||
-          user.placering >= filterCriteria.placeringMin) &&
-        (!filterCriteria.placeringMax ||
-          user.placering <= filterCriteria.placeringMax);
+        (!updatedCriteria.placeringMin ||
+          user.placering >= updatedCriteria.placeringMin) &&
+        (!updatedCriteria.placeringMax ||
+          user.placering <= updatedCriteria.placeringMax);
       const matchesAge =
-        (!filterCriteria.ageMin || userAge >= filterCriteria.ageMin) &&
-        (!filterCriteria.ageMax || userAge <= filterCriteria.ageMax);
+        (!updatedCriteria.ageMin || user.age >= updatedCriteria.ageMin) &&
+        (!updatedCriteria.ageMax || user.age <= updatedCriteria.ageMax);
+      const matchesClub =
+        !updatedCriteria.club || user.club === updatedCriteria.club;
+      const matchesName =
+        !updatedCriteria.name ||
+        `${user.fornavn} ${user.efternavn}`
+          .toLowerCase()
+          .includes(updatedCriteria.name.toLowerCase());
 
-      return matchesRating && matchesPlacering && matchesAge;
-
-     
+      return (
+        matchesRating &&
+        matchesPlacering &&
+        matchesAge &&
+        matchesClub &&
+        matchesName
+      );
     });
 
     setFilteredUsers(filtered);
-    onClose();
+  };
+
+  const handleFilterChange = (key, value) => {
+    const updatedCriteria = { ...filterCriteria, [key]: value };
+    setFilterCriteria(updatedCriteria);
+    applyFilters(updatedCriteria);
   };
 
   return (
     <div className="filter-overlay">
       <div>
+        <label>Aldersinterval:</label>
         <select
           value={filterCriteria.ageInterval}
           onChange={(e) => {
@@ -75,12 +99,9 @@ export default function FilterOverlay({ users, setFilteredUsers, onClose }) {
               ageMax = "";
             }
 
-            setFilterCriteria({
-              ...filterCriteria,
-              ageInterval: selectedInterval,
-              ageMin,
-              ageMax,
-            });
+            handleFilterChange("ageInterval", selectedInterval);
+            handleFilterChange("ageMin", ageMin);
+            handleFilterChange("ageMax", ageMax);
           }}
         >
           <option value="">Alle Aldersgrupper</option>
@@ -91,44 +112,15 @@ export default function FilterOverlay({ users, setFilteredUsers, onClose }) {
         </select>
       </div>
       <div>
-        <select
-          value={filterCriteria.club}
-          onChange={(e) =>
-            setFilterCriteria({ ...filterCriteria, club: e.target.value })
-          }
-        >
-          <option value="">Alle Køn</option>
-          <option value="mand">Herre</option>
-          <option value="kvinde">Kvinder</option>
-          <option value="andet">Andet</option>
-        </select>
-      </div>
-      <div>
+        <label>Søg efter spiller:</label>
         <input
           type="text"
-          placeholder="Klubnavn"
-          value={filterCriteria.ratingMin}
-          onChange={(e) =>
-            setFilterCriteria({ ...filterCriteria, ratingMin: e.target.value })
-          }
+          placeholder="Indtast spillerens navn"
+          value={filterCriteria.name}
+          onChange={(e) => handleFilterChange("name", e.target.value)}
         />
       </div>
-      <div>
-        <input
-          type="text"
-          placeholder="Spiller"
-          value={filterCriteria.placeringMin}
-          onChange={(e) =>
-            setFilterCriteria({
-              ...filterCriteria,
-              placeringMin: e.target.value,
-            })
-          }
-        />
-      </div>
-      <button onClick={applyFilters} className="btn" id="save-btn">
-        Søg
-      </button>
+      <button onClick={onClose}>Close</button>
     </div>
   );
 }
