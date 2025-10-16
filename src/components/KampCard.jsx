@@ -1,14 +1,15 @@
 import bell from "/public/bell.svg";
 import share from "/public/share.svg";
-import { Link, Navigate, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import { useEffect, useState } from "react";
 
 export default function KampCard() {
-  const [kamp, setKamp] = useState(null);
-  const [hold, setHold] = useState(null);
-  const [klub, setKlub] = useState(null);
+  const [kamp, setKamp] = useState({});
+  const [hold, setHold] = useState({});
+  const [klub, setKlub] = useState({});
 
   const params = useParams();
+  const navigate = useNavigate();
 
   const kampUrl = `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/kampe/${
     params.id
@@ -20,7 +21,13 @@ export default function KampCard() {
     async function getKamp() {
       const kampResponse = await fetch(kampUrl);
       const kampData = await kampResponse.json();
+      if (!kamp) {
+        console.warn("Ingen kamp fundet!");
+        return; // stop her, undgå fejl
+      }
       kampData.id = params.id;
+      console.log(kampData.id);
+      console.log(params.id);
       setKamp(kampData);
       //if (data) {
       // Get the first kamp from the object
@@ -42,7 +49,7 @@ export default function KampCard() {
   }, [params.id, kampUrl, holdUrl, klubUrl]);
 
   function navigateToUpdate() {
-    Navigate(`/kamp/${params.id}/update`);
+    navigate(`/kamp/${params.id}/update`);
   }
 
   const hjemmeholdNavn = hold?.[kamp?.hjemmehold]?.navn ?? "Hjemme";
