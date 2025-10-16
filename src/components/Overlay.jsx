@@ -64,7 +64,11 @@ export default function Overlay({ isOpen, onClose }) {
               >
                 <span>Favorit</span>
               </NavLink>
-              <NavLink to="/" className="overlay-link" onClick={handleClose}>
+              <NavLink
+                to="/kamp/resultat"
+                className="overlay-link"
+                onClick={handleClose}
+              >
                 <span>Indskriv Kampresultat</span>
               </NavLink>
               <NavLink
@@ -84,11 +88,15 @@ export default function Overlay({ isOpen, onClose }) {
               >
                 <span>Nyheder</span>
               </NavLink>
-              <NavLink to="/rating" className="overlay-link" onClick={handleClose}>
+              <NavLink
+                to="/rating"
+                className="overlay-link"
+                onClick={handleClose}
+              >
                 <span>Ratings</span>
               </NavLink>
               <NavLink
-                to="/"
+                to="/kalender"
                 className="overlay-link overlay-linkcolorchange"
                 onClick={handleClose}
               >
