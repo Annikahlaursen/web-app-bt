@@ -6,6 +6,7 @@ import FilterOverlay from "../components/FilterOvelay";
 export default function RatingPage() {
   const location = useLocation();
   const [users, setUsers] = useState([]);
+  const [searchedUsers, setSearchedUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [showFilter, setShowFilter] = useState(false);
@@ -30,12 +31,14 @@ export default function RatingPage() {
        });
 
        setUsers(usersArray);
+       setSearchedUsers(usersArray);
        setLoading(false);
      }
 
      // Check if users are passed via location.state
      if (location.state && location.state.users) {
        setUsers(location.state.users);
+       setSearchedUsers(location.state.users);
        setLoading(false);
      } else {
        // If no users are passed, fetch them directly
@@ -43,11 +46,19 @@ export default function RatingPage() {
      }
    }, [location.state]);
 
-  // const searchedUsers = filteredUsers.filter((user) =>
-  //   `${user.fornavn} ${user.efternavn}`
-  //     .toLowerCase()
-  //     .includes(searchTerm.toLowerCase())
-  // );
+ useEffect(() => {
+   // Filter users based on the search term
+   if (searchTerm === "") {
+     setSearchedUsers(users); // Show all users if search term is empty
+   } else {
+     const filtered = users.filter((user) =>
+       `${user.fornavn} ${user.efternavn}`
+         .toLowerCase()
+         .includes(searchTerm.toLowerCase())
+     );
+     setSearchedUsers(filtered);
+   }
+ }, [searchTerm, users]);
 
   return (
     <section className="page">
@@ -74,7 +85,7 @@ export default function RatingPage() {
       {loading ? (
         <p className="loading-message">Henter Ratingliste...</p>
       ) : (
-        <RatingListe users={users} />
+        <RatingListe users={searchedUsers} />
       )}
 
       {showFilter && (
