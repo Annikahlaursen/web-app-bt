@@ -1,5 +1,15 @@
 import { useState, useEffect } from "react";
 import RatingBoks from "./RatingBoks";
+import Select from "react-select";
+
+//value=key
+const options = [
+  { value: "holland", label: "Holland" },
+  { value: "denmark", label: "Denmark" },
+  { value: "sweden", label: "Sweden" },
+  { value: "norway", label: "Norway" },
+  { value: "finland", label: "Finland" },
+];
 
 export default function SearchSpiller() {
   const [searchQuery, setSearchQuery] = useState(""); // set the initial state to an empty string
@@ -33,8 +43,21 @@ export default function SearchSpiller() {
   const filteredUsers = teamUsers.filter((user) =>
     (user.fornavn ?? "").toLowerCase().includes(searchQuery)
   );
+
+  const [selectedOption, setSelectedOption] = useState({});
+
+  const handleChange = (selectedOption) => {
+    setSelectedOption(selectedOption);
+  };
+
   return (
     <>
+      <Select
+        options={options}
+        value={selectedOption}
+        onChange={handleChange}
+      />
+
       <label>
         Search by name{" "}
         <input
