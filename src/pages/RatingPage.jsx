@@ -36,22 +36,28 @@ export default function RatingPage() {
   const closeOverlay = () => setShowOverlay(false);
 
   useEffect(() => {
-    async function fetchUsers() {
-      const url =
+    async function fetchUsersAndClubs() {
+      const usersUrl =
         "https://web-app-bt-124b8-default-rtdb.firebaseio.com/users.json";
-      const response = await fetch(url);
-      const data = await response.json();
+      const clubsUrl =
+        "https://web-app-bt-124b8-default-rtdb.firebaseio.com/klubber.json";
+      const [usersResponse, clubsResponse] = await Promise.all([fetch(usersUrl), fetch(clubsUrl)]);
 
-      const usersArray = Object.keys(data).map((key) => ({
+      const usersData = await usersResponse.json();
+      const clubsData = await clubsResponse.json();
+
+      const usersArray = Object.keys(usersData).map((key) => ({
         id: key,
-        ...data[key],
+        ...usersData[key],
       }));
 
       usersArray.sort((a, b) => b.rating - a.rating);
 
+      //tilføjer properties placering, alder, klubnavn til hver bruger
       usersArray.forEach((user, index) => {
         user.placering = index + 1;
         user.age = calculateAge(user.fødselsdato);
+        user.clubName = clubsData[user.kid]?.navn || "Ukendt Klub";
       });
 
       setUsers(usersArray);
@@ -65,7 +71,7 @@ export default function RatingPage() {
       setSearchedUsers(location.state.users);
       setLoading(false);
     } else {
-      fetchUsers();
+      fetchUsersAndClubs();
     }
   }, [location.state]);
 

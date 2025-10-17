@@ -42,6 +42,11 @@ export default function FilterOverlay({
     }));
   };
 
+    const handleClubChange = (club) => {
+      updateFilterCriteria("club", club);
+    };
+
+
   const handleSave = () => {
     //gemmer de midlertidige filtre til de overordnede filtre
     Object.keys(tempFilters).forEach((key) => {
@@ -79,7 +84,7 @@ export default function FilterOverlay({
           type="text"
           placeholder="Indtast klubnavn"
           value={filterCriteria.klub}
-          onChange={(e) => updateFilterCriteria("club", e.target.value)}
+          onChange={(e) => handleClubChange(e.target.value)}
         />
       </div>
       <div>
