@@ -58,7 +58,11 @@ export default function StevneSearchPage() {
         style={{ flex: 1, padding: "10px" }}
       />
       {filteredData.map((stevne) => (
-        <StevneCard stevne={stevne} key={stevne.id} />
+        <StevneCard
+          stevne={stevne}
+          key={stevne.id}
+          onCLick={() => navigate(`/stevne/${stevne.id}`)}
+        />
       ))}
     </section>
   );
