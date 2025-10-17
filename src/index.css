@@ -831,8 +831,6 @@ form {
 .filter-overlay > * {
   width: 100%;
   margin-top: 1em;
-  /* border: solid 2px var(--light-grey);
-  border-radius: var(--border-radius); */
 }
 
 .filter-overlay select {
@@ -1017,6 +1015,7 @@ form {
   background-color: var(--blue);
   border-radius: var(--border-radius);
   color: #fff;
+  margin-top: 2rem;
 }
 
 .stevne-card #streg {
