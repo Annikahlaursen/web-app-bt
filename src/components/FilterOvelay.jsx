@@ -44,6 +44,10 @@ export default function FilterOverlay({
 
     const handleClubChange = (club) => {
       updateFilterCriteria("club", club);
+      setTempFilters((prev) => ({
+        ...prev,
+        club,
+      }));
     };
 
 

@@ -28,13 +28,14 @@ export default function useFilters(users) {
       //clubfilter
       const matchesClub =
         !filterCriteria.club ||
-        (user.club &&
-          user.club.toLowerCase().includes(filterCriteria.club.toLowerCase()));
+        (user.clubName &&
+          user.clubName.toLowerCase().includes(filterCriteria.club.toLowerCase()));
 
       return matchesAge && matchesName && matchesClub;
     });
 
     setFilteredUsers(filtered);
+
   };
 
   // opdater filterkriterier
