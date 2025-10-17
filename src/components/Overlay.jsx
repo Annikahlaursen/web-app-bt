@@ -78,7 +78,7 @@ export default function Overlay({ isOpen, onClose }) {
               >
                 <span>Find Hold</span>
               </NavLink>
-              <NavLink to="/" className="overlay-link" onClick={handleClose}>
+              <NavLink to="/stevnesearch" className="overlay-link" onClick={handleClose}>
                 <span>Find Stævne</span>
               </NavLink>
               <NavLink
