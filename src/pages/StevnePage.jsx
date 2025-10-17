@@ -12,48 +12,24 @@ export default function StevnePage() {
 
 useEffect(() => {
   async function fetchStevne() {
-    try {
+    
       const response = await fetch(
         `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/staevner/${id}.json`
       );
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch stevne");
-      }
-
       const data = await response.json();
 
-      // Check if data is valid
-      if (!data) {
-        setStevne(null); // Set stevne to null if no data is returned
-        return;
-      }
-
-      // If data is valid, process it
+    
       const staevneArray = Object.keys(data).map((stevneId) => ({
         id: stevneId,
         ...data[stevneId],
       }));
 
       setStevne(staevneArray);
-    } catch (error) {
-      console.error("Error fetching stevne:", error);
-      setStevne(null); // Handle error by setting stevne to null
-    } finally {
-      setLoading(false); // Ensure loading is set to false
-    }
+   
   }
 
   fetchStevne();
 }, [id]);
-
-if (loading) {
-  return <p>Loading...</p>;
-}
-
-if (!stevne) {
-  return <p>Stevne not found</p>;
-}
 
 
   function clicked(event) {
@@ -65,13 +41,12 @@ if (!stevne) {
   return (
     <>
       <div className="blue-background">
-        <Link to="...">
           <img
             className="arrow"
             src={arrowWhite}
             alt="Arrow back to previus page"
+            onClick={() => navigate(-1)}
           />
-        </Link>
         <h2>{stevne.titel}</h2>
       </div>
       <section className="kamp-info-section">
@@ -80,7 +55,7 @@ if (!stevne) {
         </button>
         <div className="kamp-info">
           <img src={calendar} alt="Calendar icon" />
-          <p>dato oktober 2025</p>
+          <p>{stevne.dato}</p>
         </div>
         <div className="kamp-info">
           <img src={location} alt="Location pin icon" />
