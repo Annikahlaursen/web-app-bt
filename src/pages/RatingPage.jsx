@@ -25,7 +25,6 @@ export default function RatingPage() {
   const location = useLocation();
   const [users, setUsers] = useState([]);
   const [searchedUsers, setSearchedUsers] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
   const [showFilter, setShowOverlay] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -87,8 +86,8 @@ export default function RatingPage() {
             type="text"
             name="search"
             placeholder="Søg i rating"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            value={filterCriteria.name || ""}
+            onChange={(e) => updateFilterCriteria("name", e.target.value)}
             style={{ flex: 1, padding: "10px" }}
           />
           <img
