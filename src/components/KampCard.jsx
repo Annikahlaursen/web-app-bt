@@ -1,25 +1,25 @@
 import bell from "/public/bell.svg";
 import share from "/public/share.svg";
-import { Link, useNavigate, useParams } from "react-router";
+import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 
-export default function KampCard() {
-  const [kamp, setKamp] = useState({});
+export default function KampCard({ kamp }) {
+  //const [kamp, setKamp] = useState({});
   const [hold, setHold] = useState({});
   const [klub, setKlub] = useState({});
 
-  const params = useParams();
+  //const params = useParams();
   const navigate = useNavigate();
 
-  const kampUrl = `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/kampe/${
+  /*const kampUrl = `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/kampe/${
     params.id
-  }.json`;
+  }.json`;*/
   const holdUrl = `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/hold.json`;
   const klubUrl = `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/klubber.json`;
 
   useEffect(() => {
     async function getKamp() {
-      const kampResponse = await fetch(kampUrl);
+      /*const kampResponse = await fetch(kampUrl);
       const data = await kampResponse.json();
       console.log("Params id:", params.id, "data:", data);
 
@@ -36,7 +36,7 @@ export default function KampCard() {
       //const firstKamp = Object.values(data)[0];
       //setKamp(firstKamp);
       //}
-
+*/
       const holdResponse = await fetch(holdUrl);
       const holdData = await holdResponse.json();
       setHold(holdData);
@@ -49,10 +49,10 @@ export default function KampCard() {
     }
 
     getKamp();
-  }, [params.id, kampUrl, holdUrl, klubUrl]);
+  }, [/*params.id, kampUrl, */ holdUrl, klubUrl]);
 
   function handleClick() {
-    navigate(`/kamp/${params.id}`);
+    navigate(`/kamp/${kamp.id}`);
   }
 
   //get data from hold and klub based on kamp data

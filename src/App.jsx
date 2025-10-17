@@ -15,6 +15,7 @@ import RatingPage from "./pages/RatingPage";
 import KalenderPage from "./pages/KalenderPage";
 import { auth } from "./firebase-config";
 import { onAuthStateChanged } from "firebase/auth";
+import KampCard from "./components/KampCard";
 
 export default function App() {
   const [isAuth, setIsAuth] = useState(localStorage.getItem("isAuth")); // default value comes from localStorage
@@ -46,10 +47,11 @@ export default function App() {
           <Route path="*" element={<Navigate to="/error" />} />
           <Route path="/kamp/:id" element={<KampPage />} />
           <Route path="/kamp/:id/resultat" element={<KampResultatPage />} />
-          <Route path="/stevne" element={<StevnePage />} />
+          <Route path="/stevne/:id" element={<StevnePage />} />
           <Route path="/error" element={<Error />} />
-          <Route path="/stevne/tilmeld" element={<Error />} />
+          <Route path="/stevne/:id/tilmeld" element={<Error />} />
           <Route path="/kalender" element={<KalenderPage />} />
+          <Route path="/:id" element={<KampCard />} />
         </Routes>
       </main>
     </>

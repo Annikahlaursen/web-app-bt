@@ -1,11 +1,13 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { auth } from "../firebase-config";
 import Logo from "/btp-logo.png";
+import Update from "../components/UpdateCard";
 
 export default function SignUpPage() {
   const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
 
   function handleSignUp(event) {
     event.preventDefault();
@@ -26,8 +28,10 @@ export default function SignUpPage() {
         console.log(code);
         code = code.replaceAll("-", " "); // some JS string magic to display error message. See the log above in the console
         code = code.replaceAll("auth/", "");
-        setErrorMessage(code);
+        //setErrorMessage(code);
       });
+
+    navigate({ Update });
   }
 
   async function createUser(uid, name, mail) {
@@ -66,7 +70,16 @@ export default function SignUpPage() {
                     type="text"
                     name="name"
                     className="profile-form-content"
-                    placeholder="Type your name..."
+                    placeholder="Fornavn"
+                    required
+                  />
+                  <input
+                    id="lastname"
+                    type="text"
+                    name="lastname"
+                    className="profile-form-content"
+                    placeholder="Efternavn"
+                    required
                   />
                   <input
                     id="mail"
@@ -74,19 +87,27 @@ export default function SignUpPage() {
                     name="mail"
                     className="profile-form-content"
                     aria-label="mail"
-                    placeholder="Type your mail..."
+                    placeholder="Email"
                     required
                     autoComplete="off"
                   />
-
+                  <input
+                    id="phone"
+                    type="text"
+                    name="phone"
+                    className="profile-form-content"
+                    placeholder="Telefonnummer"
+                    required
+                  />
                   <input
                     id="password"
                     type="password"
                     name="password"
                     className="profile-form-content"
                     aria-label="password"
-                    placeholder="Type your password..."
+                    placeholder="Adgangskode"
                     autoComplete="current-password"
+                    required
                   />
                   <div className="error-message">
                     <p>{errorMessage}</p>

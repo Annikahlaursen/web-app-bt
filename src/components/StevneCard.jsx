@@ -2,20 +2,41 @@ import location from "/public/location-dot-white.svg";
 import bell from "/public/bell.svg";
 import share from "/public/share.svg";
 import { Link } from "react-router";
+import { useState, useEffect } from "react";
 
 export default function StevneCard() {
+  const [stevner, setStevner] = useState([]);
+
+  useEffect(() => {
+    async function fetchStevner() {
+      const response = await fetch(
+        `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/staevner.json`
+      );
+      const data = await response.json(); // get the data from the response and parse it
+      // from object to array
+      const stevneArray = Object.keys(data).map((stevneId) => ({
+        id: stevneId,
+        ...data[stevneId],
+      })); // map the data to an array of objects
+
+      setStevner(stevneArray); // set the posts state with the postsArray
+    }
+
+    fetchStevner();
+  }, []);
+
   return (
     <div className="stevne-card">
-      <Link to="/stevne">
+      <Link to="/stevne/:id">
         <div className="kamp-container">
-          <h3>Stævne Navn</h3>
-          <p>Dato</p>
+          <h3>{stevner?.titel ?? "Ingen titel"}</h3>
+          <p>{stevner?.dato ?? "Ingen dato tilgængelig"}</p>
         </div>
         <div className="stevne-container">
           <p>Senior, Junior, Ungdom</p>
           <div className="location">
             <img src={location} alt="Location pin icon" />
-            <p>Lokation (Brabrand Hallerne)</p>
+            <p>{stevner?.lokation ?? "Brabrand hallerne"}</p>
           </div>
         </div>
       </Link>
