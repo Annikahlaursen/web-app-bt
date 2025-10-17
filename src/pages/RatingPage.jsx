@@ -32,7 +32,7 @@ export default function RatingPage() {
   const { filterCriteria, filteredUsers, updateFilterCriteria } =
     useFilters(users);
 
-  const openOverlay = () => setShowOverlay(true);
+  const toggleOverlay = () => setShowOverlay((prev) => !prev);
   const closeOverlay = () => setShowOverlay(false);
 
   useEffect(() => {
@@ -41,7 +41,10 @@ export default function RatingPage() {
         "https://web-app-bt-124b8-default-rtdb.firebaseio.com/users.json";
       const clubsUrl =
         "https://web-app-bt-124b8-default-rtdb.firebaseio.com/klubber.json";
-      const [usersResponse, clubsResponse] = await Promise.all([fetch(usersUrl), fetch(clubsUrl)]);
+      const [usersResponse, clubsResponse] = await Promise.all([
+        fetch(usersUrl),
+        fetch(clubsUrl),
+      ]);
 
       const usersData = await usersResponse.json();
       const clubsData = await clubsResponse.json();
@@ -79,7 +82,7 @@ export default function RatingPage() {
     <section className="page">
       <h1>Rating</h1>
       <div className="rating-filter">
-        <div>
+        <div style={{ position: "relative" }}>
           <input
             type="text"
             name="search"
@@ -91,27 +94,24 @@ export default function RatingPage() {
           <img
             src="sliders-solid-full.svg"
             alt="Filter"
-            onClick={openOverlay}
+            onClick={toggleOverlay}
             style={{ cursor: "pointer" }}
           />
+          {showFilter && (
+            <FilterOverlay
+              users={searchedUsers}
+              filterCriteria={filterCriteria}
+              updateFilterCriteria={updateFilterCriteria}
+              closeOverlay={closeOverlay}
+            />
+          )}
         </div>
       </div>
 
       {loading ? (
         <p className="loading-message">Henter Ratingliste...</p>
       ) : (
-        <RatingListe
-          users={filteredUsers}
-        />
-      )}
-
-      {showFilter && (
-        <FilterOverlay
-          users={searchedUsers}
-          filterCriteria={filterCriteria}
-          updateFilterCriteria={updateFilterCriteria}
-          closeOverlay={closeOverlay}
-        />
+        <RatingListe users={filteredUsers} />
       )}
     </section>
   );

@@ -12,9 +12,10 @@ export default function FilterOverlay({
     { value: "+45", label: "+45 år", ageMin: 45, ageMax: "" },
   ];
 
-  // Local state for temporary filters
+  // Local state til temporary filters (bruges til at gemme ændringer før de gemmes endeligt)
   const [tempFilters, setTempFilters] = useState(filterCriteria);
 
+  // Håndter ændring af aldersinterval
   const handleAgeIntervalChange = (selectedInterval) => {
     const interval = ageIntervals.find((i) => i.value === selectedInterval) || {
       ageMin: "",
@@ -33,6 +34,7 @@ export default function FilterOverlay({
     }));
   };
 
+  // Håndter ændring af navn
   const handleNameChange = (name) => {
     updateFilterCriteria("name", name);
 
@@ -42,14 +44,30 @@ export default function FilterOverlay({
     }));
   };
 
-    const handleClubChange = (club) => {
-      updateFilterCriteria("club", club);
-      setTempFilters((prev) => ({
-        ...prev,
-        club,
-      }));
+  // Håndter ændring af klub
+  const handleClubChange = (club) => {
+    updateFilterCriteria("club", club);
+    setTempFilters((prev) => ({
+      ...prev,
+      club,
+    }));
+  };
+
+  //Rydning af filtre
+  const handleClearFilters = () => {
+    const clearedFilters = {
+      ageInterval: "",
+      ageMin: "",
+      ageMax: "",
+      name: "",
+      club: "",
     };
 
+    setTempFilters(clearedFilters);
+    Object.keys(clearedFilters).forEach((key) => {
+      updateFilterCriteria(key, clearedFilters[key]);
+    });
+  };
 
   const handleSave = () => {
     //gemmer de midlertidige filtre til de overordnede filtre
@@ -62,6 +80,7 @@ export default function FilterOverlay({
 
   return (
     <div className="filter-overlay">
+      <h3>Rating filtrer</h3>
       <div>
         <select
           value={tempFilters.ageInterval}
@@ -79,7 +98,7 @@ export default function FilterOverlay({
         <input
           type="text"
           placeholder="Indtast spillerens navn"
-          value={filterCriteria.name}
+          value={filterCriteria.name || ""}
           onChange={(e) => handleNameChange(e.target.value)}
         />
       </div>
@@ -87,13 +106,20 @@ export default function FilterOverlay({
         <input
           type="text"
           placeholder="Indtast klubnavn"
-          value={filterCriteria.klub}
+          value={filterCriteria.club || ""}
           onChange={(e) => handleClubChange(e.target.value)}
         />
       </div>
-      <div>
-        <button onClick={handleSave}>Gem</button>
-        <button onClick={closeOverlay}>Annuller</button>
+      <div className="filter-knapper">
+        <button className="btn" onClick={handleSave}>
+          Gem
+        </button>
+        <button
+          className="profile-btns-actions-seperat"
+          onClick={handleClearFilters}
+        >
+          Ryd filter
+        </button>
       </div>
     </div>
   );
