@@ -78,40 +78,43 @@ export default function RatingPage() {
   }, [location.state]);
 
   return (
-    <section className="page">
-      <h1>Rating</h1>
-      <div className="rating-filter">
-        <div style={{ position: "relative" }}>
-          <input
-            type="text"
-            name="search"
-            placeholder="Søg i rating"
-            value={filterCriteria.name || ""}
-            onChange={(e) => updateFilterCriteria("name", e.target.value)}
-            style={{ flex: 1, padding: "10px" }}
-          />
-          <img
-            src="sliders-solid-full.svg"
-            alt="Filter"
-            onClick={toggleOverlay}
-            style={{ cursor: "pointer" }}
-          />
-          {showFilter && (
-            <FilterOverlay
-              users={searchedUsers}
-              filterCriteria={filterCriteria}
-              updateFilterCriteria={updateFilterCriteria}
-              closeOverlay={closeOverlay}
+    <section>
+      <img src="/img/unsplash-photo.svg" alt="Rating side"></img>
+      <section className="forside">
+        <h1>Rating</h1>
+        <div className="rating-filter">
+          <div style={{ position: "relative" }}>
+            <input
+              type="text"
+              name="search"
+              placeholder="Søg i rating"
+              value={filterCriteria.name || ""}
+              onChange={(e) => updateFilterCriteria("name", e.target.value)}
+              style={{ flex: 1, padding: "10px" }}
             />
-          )}
+            <img
+              src="sliders-solid-full.svg"
+              alt="Filter"
+              onClick={toggleOverlay}
+              style={{ cursor: "pointer" }}
+            />
+            {showFilter && (
+              <FilterOverlay
+                users={searchedUsers}
+                filterCriteria={filterCriteria}
+                updateFilterCriteria={updateFilterCriteria}
+                closeOverlay={closeOverlay}
+              />
+            )}
+          </div>
         </div>
-      </div>
 
-      {loading ? (
-        <p className="loading-message">Henter Ratingliste...</p>
-      ) : (
-        <RatingListe users={filteredUsers} />
-      )}
+        {loading ? (
+          <p className="loading-message">Henter Ratingliste...</p>
+        ) : (
+          <RatingListe users={filteredUsers} />
+        )}
+      </section>
     </section>
   );
 }
