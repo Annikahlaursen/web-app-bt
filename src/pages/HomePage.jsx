@@ -6,7 +6,6 @@ import NyhedsCard from "../components/NyhedsCard";
 import photo from "/public/img/unsplash-photo.svg";
 import arrow from "/public/arrow-right-black.svg";
 import RatingListe from "../components/RatingListe";
-import StevneCard from "../components/StevneCard";
 
 export default function HomePage() {
   const [users, setUsers] = useState([]);
@@ -113,7 +112,6 @@ export default function HomePage() {
             <img src={arrow} alt="Pil til nyheder" />
           </Link>
         </section>
-        <StevneCard />
       </section>
 
       {/* <p>https://web-app-bt-124b8-default-rtdb.firebaseio.com/</p> */}

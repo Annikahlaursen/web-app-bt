@@ -28,8 +28,30 @@ export default function RatingPage() {
   const [showFilter, setShowOverlay] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const { filterCriteria, filteredUsers, updateFilterCriteria } =
-    useFilters(users);
+  const { filteredData, filterCriteria, updateFilterCriteria } =
+    useFilters(users,
+      (user, criteria) => {
+        // aldersfilter
+        const matchesAge =
+          (!criteria.ageMin || user.age >= criteria.ageMin) &&
+          (!criteria.ageMax || user.age <= criteria.ageMax);
+
+        // navnefilter
+        const matchesName =
+          !criteria.name ||
+          `${user.fornavn} ${user.efternavn}`
+            .toLowerCase()
+            .includes(criteria.name.toLowerCase());
+
+        //clubfilter
+        const matchesClub =
+          !criteria.club ||
+          (user.clubName &&
+            user.clubName.toLowerCase().includes(criteria.club.toLowerCase()));
+
+        return matchesAge && matchesName && matchesClub;
+      }
+    );
 
   const toggleOverlay = () => setShowOverlay((prev) => !prev);
   const closeOverlay = () => setShowOverlay(false);
@@ -112,7 +134,7 @@ export default function RatingPage() {
         {loading ? (
           <p className="loading-message">Henter Ratingliste...</p>
         ) : (
-          <RatingListe users={filteredUsers} />
+          <RatingListe users={filteredData} />
         )}
       </section>
     </section>
