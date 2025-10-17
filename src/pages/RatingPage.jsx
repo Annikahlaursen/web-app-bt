@@ -32,9 +32,8 @@ export default function RatingPage() {
   const { filterCriteria, filteredUsers, updateFilterCriteria } =
     useFilters(users);
 
-
-    const openOverlay = () => setShowOverlay(true);
-    const closeOverlay = () => setShowOverlay(false);
+  const openOverlay = () => setShowOverlay(true);
+  const closeOverlay = () => setShowOverlay(false);
 
   useEffect(() => {
     async function fetchUsers() {
@@ -96,7 +95,7 @@ export default function RatingPage() {
         <p className="loading-message">Henter Ratingliste...</p>
       ) : (
         <RatingListe
-          users={filteredUsers.length > 0 ? filteredUsers : searchedUsers}
+          users={filteredUsers}
         />
       )}
 

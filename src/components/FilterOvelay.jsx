@@ -21,6 +21,10 @@ export default function FilterOverlay({
       ageMax: "",
     };
 
+    updateFilterCriteria("ageInterval", selectedInterval);
+    updateFilterCriteria("ageMin", interval.ageMin);
+    updateFilterCriteria("ageMax", interval.ageMax);
+
     setTempFilters((prev) => ({
       ...prev,
       ageInterval: selectedInterval,
@@ -29,13 +33,21 @@ export default function FilterOverlay({
     }));
   };
 
+  const handleNameChange = (name) => {
+    updateFilterCriteria("name", name);
+
+    setTempFilters((prev) => ({
+      ...prev,
+      name,
+    }));
+  };
+
   const handleSave = () => {
-    // Save the temporary filters to the global filter state
+    //gemmer de midlertidige filtre til de overordnede filtre
     Object.keys(tempFilters).forEach((key) => {
       updateFilterCriteria(key, tempFilters[key]);
     });
 
-    // Close the overlay
     closeOverlay();
   };
 
@@ -59,7 +71,7 @@ export default function FilterOverlay({
           type="text"
           placeholder="Indtast spillerens navn"
           value={filterCriteria.name}
-          onChange={(e) => updateFilterCriteria("name", e.target.value)}
+          onChange={(e) => handleNameChange(e.target.value)}
         />
       </div>
       <div>

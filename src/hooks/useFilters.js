@@ -11,7 +11,6 @@ export default function useFilters(users) {
 
   const [filteredUsers, setFilteredUsers] = useState(users);
 
-
   const applyFilters = () => {
     const filtered = users.filter((user) => {
       // aldersfilter
@@ -26,13 +25,11 @@ export default function useFilters(users) {
           .toLowerCase()
           .includes(filterCriteria.name.toLowerCase());
 
-
-           const matchesClub =
-             !filterCriteria.club ||
-             (user.club &&
-               user.club
-                 .toLowerCase()
-                 .includes(filterCriteria.club.toLowerCase()));
+      //clubfilter
+      const matchesClub =
+        !filterCriteria.club ||
+        (user.club &&
+          user.club.toLowerCase().includes(filterCriteria.club.toLowerCase()));
 
       return matchesAge && matchesName && matchesClub;
     });
