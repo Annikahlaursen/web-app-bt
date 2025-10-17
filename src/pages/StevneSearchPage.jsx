@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router";
+
+import arrowBlack from "/arrow-left-black.svg";
+
 import StevneCard from "../components/StevneCard";
 import useFilters from "../hooks/useFilters";
-
 
 export default function StevneSearchPage() {
   //-----------------Fetch stævner-----------------
   const [stevner, setStevner] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchStevner() {
@@ -25,33 +29,37 @@ export default function StevneSearchPage() {
     fetchStevner();
   }, []);
 
-const { filteredData, filterCriteria, updateFilterCriteria } = useFilters(
-  stevner,
-  (stevne, criteria) => {
-    const matchesTitel =
-      !criteria.titel ||
-      stevne.titel.toLowerCase().includes(criteria.titel.toLowerCase());
+  const { filteredData, filterCriteria, updateFilterCriteria } = useFilters(
+    stevner,
+    (stevne, criteria) => {
+      const matchesTitel =
+        !criteria.titel ||
+        stevne.titel.toLowerCase().includes(criteria.titel.toLowerCase());
 
-    return matchesTitel;
-  }
-);
+      return matchesTitel;
+    }
+  );
 
-
-return (
-  <section className="page">
-    <input
-      type="text"
-      name="search"
-      placeholder="Søg efter stævne"
-      value={filterCriteria.name || ""}
-      onChange={(e) => updateFilterCriteria("name", e.target.value)}
-      style={{ flex: 1, padding: "10px" }}
-    />
-    {filteredData.map((stevne) => (
-      <StevneCard stevne={stevne} key={stevne.id} />
-    ))}
-  </section>
-);
-
-
+  return (
+    <section className="page">
+      <img
+        className="arrow"
+        src={arrowBlack}
+        alt="Arrow back to previous page"
+        onClick={() => navigate(-1)}
+      />
+      <h1>Stævner</h1>
+      <input
+        type="text"
+        name="search"
+        placeholder="Søg efter stævne"
+        value={filterCriteria.name || ""}
+        onChange={(e) => updateFilterCriteria("name", e.target.value)}
+        style={{ flex: 1, padding: "10px" }}
+      />
+      {filteredData.map((stevne) => (
+        <StevneCard stevne={stevne} key={stevne.id} />
+      ))}
+    </section>
+  );
 }
