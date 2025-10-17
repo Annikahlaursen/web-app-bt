@@ -1,4 +1,4 @@
-import { Link, useNavigate, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useState, useEffect } from "react";
 import arrowWhite from "/public/arrow-left-white.svg";
 import calendar from "/public/calendar-outline.svg";
@@ -6,31 +6,27 @@ import location from "/public/location-dot.svg";
 
 export default function StevnePage() {
   const navigate = useNavigate();
-  const {id} = useParams();
+  const { id } = useParams();
   const [stevne, setStevne] = useState({});
-  const [loading, setLoading] = useState(true);
 
-useEffect(() => {
-  async function fetchStevne() {
-    
+  useEffect(() => {
+    async function fetchStevne() {
       const response = await fetch(
         `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/staevner/${id}.json`
       );
+
       const data = await response.json();
 
-    
       const staevneArray = Object.keys(data).map((stevneId) => ({
         id: stevneId,
         ...data[stevneId],
       }));
 
       setStevne(staevneArray);
-   
-  }
+    }
 
-  fetchStevne();
-}, [id]);
-
+    fetchStevne();
+  }, [id]);
 
   function clicked(event) {
     event.preventDefault();
@@ -41,12 +37,12 @@ useEffect(() => {
   return (
     <>
       <div className="blue-background">
-          <img
-            className="arrow"
-            src={arrowWhite}
-            alt="Arrow back to previus page"
-            onClick={() => navigate(-1)}
-          />
+        <img
+          className="arrow"
+          src={arrowWhite}
+          alt="Arrow back to previus page"
+          onClick={() => navigate(-1)}
+        />
         <h2>{stevne.titel}</h2>
       </div>
       <section className="kamp-info-section">
