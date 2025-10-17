@@ -64,8 +64,15 @@ export default function Profile() {
     function onStorage(e) {
       if (e.key === "currentUser") loadFromDbOrLocal();
     }
+    function onCurrentUserChanged() {
+      loadFromDbOrLocal();
+    }
     window.addEventListener("storage", onStorage);
-    return () => window.removeEventListener("storage", onStorage);
+    window.addEventListener("currentUserChanged", onCurrentUserChanged);
+    return () => {
+      window.removeEventListener("storage", onStorage);
+      window.removeEventListener("currentUserChanged", onCurrentUserChanged);
+    };
   }, []);
 
   return (

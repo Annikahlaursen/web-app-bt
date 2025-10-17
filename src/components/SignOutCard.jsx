@@ -1,8 +1,12 @@
 import { Fragment, useState, useEffect } from "react";
 import Close from "/xmark-solid-full.svg";
+import { useNavigate } from "react-router";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase-config";
 
 export default function SignOutCard({ isOpen, onClose }) {
   const [isClosing, setIsClosing] = useState(false);
+  const navigate = useNavigate();
 
   const handleClose = () => {
     setIsClosing(true);
@@ -12,10 +16,24 @@ export default function SignOutCard({ isOpen, onClose }) {
     }, 300); // Match animation duration
   };
 
-  const handleConfirmSignOut = () => {
-    // Add your sign out logic here
-    console.log("User signed out");
+  const handleConfirmSignOut = async () => {
+    try {
+      await signOut(auth);
+    } catch (err) {
+      console.error("Sign out failed:", err);
+      // proceed anyway to clear local state
+    }
+
+    try {
+      localStorage.removeItem("currentUser");
+      localStorage.removeItem("isAuth");
+    } catch (err) {
+      console.error("Clearing localStorage failed:", err);
+    }
+
+    // Close modal then navigate to public sign-in after animation
     handleClose();
+    setTimeout(() => navigate("/sign-in"), 300);
   };
 
   useEffect(() => {

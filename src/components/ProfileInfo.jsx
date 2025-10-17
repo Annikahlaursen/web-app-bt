@@ -16,8 +16,8 @@ export default function ProfileInfo() {
   const navigate = useNavigate();
 
   // Profile fields
-  const [name, setName] = useState("");
-  const [lastname, setLastname] = useState("");
+  const [fornavn, setFornavn] = useState("");
+  const [efternavn, setEfternavn] = useState("");
   const [gender, setGender] = useState("");
   const [birthday, setBirthday] = useState("");
   const [adress, setAdress] = useState("");
@@ -49,8 +49,8 @@ export default function ProfileInfo() {
           const data = await response.json();
           if (data) {
             // prefer danish keys (fornavn/efternavn) but fall back to legacy keys
-            setName(data.fornavn || data.name || "");
-            setLastname(data.efternavn || data.lastname || "");
+            setFornavn(data.fornavn || data.name || "");
+            setEfternavn(data.efternavn || data.lastname || "");
             setGender(data.gender || "");
             setBirthday(data.birthday || "");
             setAdress(data.adress || "");
@@ -73,8 +73,8 @@ export default function ProfileInfo() {
         if (currentUserRaw) {
           const currentUser = JSON.parse(currentUserRaw);
           const p = currentUser.profile || {};
-          setName(p.fornavn || "");
-          setLastname(p.efternavn || "");
+          setFornavn(p.fornavn || "");
+          setEfternavn(p.efternavn || "");
           setGender(p.gender || "");
           setBirthday(p.birthday || "");
           setAdress(p.adress || "");
@@ -101,10 +101,8 @@ export default function ProfileInfo() {
 
     // Persist both danish keys and legacy keys for compatibility
     const user = {
-      fornavn: name,
-      efternavn: lastname,
-      name: name,
-      lastname: lastname,
+      fornavn: fornavn,
+      efternavn: efternavn,
       gender,
       birthday,
       adress,
@@ -138,18 +136,22 @@ export default function ProfileInfo() {
       if (currentUserRaw) {
         const currentUser = JSON.parse(currentUserRaw);
         currentUser.profile = {
-          fornavn: name,
-          efternavn: lastname,
+          fornavn: fornavn,
+          efternavn: efternavn,
           gender,
           birthday,
           adress,
           city,
           zip,
-          email: mail,
+          mail,
           phone,
           image,
         };
         localStorage.setItem("currentUser", JSON.stringify(currentUser));
+        // notify listeners in same tab immediately
+        window.dispatchEvent(
+          new CustomEvent("currentUserChanged", { detail: currentUser })
+        );
       }
     } catch (err) {
       console.error(err);
@@ -212,6 +214,53 @@ export default function ProfileInfo() {
     navigate("/");
   }
 
+  // Delete profile from Realtime Database and sign the user out locally
+  async function handleDeleteProfile() {
+    const confirm = window.confirm(
+      "Er du sikker på, at du vil slette din profil? Denne handling kan ikke fortrydes."
+    );
+    if (!confirm) return;
+
+    setErrorMessage("");
+
+    // Attempt to delete the DB record when we have a uid and DB base URL
+    if (uid && firebaseDbUrlBase) {
+      try {
+        const url = `${firebaseDbUrlBase}/users/${uid}.json`;
+        const resp = await fetch(url, { method: "DELETE" });
+        if (!resp.ok) {
+          const text = await resp.text();
+          console.error("Failed to delete user record:", resp.status, text);
+          setErrorMessage("Kunne ikke slette profilen på serveren.");
+          return;
+        }
+      } catch (err) {
+        console.error("Delete profile request failed:", err);
+        setErrorMessage("Kunne ikke slette profilen. Prøv igen senere.");
+        return;
+      }
+    }
+
+    // Clear local session and sign out from Firebase auth
+    try {
+      try {
+        await signOut(auth);
+      } catch (err) {
+        // If signOut fails, continue to clear local data anyway
+        console.warn("Sign out after delete failed:", err);
+      }
+
+      try {
+        localStorage.removeItem("currentUser");
+      } catch (err) {
+        console.warn("Could not clear local currentUser after delete:", err);
+      }
+    } finally {
+      // Redirect to sign-in page
+      navigate("/sign-in");
+    }
+  }
+
   return (
     <Fragment>
       <div className="profile-info-parent">
@@ -241,7 +290,10 @@ export default function ProfileInfo() {
             />
           </div>
           <div className="profile-card-actions">
-            <a id="profile-card-actions-seperat">
+            <a
+              id="profile-card-actions-seperat"
+              onClick={() => fileInputRef.current.click()}
+            >
               <img src={pen} alt="Edit icon" style={{ width: "1.5rem" }} />
               Rediger
             </a>
@@ -264,18 +316,18 @@ export default function ProfileInfo() {
                 id="name"
                 name="name"
                 placeholder="Fornavn"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={fornavn}
+                onChange={(e) => setFornavn(e.target.value)}
               />
 
               <input
                 type="text"
                 className="profile-form-content"
-                id="lastname"
-                name="lastname"
+                id="efternavn"
+                name="efternavn"
                 placeholder="Efternavn"
-                value={lastname}
-                onChange={(e) => setLastname(e.target.value)}
+                value={efternavn}
+                onChange={(e) => setEfternavn(e.target.value)}
               />
 
               <select
@@ -383,7 +435,10 @@ export default function ProfileInfo() {
               Indstillinger
             </button>
             <br />
-            <button className="profile-btns profile-btns-actions-seperat">
+            <button
+              className="profile-btns profile-btns-actions-seperat"
+              onClick={handleDeleteProfile}
+            >
               Slet profil
             </button>
           </div>

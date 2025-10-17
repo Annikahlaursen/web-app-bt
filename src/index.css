@@ -161,7 +161,7 @@ form {
   color: inherit;
   transition: all 0.3s ease;
   cursor: pointer;
-  border-radius: 12px;
+  border-radius: var(--border-radius);
 }
 
 .navprofile:hover {
@@ -188,10 +188,11 @@ form {
 }
 
 .profileinfo {
-  line-height: 0.7rem;
+  line-height: 10px;
+  align-items: center;
 }
 
-.profileinfo h3 {
+.profileinfo h4 {
   margin: 0;
 }
 
@@ -227,7 +228,7 @@ form {
   color: var(--text-color-dark);
   align-self: center;
   z-index: 2002;
-  border-radius: 20px;
+  border-radius: var(--border-radius);
   padding: 1rem;
   margin-bottom: 1.3rem;
 }
@@ -254,7 +255,7 @@ form {
   background-color: var(--grey);
   justify-self: center;
   width: 85%;
-  border-radius: 20px;
+  border-radius: var(--border-radius);
   text-align: center;
   line-height: 0.5rem;
   padding: 2% 0 2% 0;
@@ -268,20 +269,37 @@ form {
 
 .profile-btns-actions-seperat {
   width: 100%;
-  border: var(--black) solid 2px;
-  border-radius: 20px;
+  color: var(--white);
+  border-radius: var(--border-radius);
   gap: 1rem;
   padding: 1rem 0;
+  border: none;
+}
+
+.profile-btns-actions-white {
+  background-color: var(--white);
+  color: var(--black);
+}
+
+.profile-btn-actions-red {
+  background-color: var(--darkred);
+}
+
+.profile-btn-actions-lightred {
+  background-color: var(--lightred);
+}
+
+.profile-btn-actions-nobackground {
+  background-color: transparent;
+}
+
+.profile-btns-actions-style {
+  background-color: var(--lightred);
+  border: var(--white) solid 2px;
 }
 
 .profile-btns-actions p {
   text-align: center;
-}
-
-#save-btn {
-  background-color: var(--lightred);
-  color: var(--white);
-  border: none;
 }
 
 .profile-btns-seperate {
@@ -317,7 +335,7 @@ form {
   padding: 2rem;
   animation: fadeIn 0.3s ease-in-out;
   background-color: var(--grey);
-  border-radius: 20px;
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
 }
 
 .profile-form {
@@ -334,7 +352,11 @@ form {
   display: flex;
   gap: 1rem;
   padding: 1rem 1rem;
-  border-radius: 20px;
+  border-radius: var(--border-radius);
+}
+
+.text-center {
+  text-align: center;
 }
 
 /* ---------- Login, Create and Update Page Styling ---------- */
@@ -345,6 +367,8 @@ form {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  color: var(--white);
+  text-align: center;
 }
 
 .login-page-logo {
@@ -489,7 +513,7 @@ form {
   width: 90%;
   align-self: center;
   z-index: 2002;
-  border-radius: 20px;
+  border-radius: var(--border-radius);
   padding: 1.5rem;
   animation: slideUpFromBottom 0.3s ease-out;
 }
