@@ -29,8 +29,8 @@ export default function KampResultatPage() {
   return (
     <section className="page">
       <h1>Kamp Resultat Page</h1>
-      <p>KampID: {kamp.id}</p>
-      <SearchSpiller />
+      <p>KampID: {kamp?.id}</p>
+      <SearchSpiller key={kamp.id} kamp={kamp} />
       <p>Her kan du se kampens resultat og statistik. {kamp.dato} </p>
       <NumberPick />
       <button className="btn" onClick={clicked}>
