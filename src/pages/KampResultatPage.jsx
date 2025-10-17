@@ -6,7 +6,8 @@ import { useNavigate, useParams } from "react-router";
 export default function KampResultatPage() {
   const [kamp, setKamp] = useState({});
   const [valgteSpillere, setValgteSpillere] = useState([]);
-  const [resultat, setResultat] = useState({ hjemme: 0, ude: 0 });
+  const [resultatHjem, setResultatHjem] = useState(0);
+  const [resultatUde, setResultatUde] = useState(0);
 
   const params = useParams();
   const navigate = useNavigate();
@@ -29,7 +30,8 @@ export default function KampResultatPage() {
     const updatedKamp = {
       ...kamp,
       spillere: valgteSpillere, //data fra searchSpillere
-      resultat: resultat, //data fra numberPick
+      resultatHjemme: resultatHjem, //data fra numberPick
+      resultatUde: resultatUde, //data fra numberPick
     };
 
     const response = await fetch(url, {
@@ -55,7 +57,10 @@ export default function KampResultatPage() {
         onSpillerChange={(spillere) => setValgteSpillere(spillere)}
       />
       <p>Her kan du se kampens resultat og statistik. {kamp.dato} </p>
-      <NumberPick onChange={(nytresultat) => setResultat(nytresultat)} />
+      <NumberPick
+        onChangeH={(nytHjemResultat) => setResultatHjem(nytHjemResultat)}
+        onChangeU={(nytUdeResultat) => setResultatUde(nytUdeResultat)}
+      />
       <button className="btn" onClick={handleSave}>
         Gem resulatat
       </button>

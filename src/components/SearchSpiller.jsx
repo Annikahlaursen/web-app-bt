@@ -2,11 +2,12 @@ import { useState, useEffect } from "react";
 import RatingBoks from "./RatingBoks";
 import Select from "react-select";
 
-export default function SearchSpiller({ kamp }) {
+export default function SearchSpiller({ kamp, onSpillerChange }) {
   const [searchQuery, setSearchQuery] = useState(""); // set the initial state to an empty string
   const [users, setUsers] = useState([]); // set the initial state to an empty array
   const [showResults, setShowResults] = useState(false); // Track input focus
   const [selectedOption, setSelectedOption] = useState({});
+  const [selectedPlayers, setSelectedPlayers] = useState([]);
 
   // Fetch data from the API
   useEffect(() => {
@@ -49,12 +50,18 @@ export default function SearchSpiller({ kamp }) {
       : teamUsers
   ).filter((user) => (user.fornavn ?? "").toLowerCase().includes(searchQuery));
 
+  function handleSelectChange(selectedOptions) {
+    setSelectedPlayers(selectedOptions);
+    if (onSpillerChange) onSpillerChange(selectedOptions); // 🔥 send data op
+  }
+
   return (
     <>
       <Select
+        isMulti
         options={userOptions}
-        value={selectedOption}
-        onChange={handleChange}
+        //value={selectedOption}
+        onChange={handleSelectChange}
         placeholder="Søg efter spiller"
         isClearable
         isSearchable
