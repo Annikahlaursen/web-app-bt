@@ -60,27 +60,6 @@ export default function HomePage() {
     fetchKampe();
   }, []);
 
-  //-----------------Fetch stævner-----------------
-const [stevne, setStevne] = useState([]);
-
-  useEffect(() => {
-    async function fetchStevner() {
-      const response = await fetch(
-        `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/staevner.json`
-      );
-      const data = await response.json();
-      // from object to array
-      const staevneArray = Object.keys(data).map((kampId) => ({
-        id: kampId,
-        ...data[kampId],
-      }));
-
-      setStevne(staevneArray);
-    }
-
-    fetchStevner();
-  }, []);
-
   const iDag = new Date();
   iDag.setHours(0, 0, 0, 0);
   //filter kampe fra der har været der
