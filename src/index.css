@@ -245,14 +245,6 @@ form {
   grid-template-columns: 1fr;
 }
 
-.profile-info-card-image {
-  background-color: var(--grey);
-  width: 6em;
-  height: 6em;
-  border-radius: 50%;
-  padding: 1rem;
-}
-
 .profile-card-content {
   margin: 1rem 0 2rem;
   justify-self: center;
@@ -701,8 +693,13 @@ form {
   display: none;
 }
 
-.image-preview {
+.profile-image-preview {
   cursor: pointer;
+  height: 6em;
+  width: 6em;
+  border-radius: 50%;
+  background-color: var(--grey);
+  padding: 1rem;
 }
 
 /*------------ Blåboks Styling -------------*/

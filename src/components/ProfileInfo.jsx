@@ -1,9 +1,16 @@
 import { Fragment, useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router";
 import { auth } from "../firebase-config";
+import {
+  getStorage,
+  ref as storageRef,
+  uploadBytes,
+  getDownloadURL,
+} from "firebase/storage";
 import { signOut } from "firebase/auth";
 import pen from "/pen-solid-full.svg";
 import trash from "/trash-solid-full.svg";
+import Placeholder from "/image-solid-full.svg";
 
 export default function ProfileInfo() {
   const navigate = useNavigate();
@@ -41,8 +48,9 @@ export default function ProfileInfo() {
           if (!response.ok) throw new Error("Failed to fetch user data");
           const data = await response.json();
           if (data) {
-            setName(data.name || "");
-            setLastname(data.lastname || "");
+            // prefer danish keys (fornavn/efternavn) but fall back to legacy keys
+            setName(data.fornavn || data.name || "");
+            setLastname(data.efternavn || data.lastname || "");
             setGender(data.gender || "");
             setBirthday(data.birthday || "");
             setAdress(data.adress || "");
@@ -65,8 +73,8 @@ export default function ProfileInfo() {
         if (currentUserRaw) {
           const currentUser = JSON.parse(currentUserRaw);
           const p = currentUser.profile || {};
-          setName(p.firstName || "");
-          setLastname(p.lastName || "");
+          setName(p.fornavn || "");
+          setLastname(p.efternavn || "");
           setGender(p.gender || "");
           setBirthday(p.birthday || "");
           setAdress(p.adress || "");
@@ -91,9 +99,12 @@ export default function ProfileInfo() {
 
     setErrorMessage("");
 
+    // Persist both danish keys and legacy keys for compatibility
     const user = {
-      name,
-      lastname,
+      fornavn: name,
+      efternavn: lastname,
+      name: name,
+      lastname: lastname,
       gender,
       birthday,
       adress,
@@ -127,8 +138,8 @@ export default function ProfileInfo() {
       if (currentUserRaw) {
         const currentUser = JSON.parse(currentUserRaw);
         currentUser.profile = {
-          firstName: name,
-          lastName: lastname,
+          fornavn: name,
+          efternavn: lastname,
           gender,
           birthday,
           adress,
@@ -165,22 +176,22 @@ export default function ProfileInfo() {
   }
 
   async function uploadImage(imageFile) {
-    const firebaseProjectId = import.meta.env.VITE_FIREBASE_PROJECT_ID;
-    const url = `https://firebasestorage.googleapis.com/v0/b/${firebaseProjectId}.appspot.com/o/${imageFile.name}`;
-    // POST request to upload image
-    const response = await fetch(url, {
-      method: "POST",
-      body: imageFile,
-      headers: { "Content-Type": imageFile.type },
-    });
-
-    if (!response.ok) {
-      setErrorMessage("Upload image failed"); // set errorMessage state with error message
-      throw new Error("Upload image failed"); // throw an error
+    try {
+      // Initialize storage and upload the file to a user-specific path when possible
+      const storage = getStorage();
+      const uid = auth?.currentUser?.uid || "public";
+      const fileRef = storageRef(
+        storage,
+        `profile_images/${uid}/${Date.now()}_${imageFile.name}`
+      );
+      const snapshot = await uploadBytes(fileRef, imageFile);
+      const downloadUrl = await getDownloadURL(snapshot.ref);
+      return downloadUrl;
+    } catch (err) {
+      console.error("Upload image failed:", err);
+      setErrorMessage("Upload image failed");
+      throw err;
     }
-
-    const imageUrl = `${url}?alt=media`; // get the image URL
-    return imageUrl; // return the image URL
   }
 
   async function handleSignOut() {
@@ -218,19 +229,16 @@ export default function ProfileInfo() {
             />
             <img
               id="image"
-              className={"image-preview"}
-              src={
-                image
-                  ? image
-                  : "https://placehold.co/600x400?text=Click+here+to+select+an+image"
-              }
+              className={"profile-image-preview"}
+              src={image || Placeholder}
               alt="Choose"
-              onError={(e) =>
-                (e.target.src =
-                  "https://placehold.co/600x400?text=Error+loading+image")
-              }
+              onError={(e) => {
+                // if the image fails to load, use the placeholder image
+                e.target.onerror = null; // prevent infinite loop
+                e.target.src = Placeholder;
+              }}
               onClick={() => fileInputRef.current.click()}
-            />{" "}
+            />
           </div>
           <div className="profile-card-actions">
             <a id="profile-card-actions-seperat">
