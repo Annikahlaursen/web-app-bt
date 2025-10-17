@@ -409,7 +409,7 @@ export default function ProfileInfo() {
               <div className="profile-btns-actions">
                 <button
                   type="submit"
-                  className="profile-btns profile-btns-actions-seperat"
+                  className="profile-btns profile-btns-actions-seperat profile-btn-actions-lightred"
                   id="save-btn"
                 >
                   Gem
@@ -420,23 +420,23 @@ export default function ProfileInfo() {
 
           <div className="profile-btns-actions">
             <button
-              className="profile-btns profile-btns-actions-seperat"
+              className="profile-btns profile-btns-actions-seperat profile-btn-actions-blackborder"
               onClick={handleSignOut}
             >
               Log ud
             </button>
-            <button className="profile-btns profile-btns-actions-seperat">
+            <button className="profile-btns profile-btns-actions-seperat profile-btn-actions-blackborder">
               Opdater adgangskode
             </button>
-            <button className="profile-btns profile-btns-actions-seperat">
+            <button className="profile-btns profile-btns-actions-seperat profile-btn-actions-blackborder">
               Tilknyt login til Face ID
             </button>
-            <button className="profile-btns profile-btns-actions-seperat">
+            <button className="profile-btns profile-btns-actions-seperat profile-btn-actions-blackborder">
               Indstillinger
             </button>
             <br />
             <button
-              className="profile-btns profile-btns-actions-seperat"
+              className="profile-btns profile-btns-actions-seperat profile-btn-actions-blackborder"
               onClick={handleDeleteProfile}
             >
               Slet profil

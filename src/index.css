@@ -289,6 +289,12 @@ form {
   background-color: var(--lightred);
 }
 
+.profile-btn-actions-blackborder {
+  border: var(--black) solid 2px;
+  background-color: var(--white);
+  color: var(--black);
+}
+
 .profile-btn-actions-nobackground {
   background-color: transparent;
 }
@@ -367,7 +373,6 @@ form {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  color: var(--white);
   text-align: center;
 }
 
@@ -1225,6 +1230,11 @@ form {
   max-width: 200px;
   height: auto;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+.update-card {
+  color: var(--black);
+  text-align: left;
 }
 
 @keyframes pulse {

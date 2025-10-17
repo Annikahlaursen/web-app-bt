@@ -72,7 +72,7 @@ export default function SignInCard() {
             type="email"
             name="mail"
             aria-label="mail"
-            placeholder="Type your mail..."
+            placeholder="Email"
             required
           />
           <input
@@ -81,7 +81,7 @@ export default function SignInCard() {
             type="password"
             name="password"
             aria-label="password"
-            placeholder="Type your password..."
+            placeholder="Adgangskode"
             autoComplete="current-password"
           />
           <div className="error-message">
@@ -94,7 +94,7 @@ export default function SignInCard() {
             >
               Log på
             </button>
-            <p>Har du glemt din adgangskode?</p>
+            <p style={{ color: "#fff" }}>Har du glemt din adgangskode?</p>
           </div>
         </form>
 
@@ -105,7 +105,7 @@ export default function SignInCard() {
           >
             Opret ny konto
           </button>
-          <p>Eller</p>
+          <p style={{ color: "#fff" }}>Eller</p>
           <button className="profile-btns profile-btns-actions-seperat profile-btns-actions-style">
             Log ind med Facebook
           </button>
