@@ -12,6 +12,8 @@ export default function HomePage() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  //-----------------Fetch users-----------------
+
   useEffect(() => {
     async function fetchUsers() {
       const url =
@@ -36,6 +38,8 @@ export default function HomePage() {
     fetchUsers();
   }, []);
 
+  //-----------------Fetch kampe-----------------
+
   const [kamp, setKamp] = useState([]);
 
   useEffect(() => {
@@ -54,6 +58,27 @@ export default function HomePage() {
     }
 
     fetchKampe();
+  }, []);
+
+  //-----------------Fetch stævner-----------------
+const [stevne, setStevne] = useState([]);
+
+  useEffect(() => {
+    async function fetchStevner() {
+      const response = await fetch(
+        `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/staevner.json`
+      );
+      const data = await response.json();
+      // from object to array
+      const staevneArray = Object.keys(data).map((kampId) => ({
+        id: kampId,
+        ...data[kampId],
+      }));
+
+      setStevne(staevneArray);
+    }
+
+    fetchStevner();
   }, []);
 
   const iDag = new Date();
@@ -75,8 +100,8 @@ export default function HomePage() {
         <section className="forside-del">
           <h1>Din Næste Kamp</h1>
           <KampCard key={nextKamp.id} kamp={nextKamp} />
-          <Link className="flex-pil" to="/kamp">
-            <p>Se alle kampe</p>
+          <Link className="flex-pil" to="/kalender">
+            <p>Kalender</p>
             <img src={arrow} alt="Pil til kamp med id" />
           </Link>
         </section>
