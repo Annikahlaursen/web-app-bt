@@ -2,19 +2,11 @@ import { useState, useEffect } from "react";
 import RatingBoks from "./RatingBoks";
 import Select from "react-select";
 
-//value=key
-const options = [
-  { value: "holland", label: "Holland" },
-  { value: "denmark", label: "Denmark" },
-  { value: "sweden", label: "Sweden" },
-  { value: "norway", label: "Norway" },
-  { value: "finland", label: "Finland" },
-];
-
-export default function SearchSpiller() {
+export default function SearchSpiller({ kamp }) {
   const [searchQuery, setSearchQuery] = useState(""); // set the initial state to an empty string
   const [users, setUsers] = useState([]); // set the initial state to an empty array
   const [showResults, setShowResults] = useState(false); // Track input focus
+  const [selectedOption, setSelectedOption] = useState({});
 
   // Fetch data from the API
   useEffect(() => {
@@ -36,40 +28,38 @@ export default function SearchSpiller() {
   }, []);
 
   // Only users with hid: -HnAd4o6AtIlkW2SCf6R
-  const teamHid = "-HnAd4o6AtIlkW2SCf6R";
+  const teamHid = kamp.hjemmehold;
   const teamUsers = users.filter((user) => user.hid === teamHid);
 
-  // Filter posts based on the search query
-  const filteredUsers = teamUsers.filter((user) =>
-    (user.fornavn ?? "").toLowerCase().includes(searchQuery)
-  );
+  // dynamiske options til react-select
+  const userOptions = users.map((user) => ({
+    value: user.id,
+    label: `${user.fornavn} ${user.efternavn ?? ""}`.trim(),
+  }));
 
-  const [selectedOption, setSelectedOption] = useState({});
-
-  const handleChange = (selectedOption) => {
-    setSelectedOption(selectedOption);
+  const handleChange = (option) => {
+    setSelectedOption(option);
+    setShowResults(true);
   };
+
+  // Filter posts based on the search query
+  const filteredUsers = (
+    selectedOption
+      ? users.filter((user) => user.id === selectedOption.value)
+      : teamUsers
+  ).filter((user) => (user.fornavn ?? "").toLowerCase().includes(searchQuery));
 
   return (
     <>
       <Select
-        options={options}
+        options={userOptions}
         value={selectedOption}
         onChange={handleChange}
+        placeholder="Søg efter spiller"
+        isClearable
+        isSearchable
       />
 
-      <label>
-        Search by name{" "}
-        <input
-          aria-label="Search by caption"
-          defaultValue={searchQuery}
-          onClick={() => setShowResults(true)}
-          onChange={(event) => setSearchQuery(event.target.value.toLowerCase())}
-          placeholder="Søg spiller"
-          type="search"
-          name="searchQuery"
-        />
-      </label>
       {showResults && (
         <div>
           {filteredUsers.map((user, idx) => (
