@@ -36,10 +36,12 @@ export default function RatingPage() {
 
   useEffect(() => {
     async function fetchUsersAndClubs() {
-      const usersUrl =
-        "https://web-app-bt-124b8-default-rtdb.firebaseio.com/users.json";
-      const clubsUrl =
-        "https://web-app-bt-124b8-default-rtdb.firebaseio.com/klubber.json";
+      const usersUrl = `${
+        import.meta.env.VITE_FIREBASE_DATABASE_URL
+      }/users.json`;
+      const clubsUrl = `${
+        import.meta.env.VITE_FIREBASE_DATABASE_URL
+      }/klubber.json`;
       const [usersResponse, clubsResponse] = await Promise.all([
         fetch(usersUrl),
         fetch(clubsUrl),
