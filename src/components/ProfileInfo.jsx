@@ -156,6 +156,7 @@ export default function ProfileInfo() {
     } catch (err) {
       console.error(err);
     }
+
     // After saving, navigate to the update view so the user can continue
     navigate("/profile/update");
   }
@@ -165,15 +166,27 @@ export default function ProfileInfo() {
    * The event is fired by the input file field in the form
    */
   async function handleImageChange(event) {
-    const file = event.target.files[0]; // get the first file in the array
-    if (file.size < 500000) {
-      // if file size is below 0.5MB
+    const file = event.target.files && event.target.files[0]; // get the first file in the array
+    if (!file) return;
+
+    // increase allowed size to 2MB to be more forgiving
+    const MAX_BYTES = 2_000_000; // 2 MB
+    console.debug("Selected file:", file.name, file.size, "bytes");
+    if (file.size <= MAX_BYTES) {
+      // if file size is below or equal to 2MB
       const imageUrl = await uploadImage(file); // call the uploadImage function
       setImage(imageUrl); // set the image state with the image URL
       setErrorMessage(""); // reset errorMessage state
     } else {
-      // if not below 0.5MB display an error message using the errorMessage state
-      setErrorMessage("The image file is too big!");
+      // if too big display an informative error message
+      const sizeMB = (file.size / 1024 / 1024).toFixed(2);
+      setErrorMessage(
+        `Filen er for stor (${sizeMB} MB). Maks ${(
+          MAX_BYTES /
+          1024 /
+          1024
+        ).toFixed(2)} MB.`
+      );
     }
   }
 
@@ -297,7 +310,78 @@ export default function ProfileInfo() {
               <img src={pen} alt="Edit icon" style={{ width: "1.5rem" }} />
               Rediger
             </a>
-            <a id="profile-card-actions-seperat">
+            <a
+              id="profile-card-actions-seperat"
+              onClick={async () => {
+                // remove image handler
+                async function handleRemoveImage() {
+                  setErrorMessage("");
+
+                  // first try to update the server record if possible
+                  if (uid && firebaseDbUrlBase) {
+                    try {
+                      const url = `${firebaseDbUrlBase}/users/${uid}.json`;
+                      const resp = await fetch(url, {
+                        method: "PATCH",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ image: "" }),
+                      });
+                      if (!resp.ok) {
+                        const txt = await resp.text();
+                        console.error(
+                          "Failed to clear image on server:",
+                          resp.status,
+                          txt
+                        );
+                        setErrorMessage(
+                          "Kunne ikke fjerne billedet på serveren."
+                        );
+                        return;
+                      }
+                    } catch (err) {
+                      console.error("Error clearing image on server:", err);
+                      setErrorMessage(
+                        "Kunne ikke fjerne billedet på serveren."
+                      );
+                      return;
+                    }
+                  }
+
+                  // Update localStorage fallback copy and notify listeners
+                  try {
+                    const currentUserRaw = localStorage.getItem("currentUser");
+                    if (currentUserRaw) {
+                      const currentUser = JSON.parse(currentUserRaw);
+                      currentUser.profile = currentUser.profile || {};
+                      currentUser.profile.image = "";
+                      localStorage.setItem(
+                        "currentUser",
+                        JSON.stringify(currentUser)
+                      );
+                      window.dispatchEvent(
+                        new CustomEvent("currentUserChanged", {
+                          detail: currentUser,
+                        })
+                      );
+                    }
+                  } catch (err) {
+                    console.error(
+                      "Failed to update local currentUser after removing image:",
+                      err
+                    );
+                  }
+
+                  // finally update component state so UI shows placeholder
+                  setImage("");
+                }
+
+                // ask user for confirmation before removing image
+                const confirmRemove = window.confirm(
+                  "Vil du fjerne dit profilbillede?"
+                );
+                if (confirmRemove) await handleRemoveImage();
+              }}
+            >
               <img src={trash} alt="Delete icon" style={{ width: "1.5rem" }} />
               Fjern
             </a>

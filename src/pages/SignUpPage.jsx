@@ -4,14 +4,18 @@ import { Link, useNavigate } from "react-router";
 import { auth } from "../firebase-config";
 import { setCurrentUserStorage } from "../utils/currentUserEvents";
 import Logo from "/btp-logo.png";
+import Update from "../components/UpdateCard";
 // import Update from "../components/UpdateCard"; (not used)
 
 export default function SignUpPage() {
   const [errorMessage, setErrorMessage] = useState("");
+  const [showUpdate, setShowUpdate] = useState(false);
   const navigate = useNavigate();
 
   async function handleSignUp(event) {
     event.preventDefault();
+    // show the UpdateCard immediately so user can continue with profile details
+    setShowUpdate(true);
     setErrorMessage("");
 
     const form = event.target;
@@ -65,8 +69,8 @@ export default function SignUpPage() {
         : { uid: user.uid, mail: user.mail, profile: { fornavn, efternavn } };
       setCurrentUserStorage(storageObj);
 
-      // navigate to profile update view
-      navigate("/update/:id");
+      // navigate to update route (use the new uid so UpdateCard persists after auth change)
+      navigate(`/update/${user.uid}`);
     } catch (error) {
       let code = error.code || error.message || "unknown error";
       try {
@@ -74,6 +78,8 @@ export default function SignUpPage() {
       } catch {
         /* noop */
       }
+      // revert optimistic UI if signup failed
+      setShowUpdate(false);
       setErrorMessage(code);
     }
   }
@@ -109,68 +115,72 @@ export default function SignUpPage() {
           <img id="login-logo" src={Logo} alt="Bordtennisportalen.dk logo" />
         </div>
         <div className="profile-info-parent">
-          <div className="profile-card">
-            <div>
-              <form
-                action="ProfileInfo"
-                className="profile-form"
-                onSubmit={handleSignUp}
-              >
-                <input
-                  id="fornavn"
-                  type="text"
-                  name="name"
-                  className="profile-form-content"
-                  placeholder="Fornavn"
-                  required
-                />
-                <input
-                  id="efternavn"
-                  type="text"
-                  name="efternavn"
-                  className="profile-form-content"
-                  placeholder="Efternavn"
-                  required
-                />
-                <input
-                  id="mail"
-                  type="email"
-                  name="mail"
-                  className="profile-form-content"
-                  aria-label="mail"
-                  placeholder="Email"
-                  required
-                  autoComplete="off"
-                />
-                <input
-                  id="phone"
-                  type="text"
-                  name="phone"
-                  className="profile-form-content"
-                  placeholder="Telefonnummer"
-                  required
-                />
-                <input
-                  id="password"
-                  type="password"
-                  name="password"
-                  className="profile-form-content"
-                  aria-label="password"
-                  placeholder="Adgangskode"
-                  autoComplete="current-password"
-                  required
-                />
-                <div className="error-message">
-                  <p>{errorMessage}</p>
-                </div>
-                <div className="profile-btns-actions">
-                  <button className="profile-btns profile-btns-actions-seperat profile-btn-actions-lightred">
-                    Opret konto
-                  </button>
-                </div>
-              </form>
+          {showUpdate ? (
+            <Update />
+          ) : (
+            <div className="profile-card">
+              <div>
+                <form
+                  action="ProfileInfo"
+                  className="profile-form"
+                  onSubmit={handleSignUp}
+                >
+                  <input
+                    id="fornavn"
+                    type="text"
+                    name="name"
+                    className="profile-form-content"
+                    placeholder="Fornavn"
+                    required
+                  />
+                  <input
+                    id="efternavn"
+                    type="text"
+                    name="efternavn"
+                    className="profile-form-content"
+                    placeholder="Efternavn"
+                    required
+                  />
+                  <input
+                    id="mail"
+                    type="email"
+                    name="mail"
+                    className="profile-form-content"
+                    aria-label="mail"
+                    placeholder="Email"
+                    required
+                    autoComplete="off"
+                  />
+                  <input
+                    id="phone"
+                    type="text"
+                    name="phone"
+                    className="profile-form-content"
+                    placeholder="Telefonnummer"
+                    required
+                  />
+                  <input
+                    id="password"
+                    type="password"
+                    name="password"
+                    className="profile-form-content"
+                    aria-label="password"
+                    placeholder="Adgangskode"
+                    autoComplete="current-password"
+                    required
+                  />
+                  <div className="error-message">
+                    <p>{errorMessage}</p>
+                  </div>
+                  <div className="profile-btns-actions">
+                    <button className="profile-btns profile-btns-actions-seperat profile-btn-actions-lightred">
+                      Opret konto
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
-          </div>
+          )}
           <br />
           <p className="text-center">
             Har du allerede en konto? <Link to="/sign-in">Log på</Link>

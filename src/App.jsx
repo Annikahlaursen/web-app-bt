@@ -37,24 +37,22 @@ export default function App() {
   const privateRoutes = (
     <>
       <Nav />
-      <main>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/rating" element={<RatingPage />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="*" element={<Navigate to="/" />} />
-          <Route path="*" element={<Navigate to="/error" />} />
-          <Route path="/kamp/:id" element={<KampPage />} />
-          <Route path="/kamp/:id/resultat" element={<KampResultatPage />} />
-          <Route path="/stevne/:id" element={<StevnePage />} />
-          <Route path="/error" element={<Error />} />
-          <Route path="/stevne/:id/tilmeld" element={<Error />} />
-          <Route path="/kalender" element={<KalenderPage />} />
-          <Route path="/:id" element={<KampCard />} />
-        </Routes>
-      </main>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/rating" element={<RatingPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="*" element={<Navigate to="/" />} />
+        <Route path="*" element={<Navigate to="/error" />} />
+        <Route path="/kamp/:id" element={<KampPage />} />
+        <Route path="/kamp/:id/resultat" element={<KampResultatPage />} />
+        <Route path="/stevne/:id" element={<StevnePage />} />
+        <Route path="/error" element={<Error />} />
+        <Route path="/stevne/:id/tilmeld" element={<Error />} />
+        <Route path="/kalender" element={<KalenderPage />} />
+        <Route path="/:id" element={<KampCard />} />
+      </Routes>
     </>
   );
 
