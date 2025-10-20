@@ -8,7 +8,7 @@ export default function StevneCard({stevne}) {
 
   return (
     <div className="stevne-card">
-      <Link to="/stevne/:id">
+      <Link to={`/stevne/${stevne.id}`}>
         <div className="kamp-container">
           <h3>{stevne?.titel ?? "Ingen titel"}</h3>
           <p>{stevne?.dato ?? "Ingen dato tilgængelig"}</p>
