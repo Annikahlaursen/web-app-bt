@@ -2,7 +2,6 @@ import location from "/public/location-dot-white.svg";
 import bell from "/public/bell.svg";
 import share from "/public/share.svg";
 import { Link } from "react-router";
-// import { useState, useEffect } from "react";
 
 export default function StevneCard({stevne}) {
 
