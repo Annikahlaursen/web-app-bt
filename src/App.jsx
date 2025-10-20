@@ -19,7 +19,7 @@ import KalenderPage from "./pages/KalenderPage";
 import StevneSearchPage from "./pages/StevneSearchPage";
 import KampCard from "./components/KampCard";
 import UpdateCard from "./components/UpdateCard";
-
+import KampIdSearchPage from "./pages/KampIdSearchPage";
 
 export default function App() {
   const [isAuth, setIsAuth] = useState(localStorage.getItem("isAuth")); // default value comes from localStorage
@@ -57,6 +57,7 @@ export default function App() {
           <Route path="/kalender" element={<KalenderPage />} />
           <Route path="/:id" element={<KampCard />} />
           <Route path="/stevnesearch" element={<StevneSearchPage />} />
+          <Route path="/searchKampID" element={<KampIdSearchPage />} />
         </Routes>
       </main>
     </>

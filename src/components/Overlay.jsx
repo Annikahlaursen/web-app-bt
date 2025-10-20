@@ -136,7 +136,7 @@ export default function Overlay({ isOpen, onClose }) {
                 <span>Favorit</span>
               </NavLink>
               <NavLink
-                to="/kamp/resultat"
+                to="/searchKampID"
                 className="overlay-link"
                 onClick={handleClose}
               >
@@ -149,7 +149,11 @@ export default function Overlay({ isOpen, onClose }) {
               >
                 <span>Find Hold</span>
               </NavLink>
-              <NavLink to="/stevnesearch" className="overlay-link" onClick={handleClose}>
+              <NavLink
+                to="/stevnesearch"
+                className="overlay-link"
+                onClick={handleClose}
+              >
                 <span>Find Stævne</span>
               </NavLink>
               <NavLink
