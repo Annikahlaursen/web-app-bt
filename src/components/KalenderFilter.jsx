@@ -7,7 +7,7 @@ const filters = [
   { id: "staevner", label: "Stævner", color: "#035183" },
 ];
 
-export default function KalenderFilter() {
+export default function KalenderFilter({ setFilter }) {
   const [active, setActive] = useState("alle"); //default er "alle"
   const [pillProps, setPillProps] = useState({
     left: 0,
@@ -45,7 +45,9 @@ export default function KalenderFilter() {
 
       setPillProps({ left, width, color });
     }
-  }, [active]);
+setFilter(active);
+
+  }, [active, setFilter]);
 
   return (
     <div className="kalender-filter">

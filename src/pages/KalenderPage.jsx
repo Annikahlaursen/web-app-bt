@@ -7,6 +7,7 @@ export default function KalenderPage() {
   const [events, setEvents] = useState([]);
   const nextEventRef = useRef(null);
   const monthHeadersRef = useRef([]);
+  const [activeFilter, setActiveFilter] = useState("alle");
 
   //----------------------------Henter Data----------------------------// 
   useEffect(() => {
@@ -100,12 +101,30 @@ export default function KalenderPage() {
      };
    }, []);
 
+
+/*---------------------------Filtrerer events baseret på type-property----------------------- */
+  const filteredEvents = Object.keys(groupedEvents).reduce((acc, month) => {
+    const events = groupedEvents[month].filter((event) => {
+      if (activeFilter === "alle") return true;
+      if (activeFilter === "holdkampe") return event.type === "kamp";
+      if (activeFilter === "staevner") return event.type === "stevne";
+      return false;
+    });
+
+    if (events.length > 0) {
+      acc[month] = events;
+    }
+    return acc;
+  }, {});
+
+
+  /*-------------------------------JSX---------------------------------- */
   return (
     <section className="page">
-      <KalenderFilter />
+      <KalenderFilter setFilter={setActiveFilter}/>
       {(() => {
         let nextEventFound = false; // Track if the next event has been found across all months
-        return Object.keys(groupedEvents).map((month, index) => (
+        return Object.keys(filteredEvents).map((month, index) => (
           <div key={month}>
             <h2 className="month-header" ref={(el)=>(monthHeadersRef.current[index] = el)}>{month}</h2>
             {groupedEvents[month].map((event) => {
