@@ -1189,7 +1189,7 @@ form {
 
 /* ---------- forside Styling ---------- */
 .forside {
-  padding: 0.5em 2em 2em;
+  padding: 0.5em 2em 7em;
   border-radius: var(--border-radius) var(--border-radius) 0 0;
   background-color: var(--white);
   margin-top: -3rem;
