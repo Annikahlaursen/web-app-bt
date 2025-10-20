@@ -6,7 +6,9 @@ import KampCard from "../components/KampCard";
 export default function KalenderPage() {
   const [events, setEvents] = useState([]);
   const nextEventRef = useRef(null);
+  const monthHeadersRef = useRef([]);
 
+  //----------------------------Henter Data----------------------------// 
   useEffect(() => {
     async function fetchEvents() {
       // Fetch stevne data
@@ -41,14 +43,18 @@ export default function KalenderPage() {
     fetchEvents();
   }, []);
 
+  //----------------------------Scroll til næste Event----------------------------//
+
   useLayoutEffect(() => {
-    // Scroll to the next upcoming event
     if (nextEventRef.current) {
-      nextEventRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+      nextEventRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    } 
   }, [events]);
 
-  // Helper function to format the month header
+  //------------------------Hjælpefunktioner formaterer månedheader og grupperer cards------------------------//
   const formatMonth = (dato) => {
     const options = { month: "long", year: "numeric" };
     const formattedDate = new Date(dato).toLocaleDateString("da-DK", options);
@@ -56,7 +62,7 @@ export default function KalenderPage() {
     return formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
   };
 
-  // Group events by month
+  // grupperer events efter måned
   const groupedEvents = events.reduce((acc, event) => {
     const month = formatMonth(event.dato);
     if (!acc[month]) acc[month] = [];
@@ -64,20 +70,49 @@ export default function KalenderPage() {
     return acc;
   }, {});
 
+   useEffect(() => {
+     const observer = new IntersectionObserver(
+       (entries) => {
+         entries.forEach((entry) => {
+           const header = entry.target;
+           if (entry.isIntersecting) {
+             // Add sticky class to the current month header
+             header.classList.add("sticky");
+           } else {
+             // Remove sticky class when it's no longer in view
+             header.classList.remove("sticky");
+           }
+         });
+       },
+       {
+         root: null, // Observe within the viewport
+         rootMargin: "-70px 0px 0px 0px", // Account for the KalenderFilter height
+         threshold: 0, // Trigger when the header enters or exits the viewport
+       }
+     );
+
+     // Observe all month headers
+     monthHeadersRef.current.forEach((header) => observer.observe(header));
+
+     return () => {
+       // Cleanup observer on unmount
+       monthHeadersRef.current.forEach((header) => observer.unobserve(header));
+     };
+   }, []);
+
   return (
     <section className="page">
       <KalenderFilter />
       {(() => {
         let nextEventFound = false; // Track if the next event has been found across all months
-        return Object.keys(groupedEvents).map((month) => (
+        return Object.keys(groupedEvents).map((month, index) => (
           <div key={month}>
-            <h2>{month}</h2>
+            <h2 className="month-header" ref={(el)=>(monthHeadersRef.current[index] = el)}>{month}</h2>
             {groupedEvents[month].map((event) => {
               const isNextEvent =
                 !nextEventFound &&  new Date(event.dato).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0);
               if (isNextEvent) {
                 nextEventFound = true; // Mark that the next event has been found
-                console.log("Next event found:", event);
               }
               return event.type === "stevne" ? (
                 <StevneCard

@@ -48,32 +48,34 @@ export default function KalenderFilter() {
   }, [active]);
 
   return (
-    <div className="kalender-filter-container" ref={containerRef}>
-      <motion.div
-        className="active-pill"
-        animate={{
-          left: pillProps.left,
-          width: pillProps.width,
-          backgroundColor: pillProps.color,
-        }}
-        transition={{ type: "spring", stiffness: 500, damping: 30 }}
-      />
-      {filters.map((filter) => (
-        <button
-          key={filter.id}
-          ref={(el) => (btnRefs.current[filter.id] = el)}
-          onClick={() => setActive(filter.id)}
-          className="kalender-filter-button"
-        >
-          <span
-            className={`filter-label ${
-              active === filter.id ? "active-label" : ""
-            }`}
+    <div className="kalender-filter">
+      <div className="kalender-filter-container" ref={containerRef}>
+        <motion.div
+          className="active-pill"
+          animate={{
+            left: pillProps.left,
+            width: pillProps.width,
+            backgroundColor: pillProps.color,
+          }}
+          transition={{ type: "spring", stiffness: 500, damping: 30 }}
+        />
+        {filters.map((filter) => (
+          <button
+            key={filter.id}
+            ref={(el) => (btnRefs.current[filter.id] = el)}
+            onClick={() => setActive(filter.id)}
+            className="kalender-filter-button"
           >
-            {filter.label}
-          </span>
-        </button>
-      ))}
+            <span
+              className={`filter-label ${
+                active === filter.id ? "active-label" : ""
+              }`}
+            >
+              {filter.label}
+            </span>
+          </button>
+        ))}
+      </div>
     </div>
   );
 }
