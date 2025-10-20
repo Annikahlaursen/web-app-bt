@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import KampCard from "../components/KampCard";
 import useFilters from "../hooks/useFilters";
+import { Link } from "react-router";
+import arrowBlack from "/public/arrow-left-black.svg";
 
 export default function KampIdSearchPage() {
   const [kamp, setKamp] = useState([]);
@@ -52,18 +54,24 @@ export default function KampIdSearchPage() {
   );
 
   return (
-    <>
-      <h1>Søg kampID</h1>
-      <div style={{ position: "relative" }}>
-        <input
-          type="text"
-          name="search"
-          placeholder="Søg efter KampID"
-          value={filterCriteria.id || ""}
-          onChange={(e) => updateFilterCriteria("id", e.target.value)}
-          style={{ flex: 1, padding: "10px", width: "40vh" }}
+    <div className="page">
+      <Link to="...">
+        <img
+          className="arrow"
+          src={arrowBlack}
+          alt="Arrow back to previus page"
         />
-
+      </Link>
+      <input
+        className="searchbar"
+        type="text"
+        name="search"
+        placeholder="Søg efter KampID"
+        value={filterCriteria.id || ""}
+        onChange={(e) => updateFilterCriteria("id", e.target.value)}
+        style={{ flex: 1, padding: "10px", width: "40vh" }}
+      />
+      <section className="opdel">
         {filteredData.length > 0 ? (
           filteredData.map((kamp) => (
             <KampCard key={kamp.id} kamp={kamp} oplysninger="kunOplysninger" />
@@ -71,7 +79,7 @@ export default function KampIdSearchPage() {
         ) : (
           <p>Ingen kampe idag</p>
         )}
-      </div>
-    </>
+      </section>
+    </div>
   );
 }

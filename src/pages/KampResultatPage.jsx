@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import NumberPick from "../components/NumberPick";
 import SearchSpiller from "../components/SearchSpiller";
 import { useNavigate, useParams } from "react-router";
+import { Link } from "react-router";
+import arrowBlack from "/public/arrow-left-black.svg";
 
 export default function KampResultatPage() {
   const [kamp, setKamp] = useState({});
@@ -49,6 +51,13 @@ export default function KampResultatPage() {
 
   return (
     <section className="page">
+      <Link to="...">
+        <img
+          className="arrow"
+          src={arrowBlack}
+          alt="Arrow back to previus page"
+        />
+      </Link>
       <h1>Kamp Resultat Page</h1>
       <p>KampID: {kamp?.id}</p>
       <SearchSpiller

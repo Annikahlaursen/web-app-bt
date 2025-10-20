@@ -874,20 +874,20 @@ form {
   border: solid 2px var(--light-grey);
 }
 
-.filter-knapper{
+.filter-knapper {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   gap: 1rem;
 }
 
-.filter-knapper button:last-child{
+.filter-knapper button:last-child {
   background-color: var(--white);
   color: var(--black);
   border: solid 2px var(--black);
 }
 
-.filter-knapper button{
+.filter-knapper button {
   width: 100%;
   padding: 0.5rem 1rem;
   font-size: 1rem;
@@ -1265,4 +1265,17 @@ form {
     transform: scale(1.1);
     opacity: 1;
   }
+}
+
+/*---------- KampID search page Styling ----------*/
+.searchbar {
+  position: relative;
+  margin: 0 0 2rem 0;
+  width: 85%;
+  font-size: large;
+}
+.opdel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
