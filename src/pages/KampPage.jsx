@@ -60,6 +60,8 @@ export default function KampPage() {
     kamp.spillere = "Afventer";
   }
 
+  console.log(kamp.harResultat);
+
   return (
     <>
       <div className="red-background">
