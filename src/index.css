@@ -633,7 +633,7 @@ form {
 /* ---------- Page Styling ---------- */
 .page {
   animation: fadeIn 0.5s;
-  padding: 2em 2em 2em;
+  padding: 2em 2em 7em;
 }
 
 /* ---------- Container Styling ---------- */
@@ -861,7 +861,7 @@ form {
   position: sticky;
 }
 
-.rating-filter :nth-child(1) {
+.rating-filter > :nth-child(1) {
   display: grid;
   grid-template-columns: 6fr 1fr;
   gap: 1em;
@@ -874,10 +874,10 @@ form {
 
 .filter-overlay {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 50px;
+  right: -30px;
   width: 80vw;
-  height: 50vh;
+  height: auto;
   padding: 1em;
   z-index: 1;
   display: flex;
@@ -891,8 +891,6 @@ form {
 .filter-overlay > * {
   width: 100%;
   margin-top: 1em;
-  /* border: solid 2px var(--light-grey);
-  border-radius: var(--border-radius); */
 }
 
 .filter-overlay select {
@@ -908,6 +906,26 @@ form {
   background-color: transparent;
   padding: 0.5rem 1rem;
   border: solid 2px var(--light-grey);
+}
+
+.filter-knapper{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.filter-knapper button:last-child{
+  background-color: var(--white);
+  color: var(--black);
+  border: solid 2px var(--black);
+}
+
+.filter-knapper button{
+  width: 100%;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border-radius: var(--border-radius);
 }
 
 .loading-message {
@@ -1057,6 +1075,7 @@ form {
   background-color: var(--blue);
   border-radius: var(--border-radius);
   color: #fff;
+  margin-top: 2rem;
 }
 
 .stevne-card #streg {

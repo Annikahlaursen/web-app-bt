@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router";
+import useFilters from "../hooks/useFilters";
 import RatingListe from "../components/RatingListe";
 import FilterOverlay from "../components/FilterOvelay";
 
+// Funktion til at beregne alder ud fra fødselsdato
 function calculateAge(fødselsdato) {
   const today = new Date();
   const birthDate = new Date(fødselsdato);
@@ -23,95 +25,120 @@ export default function RatingPage() {
   const location = useLocation();
   const [users, setUsers] = useState([]);
   const [searchedUsers, setSearchedUsers] = useState([]);
-  const [filteredUsers, setFilteredUsers] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [showFilter, setShowFilter] = useState(false);
+  const [showFilter, setShowOverlay] = useState(false);
   const [loading, setLoading] = useState(true);
 
-   useEffect(() => {
-     async function fetchUsers() {
-       const url =
-         "https://web-app-bt-124b8-default-rtdb.firebaseio.com/users.json";
-       const response = await fetch(url);
-       const data = await response.json();
+  const { filteredData, filterCriteria, updateFilterCriteria } =
+    useFilters(users,
+      (user, criteria) => {
+        // aldersfilter
+        const matchesAge =
+          (!criteria.ageMin || user.age >= criteria.ageMin) &&
+          (!criteria.ageMax || user.age <= criteria.ageMax);
 
-       const usersArray = Object.keys(data).map((key) => ({
-         id: key,
-         ...data[key],
-       }));
+        // navnefilter
+        const matchesName =
+          !criteria.name ||
+          `${user.fornavn} ${user.efternavn}`
+            .toLowerCase()
+            .includes(criteria.name.toLowerCase());
 
-       usersArray.sort((a, b) => b.rating - a.rating);
+        //clubfilter
+        const matchesClub =
+          !criteria.club ||
+          (user.clubName &&
+            user.clubName.toLowerCase().includes(criteria.club.toLowerCase()));
 
-       usersArray.forEach((user, index) => {
-         user.placering = index + 1;
-          user.age = calculateAge(user.fødselsdato);
-       });
+        return matchesAge && matchesName && matchesClub;
+      }
+    );
 
-       setUsers(usersArray);
-       setSearchedUsers(usersArray);
-       setLoading(false);
-     }
+  const toggleOverlay = () => setShowOverlay((prev) => !prev);
+  const closeOverlay = () => setShowOverlay(false);
 
-// Tjek om brugere er blevet sendt via navigation state
-     if (location.state && location.state.users) {
-       setUsers(location.state.users);
-       setSearchedUsers(location.state.users);
-       setLoading(false);
-     } else {
-       fetchUsers();
-     }
-   }, [location.state]);
+  useEffect(() => {
+    async function fetchUsersAndClubs() {
+      const usersUrl = `${
+        import.meta.env.VITE_FIREBASE_DATABASE_URL
+      }/users.json`;
+      const clubsUrl = `${
+        import.meta.env.VITE_FIREBASE_DATABASE_URL
+      }/klubber.json`;
+      const [usersResponse, clubsResponse] = await Promise.all([
+        fetch(usersUrl),
+        fetch(clubsUrl),
+      ]);
 
- useEffect(() => {
-   if (searchTerm === "") {
-     setSearchedUsers(users); //Viser alle brugere hvis søgeterm er tom
-   } else {
-     const filtered = users.filter((user) =>
-       `${user.fornavn} ${user.efternavn}`
-         .toLowerCase()
-         .includes(searchTerm.toLowerCase())
-     );
-     setSearchedUsers(filtered);
-   }
- }, [searchTerm, users]);
+      const usersData = await usersResponse.json();
+      const clubsData = await clubsResponse.json();
+
+      const usersArray = Object.keys(usersData).map((key) => ({
+        id: key,
+        ...usersData[key],
+      }));
+
+      usersArray.sort((a, b) => b.rating - a.rating);
+
+      //tilføjer properties placering, alder, klubnavn til hver bruger
+      usersArray.forEach((user, index) => {
+        user.placering = index + 1;
+        user.age = calculateAge(user.fødselsdato);
+        user.clubName = clubsData[user.kid]?.navn || "Ukendt Klub";
+      });
+
+      setUsers(usersArray);
+      setSearchedUsers(usersArray);
+      setLoading(false);
+    }
+
+    // Tjek om brugere er blevet sendt via navigation state
+    if (location.state && location.state.users) {
+      setUsers(location.state.users);
+      setSearchedUsers(location.state.users);
+      setLoading(false);
+    } else {
+      fetchUsersAndClubs();
+    }
+  }, [location.state]);
 
   return (
-    <section className="page">
-      <h1>Rating</h1>
-      <div className="rating-filter">
-        <div>
-          <input
-            type="text"
-            name="search"
-            placeholder="Søg i rating"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            style={{ flex: 1, padding: "10px" }}
-          />
-          <img
-            src="sliders-solid-full.svg"
-            alt="Filter"
-            onClick={() => setShowFilter(true)}
-            style={{ cursor: "pointer" }}
-          />
+    <section>
+      <img src="/img/unsplash-photo.svg" alt="Rating side"></img>
+      <section className="forside">
+        <h1>Rating</h1>
+        <div className="rating-filter">
+          <div style={{ position: "relative" }}>
+            <input
+              type="text"
+              name="search"
+              placeholder="Søg i rating"
+              value={filterCriteria.name || ""}
+              onChange={(e) => updateFilterCriteria("name", e.target.value)}
+              style={{ flex: 1, padding: "10px" }}
+            />
+            <img
+              src="sliders-solid-full.svg"
+              alt="Filter"
+              onClick={toggleOverlay}
+              style={{ cursor: "pointer" }}
+            />
+            {showFilter && (
+              <FilterOverlay
+                users={searchedUsers}
+                filterCriteria={filterCriteria}
+                updateFilterCriteria={updateFilterCriteria}
+                closeOverlay={closeOverlay}
+              />
+            )}
+          </div>
         </div>
-      </div>
 
-      {loading ? (
-        <p className="loading-message">Henter Ratingliste...</p>
-      ) : (
-        <RatingListe
-          users={filteredUsers.length > 0 ? filteredUsers : searchedUsers}
-        />
-      )}
-
-      {showFilter && (
-        <FilterOverlay
-          users={searchedUsers}
-          setFilteredUsers={setFilteredUsers}
-          onClose={() => setShowFilter(false)}
-        />
-      )}
+        {loading ? (
+          <p className="loading-message">Henter Ratingliste...</p>
+        ) : (
+          <RatingListe users={filteredData} />
+        )}
+      </section>
     </section>
   );
 }

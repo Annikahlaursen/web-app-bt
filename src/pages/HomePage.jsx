@@ -6,11 +6,12 @@ import NyhedsCard from "../components/NyhedsCard";
 import photo from "/public/img/unsplash-photo.svg";
 import arrow from "/public/arrow-right-black.svg";
 import RatingListe from "../components/RatingListe";
-import StevneCard from "../components/StevneCard";
 
 export default function HomePage() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  //-----------------Fetch users-----------------
 
   useEffect(() => {
     async function fetchUsers() {
@@ -35,6 +36,8 @@ export default function HomePage() {
     }
     fetchUsers();
   }, []);
+
+  //-----------------Fetch kampe-----------------
 
   const [kamp, setKamp] = useState([]);
 
@@ -75,8 +78,8 @@ export default function HomePage() {
         <section className="forside-del">
           <h1>Din Næste Kamp</h1>
           <KampCard key={nextKamp.id} kamp={nextKamp} />
-          <Link className="flex-pil" to="/kamp">
-            <p>Se alle kampe</p>
+          <Link className="flex-pil" to="/kalender">
+            <p>Kalender</p>
             <img src={arrow} alt="Pil til kamp med id" />
           </Link>
         </section>
@@ -109,7 +112,6 @@ export default function HomePage() {
             <img src={arrow} alt="Pil til nyheder" />
           </Link>
         </section>
-        <StevneCard />
       </section>
 
       {/* <p>https://web-app-bt-124b8-default-rtdb.firebaseio.com/</p> */}

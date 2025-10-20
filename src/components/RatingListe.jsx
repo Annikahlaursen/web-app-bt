@@ -4,6 +4,10 @@ import { useLocation } from "react-router";
 export default function RatingListe({ users = [] }) {
   const location = useLocation();
   const isRatingPage = location.pathname === "/rating";
+
+  if (users.length === 0) {
+    return <p>Ingen spillere matcher din søgning</p>;
+  }
   
   return (
     <div className={`rating-liste ${isRatingPage ? "on-rating-page" : ""}`}>
