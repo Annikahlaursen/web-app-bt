@@ -16,7 +16,7 @@ import KalenderPage from "./pages/KalenderPage";
 import { auth } from "./firebase-config";
 import { onAuthStateChanged } from "firebase/auth";
 import KampCard from "./components/KampCard";
-import UpdateCard from "./components/UpdateCard";
+import UpdateCard from "./pages/UpdatePage";
 
 export default function App() {
   const [isAuth, setIsAuth] = useState(localStorage.getItem("isAuth")); // default value comes from localStorage

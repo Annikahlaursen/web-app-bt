@@ -1,5 +1,5 @@
 import { Fragment, useState, useRef } from "react";
-import UpdateCard from "./UpdateCard";
+import UpdateCard from "../pages/UpdatePage";
 import Placeholder from "/user-solid-full.svg";
 import {
   getStorage,

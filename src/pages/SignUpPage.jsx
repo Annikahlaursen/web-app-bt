@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router";
 import { auth } from "../firebase-config";
 import { setCurrentUserStorage } from "../utils/currentUserEvents";
 import Logo from "/btp-logo.png";
-import Update from "../components/UpdateCard";
+import Update from "./UpdatePage";
 // import Update from "../components/UpdateCard"; (not used)
 
 export default function SignUpPage() {
