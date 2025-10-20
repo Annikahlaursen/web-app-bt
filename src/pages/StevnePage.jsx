@@ -1,38 +1,41 @@
 import { useNavigate, useParams } from "react-router";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import arrowWhite from "/public/arrow-left-white.svg";
 import calendar from "/public/calendar-outline.svg";
 import location from "/public/location-dot.svg";
 
-export default function StevnePage() {
+export default function StevnePage({stevne}) {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [stevne, setStevne] = useState({});
 
-  useEffect(() => {
-    async function fetchStevne() {
-      const response = await fetch(
-        `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/staevner/${id}.json`
-      );
 
-      const data = await response.json();
+  // useEffect(() => {
+  //   async function fetchStevne() {
+  //     const response = await fetch(
+  //       `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/staevner/${id}.json`
+  //     );
 
-      const staevneArray = Object.keys(data).map((stevneId) => ({
-        id: stevneId,
-        ...data[stevneId],
-      }));
+  //     const data = await response.json();
 
-      setStevne(staevneArray);
-    }
+  //     const staevneArray = Object.keys(data).map((stevneId) => ({
+  //       id: stevneId,
+  //       ...data[stevneId],
+  //     }));
 
-    fetchStevne();
-  }, [id]);
+  //     setStevne(staevneArray);
+  //     console.log(staevneArray);
+  //   }
+
+  //   fetchStevne();
+  // }, [id]);
 
   function clicked(event) {
     event.preventDefault();
     console.log("Button clicked");
     navigate("/stevne/tilmeld");
   }
+
+  console.log(stevne);
 
   return (
     <>
@@ -68,7 +71,7 @@ export default function StevnePage() {
           <li>Herre klasse 2</li>
           <li>Herre Junior Elite</li>
         </ul>
-        <p>Søndag</p>
+        <p>SØNDAG</p>
         <ul>
           <li>Dame Elite</li>
           <li>Drenge B</li>
