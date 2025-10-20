@@ -60,6 +60,8 @@ export default function KampPage() {
     kamp.spillere = "Afventer";
   }
 
+  console.log(kamp.harResultat);
+
   return (
     <>
       <div className="red-background">
@@ -93,7 +95,7 @@ export default function KampPage() {
           <p>{kamp?.lokation}</p>
         </div>
         <br />
-        <p>Kamp resultat: {kamp.resultat ?? "Afventer"}</p>
+        <p>Kamp resultat: {kamp?.resultat ?? "Afventer"}</p>
         <p>Spillere: {kamp?.spillere ?? "Afventer"}</p>
       </section>
     </>
