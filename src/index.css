@@ -161,7 +161,7 @@ form {
   color: inherit;
   transition: all 0.3s ease;
   cursor: pointer;
-  border-radius: 12px;
+  border-radius: var(--border-radius);
 }
 
 .navprofile:hover {
@@ -188,10 +188,11 @@ form {
 }
 
 .profileinfo {
-  line-height: 0.7rem;
+  line-height: 10px;
+  align-items: center;
 }
 
-.profileinfo h3 {
+.profileinfo h4 {
   margin: 0;
 }
 
@@ -227,7 +228,7 @@ form {
   color: var(--text-color-dark);
   align-self: center;
   z-index: 2002;
-  border-radius: 20px;
+  border-radius: var(--border-radius);
   padding: 1rem;
   margin-bottom: 1.3rem;
 }
@@ -245,14 +246,6 @@ form {
   grid-template-columns: 1fr;
 }
 
-.profile-info-card-image {
-  background-color: var(--grey);
-  width: 6em;
-  height: 6em;
-  border-radius: 50%;
-  padding: 1rem;
-}
-
 .profile-card-content {
   margin: 1rem 0 2rem;
   justify-self: center;
@@ -262,7 +255,7 @@ form {
   background-color: var(--grey);
   justify-self: center;
   width: 85%;
-  border-radius: 20px;
+  border-radius: var(--border-radius);
   text-align: center;
   line-height: 0.5rem;
   padding: 2% 0 2% 0;
@@ -276,20 +269,43 @@ form {
 
 .profile-btns-actions-seperat {
   width: 100%;
-  border: var(--black) solid 2px;
-  border-radius: 20px;
+  color: var(--white);
+  border-radius: var(--border-radius);
   gap: 1rem;
   padding: 1rem 0;
+  border: none;
+}
+
+.profile-btns-actions-white {
+  background-color: var(--white);
+  color: var(--black);
+}
+
+.profile-btn-actions-red {
+  background-color: var(--darkred);
+}
+
+.profile-btn-actions-lightred {
+  background-color: var(--lightred);
+}
+
+.profile-btn-actions-blackborder {
+  border: var(--black) solid 2px;
+  background-color: var(--white);
+  color: var(--black);
+}
+
+.profile-btn-actions-nobackground {
+  background-color: transparent;
+}
+
+.profile-btns-actions-style {
+  background-color: var(--lightred);
+  border: var(--white) solid 2px;
 }
 
 .profile-btns-actions p {
   text-align: center;
-}
-
-#save-btn {
-  background-color: var(--lightred);
-  color: var(--white);
-  border: none;
 }
 
 .profile-btns-seperate {
@@ -325,7 +341,7 @@ form {
   padding: 2rem;
   animation: fadeIn 0.3s ease-in-out;
   background-color: var(--grey);
-  border-radius: 20px;
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
 }
 
 .profile-form {
@@ -342,7 +358,11 @@ form {
   display: flex;
   gap: 1rem;
   padding: 1rem 1rem;
-  border-radius: 20px;
+  border-radius: var(--border-radius);
+}
+
+.text-center {
+  text-align: center;
 }
 
 /* ---------- Login, Create and Update Page Styling ---------- */
@@ -353,6 +373,7 @@ form {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  text-align: center;
 }
 
 .login-page-logo {
@@ -497,7 +518,7 @@ form {
   width: 90%;
   align-self: center;
   z-index: 2002;
-  border-radius: 20px;
+  border-radius: var(--border-radius);
   padding: 1.5rem;
   animation: slideUpFromBottom 0.3s ease-out;
 }
@@ -578,7 +599,7 @@ form {
 /* ---------- Page Styling ---------- */
 .page {
   animation: fadeIn 0.5s;
-  padding: 2em 2em 2em;
+  padding: 2em 2em 7em;
 }
 
 /* ---------- Container Styling ---------- */
@@ -701,8 +722,13 @@ form {
   display: none;
 }
 
-.image-preview {
+.profile-image-preview {
   cursor: pointer;
+  height: 6em;
+  width: 6em;
+  border-radius: 50%;
+  background-color: var(--grey);
+  padding: 1rem;
 }
 
 /*------------ Blåboks Styling -------------*/
@@ -801,7 +827,7 @@ form {
   position: sticky;
 }
 
-.rating-filter :nth-child(1) {
+.rating-filter > :nth-child(1) {
   display: grid;
   grid-template-columns: 6fr 1fr;
   gap: 1em;
@@ -814,10 +840,10 @@ form {
 
 .filter-overlay {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 50px;
+  right: -30px;
   width: 80vw;
-  height: 50vh;
+  height: auto;
   padding: 1em;
   z-index: 1;
   display: flex;
@@ -831,8 +857,6 @@ form {
 .filter-overlay > * {
   width: 100%;
   margin-top: 1em;
-  /* border: solid 2px var(--light-grey);
-  border-radius: var(--border-radius); */
 }
 
 .filter-overlay select {
@@ -848,6 +872,26 @@ form {
   background-color: transparent;
   padding: 0.5rem 1rem;
   border: solid 2px var(--light-grey);
+}
+
+.filter-knapper{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.filter-knapper button:last-child{
+  background-color: var(--white);
+  color: var(--black);
+  border: solid 2px var(--black);
+}
+
+.filter-knapper button{
+  width: 100%;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border-radius: var(--border-radius);
 }
 
 .loading-message {
@@ -997,6 +1041,7 @@ form {
   background-color: var(--blue);
   border-radius: var(--border-radius);
   color: #fff;
+  margin-top: 2rem;
 }
 
 .stevne-card #streg {
@@ -1204,6 +1249,11 @@ form {
   max-width: 200px;
   height: auto;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+.update-card {
+  color: var(--black);
+  text-align: left;
 }
 
 @keyframes pulse {

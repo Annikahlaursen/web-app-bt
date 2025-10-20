@@ -6,6 +6,7 @@ export default function SearchSpiller({ kamp, onSpillerChange }) {
   const [searchQuery, setSearchQuery] = useState(""); // set the initial state to an empty string
   const [users, setUsers] = useState([]); // set the initial state to an empty array
   const [showResults, setShowResults] = useState(false); // Track input focus
+  const [showUdeResults, setShowUdeResults] = useState(false); // Track input focus
   const [selectedOption, setSelectedOption] = useState({});
   const [selectedPlayers, setSelectedPlayers] = useState([]);
 
@@ -55,9 +56,20 @@ export default function SearchSpiller({ kamp, onSpillerChange }) {
     if (onSpillerChange) onSpillerChange(selectedOptions); // 🔥 send data op
   }
 
+  const udeTeamHid = kamp.udehold;
+  const udeTeamUsers = users.filter((user) => user.hid === udeTeamHid);
+  // Filter posts based on the search query
+  const filteredUsers = teamUsers.filter((user) =>
+    (user.fornavn ?? "").toLowerCase().includes(searchQuery)
+  );
+
+  const filteredUdeUsers = udeTeamUsers.filter((user) =>
+    (user.fornavn ?? "").toLowerCase().includes(searchQuery)
+  );
+
   return (
     <>
-      <Select
+    <Select
         isMulti
         options={userOptions}
         //value={selectedOption}
@@ -65,11 +77,40 @@ export default function SearchSpiller({ kamp, onSpillerChange }) {
         placeholder="Søg efter spiller"
         isClearable
         isSearchable
-      />
-
+      <label>
+        Hjemmehold{" "}
+        <input
+          aria-label="Search by caption"
+          defaultValue={searchQuery}
+          onClick={() => setShowResults(true)}
+          onChange={(event) => setSearchQuery(event.target.value.toLowerCase())}
+          placeholder="Søg spiller"
+          type="search"
+          name="searchQuery"
+        />
+      </label>
       {showResults && (
         <div>
           {filteredUsers.map((user, idx) => (
+            <RatingBoks key={user.id} user={user} placering={idx + 1} />
+          ))}
+        </div>
+      )}
+      <label>
+        Udehold{" "}
+        <input
+          aria-label="Search by caption"
+          defaultValue={searchQuery}
+          onClick={() => setShowUdeResults(true)}
+          onChange={(event) => setSearchQuery(event.target.value.toLowerCase())}
+          placeholder="Søg spiller"
+          type="search"
+          name="searchQuery"
+        />
+      </label>
+      {showUdeResults && (
+        <div>
+          {filteredUdeUsers.map((user, idx) => (
             <RatingBoks key={user.id} user={user} placering={idx + 1} />
           ))}
         </div>

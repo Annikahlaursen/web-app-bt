@@ -2,34 +2,50 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { auth } from "../firebase-config";
+import { setCurrentUserStorage } from "../utils/currentUserEvents";
 
 export default function SignInCard() {
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
-
   async function handleSignIn(event) {
     event.preventDefault();
-    const mail = event.target.mail.value; // mail value from input field in sign in form
-    const password = event.target.password.value; // password value from input field in sign in form
+    setErrorMessage("");
+
+    const email = event.target.mail.value;
+    const password = event.target.password.value;
 
     try {
       const userCredential = await signInWithEmailAndPassword(
         auth,
-        mail,
+        email,
         password
       );
       const user = userCredential.user;
-      // store minimal user info for later pages (ProfileInfo reads from localStorage fallback)
-      try {
-        localStorage.setItem(
-          "currentUser",
-          JSON.stringify({ uid: user.uid, email: user.email })
-        );
-        // also set auth flag so App can render private routes immediately
-        localStorage.setItem("isAuth", "true");
-      } catch (e) {
-        console.warn("Could not write currentUser to localStorage", e);
+
+      // Try to load the user's profile from the realtime DB (by uid)
+      let profile = null;
+      const firebaseDbUrlBase = import.meta.env.VITE_FIREBASE_DATABASE_URL;
+      if (firebaseDbUrlBase && user?.uid) {
+        try {
+          const url = `${firebaseDbUrlBase}/users/${user.uid}.json`;
+          const resp = await fetch(url);
+          if (resp.ok) {
+            const data = await resp.json();
+            if (data) profile = data;
+          }
+        } catch (e) {
+          console.warn("Could not load user profile from DB", e);
+        }
       }
+
+      if (profile) {
+        const currentUser = { uid: user.uid, email: user.email, profile };
+        setCurrentUserStorage(currentUser);
+      } else {
+        // fallback: store minimal info so UI still reacts
+        setCurrentUserStorage({ uid: user.uid, email: user.email });
+      }
+
       // navigate to home on success
       navigate("/home");
     } catch (error) {
@@ -56,7 +72,7 @@ export default function SignInCard() {
             type="email"
             name="mail"
             aria-label="mail"
-            placeholder="Type your mail..."
+            placeholder="Email"
             required
           />
           <input
@@ -65,7 +81,7 @@ export default function SignInCard() {
             type="password"
             name="password"
             aria-label="password"
-            placeholder="Type your password..."
+            placeholder="Adgangskode"
             autoComplete="current-password"
           />
           <div className="error-message">
@@ -73,27 +89,27 @@ export default function SignInCard() {
           </div>
           <div>
             <button
-              className="profile-btns profile-btns-actions-seperat"
+              className="profile-btns profile-btns-actions-seperat profile-btns-actions-white"
               type="submit"
             >
               Log på
             </button>
+            <p style={{ color: "#fff" }}>Har du glemt din adgangskode?</p>
           </div>
         </form>
 
         <div className="profile-btns-actions">
           <button
-            className="profile-btns profile-btns-actions-seperat"
-            id="save-btn"
+            className="profile-btns profile-btns-actions-seperat profile-btn-actions-red"
             onClick={handleGoToSignUp}
           >
             Opret ny konto
           </button>
-          <p>Eller</p>
-          <button className="profile-btns profile-btns-actions-seperat">
+          <p style={{ color: "#fff" }}>Eller</p>
+          <button className="profile-btns profile-btns-actions-seperat profile-btns-actions-style">
             Log ind med Facebook
           </button>
-          <button className="profile-btns profile-btns-actions-seperat">
+          <button className="profile-btns profile-btns-actions-seperat profile-btns-actions-style">
             Log ind med Google
           </button>
         </div>

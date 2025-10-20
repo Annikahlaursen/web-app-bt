@@ -1,5 +1,8 @@
 import { Routes, Route, Navigate } from "react-router";
 import { useState } from "react";
+import { auth } from "./firebase-config";
+import { onAuthStateChanged } from "firebase/auth";
+
 import Nav from "./components/Nav";
 import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
@@ -13,9 +16,10 @@ import StevnePage from "./pages/StevnePage";
 import Error from "./pages/ErrorPage";
 import RatingPage from "./pages/RatingPage";
 import KalenderPage from "./pages/KalenderPage";
-import { auth } from "./firebase-config";
-import { onAuthStateChanged } from "firebase/auth";
+import StevneSearchPage from "./pages/StevneSearchPage";
 import KampCard from "./components/KampCard";
+import UpdateCard from "./components/UpdateCard";
+
 
 export default function App() {
   const [isAuth, setIsAuth] = useState(localStorage.getItem("isAuth")); // default value comes from localStorage
@@ -52,6 +56,7 @@ export default function App() {
           <Route path="/stevne/:id/tilmeld" element={<Error />} />
           <Route path="/kalender" element={<KalenderPage />} />
           <Route path="/:id" element={<KampCard />} />
+          <Route path="/stevnesearch" element={<StevneSearchPage />} />
         </Routes>
       </main>
     </>
@@ -60,6 +65,7 @@ export default function App() {
   // variable holding all public routes without nav bar
   const publicRoutes = (
     <Routes>
+      <Route path="/update/:id" element={<UpdateCard />} />
       <Route path="/sign-in" element={<SignInPage />} />
       <Route path="/sign-up" element={<SignUpPage />} />
       <Route path="*" element={<Navigate to="/sign-in" />} />
