@@ -3,7 +3,7 @@ import share from "/public/share.svg";
 import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 
-export default function KampCard({ kamp }) {
+export default function KampCard({ kamp, oplysninger }) {
   //const [kamp, setKamp] = useState({});
   const [hold, setHold] = useState({});
   const [klub, setKlub] = useState({});
@@ -55,6 +55,10 @@ export default function KampCard({ kamp }) {
     navigate(`/kamp/${kamp.id}`);
   }
 
+  function handleResultatClick() {
+    navigate(`/kamp/${kamp.id}/resultat`);
+  }
+
   //get data from hold and klub based on kamp data
   const hjemmeholdNavn = hold?.[kamp?.hjemmehold]?.navn ?? "Hjemme";
   const udeholdNavn = hold?.[kamp?.udehold]?.navn ?? "Ude";
@@ -63,36 +67,61 @@ export default function KampCard({ kamp }) {
   const udeklubLogo =
     klub?.[kamp?.udeklub]?.image ?? "https://placehold.co/50x50.webp";
 
-  return (
-    <div className="kamp-card" onClick={handleClick}>
-      <div className="kamp-container">
-        <p>{kamp?.id}</p>
-        <p>{kamp?.dato}</p>
-      </div>
-      <div className="kamp-container">
-        <div className="kamp-hold">
-          <img src={hjemmeklubLogo} alt={klub?.navn} />
-          <p>{hjemmeholdNavn}</p>
+  if (oplysninger === "kunOplysninger") {
+    return (
+      <div className="kamp-card" onClick={handleResultatClick}>
+        <div className="kamp-container">
+          <p>{kamp?.id}</p>
+          <p>{kamp?.dato}</p>
         </div>
-        <div className="kamp-vs">
-          <p>VS</p>
-          <p>{kamp?.tid}</p>
-        </div>
-        <div className="kamp-hold">
-          <img src={udeklubLogo} alt="" />
-          <p>{udeholdNavn}</p>
-        </div>
-      </div>
-      <div className="kamp-container" id="streg">
-        <div className="del-notifikationer" id="streg-midt">
-          <img src={share} alt="Dele ikon" />
-          <p>Del</p>
-        </div>
-        <div className="del-notifikationer">
-          <img src={bell} alt="Notifikations klokke ikon" />
-          <p>Notifikationer</p>
+        <div className="kamp-container">
+          <div className="kamp-hold">
+            <img src={hjemmeklubLogo} alt={klub?.navn} />
+            <p>{hjemmeholdNavn}</p>
+          </div>
+          <div className="kamp-vs">
+            <p>VS</p>
+            <p>{kamp?.tid}</p>
+          </div>
+          <div className="kamp-hold">
+            <img src={udeklubLogo} alt="" />
+            <p>{udeholdNavn}</p>
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  } else {
+    return (
+      <div className="kamp-card" onClick={handleClick}>
+        <div className="kamp-container">
+          <p>{kamp?.id}</p>
+          <p>{kamp?.dato}</p>
+        </div>
+        <div className="kamp-container">
+          <div className="kamp-hold">
+            <img src={hjemmeklubLogo} alt={klub?.navn} />
+            <p>{hjemmeholdNavn}</p>
+          </div>
+          <div className="kamp-vs">
+            <p>VS</p>
+            <p>{kamp?.tid}</p>
+          </div>
+          <div className="kamp-hold">
+            <img src={udeklubLogo} alt="" />
+            <p>{udeholdNavn}</p>
+          </div>
+        </div>
+        <div className="kamp-container" id="streg">
+          <div className="del-notifikationer" id="streg-midt">
+            <img src={share} alt="Dele ikon" />
+            <p>Del</p>
+          </div>
+          <div className="del-notifikationer">
+            <img src={bell} alt="Notifikations klokke ikon" />
+            <p>Notifikationer</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
