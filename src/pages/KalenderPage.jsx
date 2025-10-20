@@ -127,7 +127,7 @@ export default function KalenderPage() {
         return Object.keys(filteredEvents).map((month, index) => (
           <div key={month}>
             <h2 className="month-header" ref={(el)=>(monthHeadersRef.current[index] = el)}>{month}</h2>
-            {groupedEvents[month].map((event) => {
+            {filteredEvents[month].map((event) => {
               const isNextEvent =
                 !nextEventFound &&  new Date(event.dato).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0);
               if (isNextEvent) {
