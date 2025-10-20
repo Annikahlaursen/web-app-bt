@@ -46,7 +46,7 @@ export default function KalenderPage() {
     if (nextEventRef.current) {
       nextEventRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
     }
-  }, [events]);
+  }, [groupedEvents]);
 
   // Helper function to format the month header
   const formatMonth = (dato) => {
@@ -72,9 +72,9 @@ export default function KalenderPage() {
         return Object.keys(groupedEvents).map((month) => (
           <div key={month}>
             <h2>{month}</h2>
-            {groupedEvents[month].map((event, index) => {
+            {groupedEvents[month].map((event) => {
               const isNextEvent =
-                !nextEventFound && new Date(event.dato) > new Date(); // Only mark the first upcoming event
+                !nextEventFound &&  new Date(event.dato).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0);
               if (isNextEvent) {
                 nextEventFound = true; // Mark that the next event has been found
                 console.log("Next event found:", event);
