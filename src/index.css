@@ -114,6 +114,8 @@ form {
   position: fixed;
   right: 0;
   text-align: center;
+  align-items: center;
+  justify-items: center;
   bottom: 0;
   padding: 1.5em 3em;
   grid-template-columns: 1fr 1fr 1fr;
@@ -1169,10 +1171,11 @@ form {
 
 .kamp-info-section {
   margin-top: -4rem;
+  margin-bottom: 4rem;
   background-color: var(--white);
   border-radius: var(--border-radius);
   padding: 2rem;
-  min-height: 50rem;
+  min-height: 55rem;
 }
 
 .kamp-info {
@@ -1196,6 +1199,11 @@ form {
   text-align: center;
 }
 
+.kamp-info-section.stevne{
+  min-height: 110vh;
+  height: auto;
+}
+
 /* ---------- Button Styling ---------- */
 .btn {
   background-color: var(--lightred);
@@ -1206,7 +1214,7 @@ form {
   font-size: 1rem;
   font-family: var(--display-font);
   position: sticky;
-  top: 42rem;
+  top: 80%;
   margin: 0 auto;
   display: block;
 }
@@ -1241,7 +1249,7 @@ form {
 
 /* ---------- forside Styling ---------- */
 .forside {
-  padding: 0.5em 2em 2em;
+  padding: 0.5em 2em 7em;
   border-radius: var(--border-radius) var(--border-radius) 0 0;
   background-color: var(--white);
   margin-top: -3rem;
