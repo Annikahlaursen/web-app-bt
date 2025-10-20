@@ -1114,8 +1114,8 @@ form {
   margin-bottom: 4rem;
   background-color: var(--white);
   border-radius: var(--border-radius);
-  padding: 2rem 2rem 200px;
-  min-height: 50rem;
+  padding: 2rem;
+  min-height: 55rem;
 }
 
 .kamp-info {
@@ -1137,6 +1137,11 @@ form {
 
 .blue-background h2 {
   text-align: center;
+}
+
+.kamp-info-section.stevne{
+  min-height: 110vh;
+  height: auto;
 }
 
 /* ---------- Button Styling ---------- */

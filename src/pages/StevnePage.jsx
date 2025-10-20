@@ -43,7 +43,7 @@ export default function StevnePage() {
         />
         <h2>{stevne.titel}</h2>
       </div>
-      <section className="kamp-info-section">
+      <section className="kamp-info-section stevne">
         <button className="btn" onClick={clicked}>
           {stevne.ertilmeldt ? "Du er tilmeldt" : "Tilmeld stævne "}
         </button>
