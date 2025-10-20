@@ -1,33 +1,29 @@
 import { useNavigate, useParams } from "react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import arrowWhite from "/public/arrow-left-white.svg";
 import calendar from "/public/calendar-outline.svg";
 import location from "/public/location-dot.svg";
 
-export default function StevnePage({stevne}) {
+export default function StevnePage() {
   const navigate = useNavigate();
   const { id } = useParams();
+  const [stevne, setStevne] = useState({});
 
 
-  // useEffect(() => {
-  //   async function fetchStevne() {
-  //     const response = await fetch(
-  //       `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/staevner/${id}.json`
-  //     );
+  useEffect(() => {
+    async function fetchStevne() {
+      const response = await fetch(
+        `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/staevner/${id}.json`
+      );
 
-  //     const data = await response.json();
+      const data = await response.json();
 
-  //     const staevneArray = Object.keys(data).map((stevneId) => ({
-  //       id: stevneId,
-  //       ...data[stevneId],
-  //     }));
+      setStevne(data);
+      console.log(data);
+    }
 
-  //     setStevne(staevneArray);
-  //     console.log(staevneArray);
-  //   }
-
-  //   fetchStevne();
-  // }, [id]);
+    fetchStevne();
+  }, [id]);
 
   function clicked(event) {
     event.preventDefault();
@@ -58,12 +54,11 @@ export default function StevnePage({stevne}) {
         </div>
         <div className="kamp-info">
           <img src={location} alt="Location pin icon" />
-          <p>Adresse, postnummer</p>
+          <p>{stevne.lokation}</p>
         </div>
         <div className="kamp-info">
-          <p>Pris: 100 DKK</p>
+          <p>{`Pris: ${stevne.pris} DKK`}</p>
         </div>
-        <br />
         <h2>Rækker</h2>
         <p>LØRDAG</p>
         <ul>
