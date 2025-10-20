@@ -4,6 +4,8 @@ export default function KalenderPage() {
   return (
     <section className="page">
       <KalenderFilter />
+
+      
     </section>
   );
 }

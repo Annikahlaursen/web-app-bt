@@ -1045,6 +1045,7 @@ form {
   background-color: var(--lightred);
   border-radius: var(--border-radius);
   color: #fff;
+  margin-top: 2rem;
 }
 
 .kamp-container {
