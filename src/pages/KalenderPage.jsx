@@ -17,7 +17,7 @@ export default function KalenderPage() {
       const stevneArray = Object.keys(stevneData).map((id) => ({
         id,
         ...stevneData[id],
-        type: "stevne", // Add type to distinguish between stevne and kamp
+        type: "stevne", //Tilføj type for at skelne mellem stevne og kamp
       }));
 
       // Fetch kamp data
@@ -28,12 +28,11 @@ export default function KalenderPage() {
       const kampArray = Object.keys(kampData).map((id) => ({
         id,
         ...kampData[id],
-        type: "kamp", // Add type to distinguish between stevne and kamp
+        type: "kamp",
       }));
 
-      // Combine and sort events by date
       const combinedEvents = [...stevneArray, ...kampArray].sort(
-        (a, b) => new Date(a.date) - new Date(b.date)
+        (a, b) => new Date(a.dato) - new Date(b.dato)
       );
 
       setEvents(combinedEvents);
@@ -52,7 +51,9 @@ export default function KalenderPage() {
   // Helper function to format the month header
   const formatMonth = (dato) => {
     const options = { month: "long", year: "numeric" };
-    return new Date(dato).toLocaleDateString("da-DK", options);
+    const formattedDate = new Date(dato).toLocaleDateString("da-DK", options);
+
+    return formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
   };
 
   // Group events by month
@@ -71,7 +72,7 @@ export default function KalenderPage() {
           <h2>{month}</h2>
           {groupedEvents[month].map((event, index) => {
             const isNextEvent =
-              new Date(event.date) > new Date() &&
+              new Date(event.dato) > new Date() &&
               !nextEventRef.current; // Find the first upcoming event
             return event.type === "stevne" ? (
               <StevneCard
