@@ -59,9 +59,9 @@ export default function SearchSpiller({ kamp, onSpillerChange }) {
   const udeTeamHid = kamp.udehold;
   const udeTeamUsers = users.filter((user) => user.hid === udeTeamHid);
   // Filter posts based on the search query
-  const filteredUsers = teamUsers.filter((user) =>
+  /*const filteredUsers = teamUsers.filter((user) =>
     (user.fornavn ?? "").toLowerCase().includes(searchQuery)
-  );
+  );*/
 
   const filteredUdeUsers = udeTeamUsers.filter((user) =>
     (user.fornavn ?? "").toLowerCase().includes(searchQuery)
@@ -69,7 +69,7 @@ export default function SearchSpiller({ kamp, onSpillerChange }) {
 
   return (
     <>
-    <Select
+      <Select
         isMulti
         options={userOptions}
         //value={selectedOption}
@@ -77,18 +77,8 @@ export default function SearchSpiller({ kamp, onSpillerChange }) {
         placeholder="Søg efter spiller"
         isClearable
         isSearchable
-      <label>
-        Hjemmehold{" "}
-        <input
-          aria-label="Search by caption"
-          defaultValue={searchQuery}
-          onClick={() => setShowResults(true)}
-          onChange={(event) => setSearchQuery(event.target.value.toLowerCase())}
-          placeholder="Søg spiller"
-          type="search"
-          name="searchQuery"
-        />
-      </label>
+      />
+
       {showResults && (
         <div>
           {filteredUsers.map((user, idx) => (
@@ -96,18 +86,7 @@ export default function SearchSpiller({ kamp, onSpillerChange }) {
           ))}
         </div>
       )}
-      <label>
-        Udehold{" "}
-        <input
-          aria-label="Search by caption"
-          defaultValue={searchQuery}
-          onClick={() => setShowUdeResults(true)}
-          onChange={(event) => setSearchQuery(event.target.value.toLowerCase())}
-          placeholder="Søg spiller"
-          type="search"
-          name="searchQuery"
-        />
-      </label>
+
       {showUdeResults && (
         <div>
           {filteredUdeUsers.map((user, idx) => (
