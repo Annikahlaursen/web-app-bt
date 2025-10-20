@@ -114,6 +114,8 @@ form {
   position: fixed;
   right: 0;
   text-align: center;
+  align-items: center;
+  justify-items: center;
   bottom: 0;
   padding: 1.5em 3em;
   grid-template-columns: 1fr 1fr 1fr;
@@ -1109,9 +1111,10 @@ form {
 
 .kamp-info-section {
   margin-top: -4rem;
+  margin-bottom: 4rem;
   background-color: var(--white);
   border-radius: var(--border-radius);
-  padding: 2rem;
+  padding: 2rem 2rem 200px;
   min-height: 50rem;
 }
 
@@ -1146,7 +1149,7 @@ form {
   font-size: 1rem;
   font-family: var(--display-font);
   position: sticky;
-  top: 42rem;
+  top: 80%;
   margin: 0 auto;
   display: block;
 }

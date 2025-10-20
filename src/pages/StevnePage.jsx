@@ -9,7 +9,6 @@ export default function StevnePage() {
   const { id } = useParams();
   const [stevne, setStevne] = useState({});
 
-
   useEffect(() => {
     async function fetchStevne() {
       const response = await fetch(
@@ -46,7 +45,7 @@ export default function StevnePage() {
       </div>
       <section className="kamp-info-section">
         <button className="btn" onClick={clicked}>
-          Tilmeld stævne
+          {stevne.ertilmeldt ? "Du er tilmeldt" : "Tilmeld stævne "}
         </button>
         <div className="kamp-info">
           <img src={calendar} alt="Calendar icon" />
@@ -59,6 +58,7 @@ export default function StevnePage() {
         <div className="kamp-info">
           <p>{`Pris: ${stevne.pris} DKK`}</p>
         </div>
+        <p>{stevne.beskrivelse}</p>
         <h2>Rækker</h2>
         <p>LØRDAG</p>
         <ul>
@@ -72,6 +72,16 @@ export default function StevnePage() {
           <li>Drenge B</li>
           <li>Puslinge A</li>
         </ul>
+        {stevne.ertilmeldt && (
+          <div>
+            <p>Du er tilmeldt rækkerne:</p>
+            <ul>
+              {stevne.tilmeldt.map((række, index) => (
+                <li key={index}>{række}</li>
+              ))}
+            </ul>
+          </div>
+        )}
       </section>
     </>
   );
