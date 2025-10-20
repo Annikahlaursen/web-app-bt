@@ -935,8 +935,18 @@ form {
 }
 
 /*-------------Kalender Filter Styling------------*/
+.kalender-filter{
+  display: flex;
+  position: sticky;
+  top: 0;
+  padding: 2rem 0 0;
+  background-color: var(--white);
+  z-index: 4;
+  height: auto;
+  box-sizing: content-box;
+}
+
 .kalender-filter-container {
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -945,6 +955,7 @@ form {
   padding: 0.5rem 1rem;
   border-radius: var(--border-radius);
   overflow: hidden;
+  position: relative;
 }
 
 .kalender-filter-button {
@@ -955,7 +966,7 @@ form {
   padding: 0.5rem 1rem;
   border-radius: var(--border-radius);
   cursor: pointer;
-  z-index: 2;
+  /* z-index: 3; */
   color: #000;
 }
 
@@ -965,6 +976,7 @@ form {
   bottom: 0;
   border-radius: var(--border-radius);
   z-index: 1;
+  height: 100%;
 }
 
 .filter-label {
@@ -975,6 +987,15 @@ form {
 
 .filter-label.active-label {
   color: #fff;
+}
+
+.month-header {
+  position: sticky;
+  top: 5rem;
+  background-color: var(--white);
+  z-index: 1;
+  padding: 1rem 1rem;
+  margin:0;
 }
 
 /*-----------NyhedsCard Styling-------------*/
@@ -1077,7 +1098,7 @@ form {
   background-color: var(--blue);
   border-radius: var(--border-radius);
   color: #fff;
-  margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 
 .stevne-card #streg {
@@ -1107,12 +1128,13 @@ form {
   background-color: var(--lightred);
   border-radius: var(--border-radius);
   color: #fff;
-  margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 
 .kamp-container {
   display: flex;
   justify-content: space-between;
+  align-items: baseline;
   padding-right: 1rem;
   padding-left: 1rem;
 }
