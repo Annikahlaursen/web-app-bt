@@ -113,8 +113,6 @@ export default function HomePage() {
           </Link>
         </section>
       </section>
-
-      {/* <p>https://web-app-bt-124b8-default-rtdb.firebaseio.com/</p> */}
     </section>
   );
 }

@@ -2,51 +2,109 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { auth } from "../firebase-config";
+import { setCurrentUserStorage } from "../utils/currentUserEvents";
 import Logo from "/btp-logo.png";
-import Update from "../components/UpdateCard";
+import Update from "./UpdatePage";
+// import Update from "../components/UpdateCard"; (not used)
 
 export default function SignUpPage() {
   const [errorMessage, setErrorMessage] = useState("");
+  const [showUpdate, setShowUpdate] = useState(false);
   const navigate = useNavigate();
 
-  function handleSignUp(event) {
+  async function handleSignUp(event) {
     event.preventDefault();
+    // show the UpdateCard immediately so user can continue with profile details
+    setShowUpdate(true);
+    setErrorMessage("");
+
     const form = event.target;
+    const fornavn =
+      form.querySelector("#fornavn")?.value || form.name?.value || "";
+    const efternavn =
+      form.querySelector("#efternavn")?.value || form.efternavn?.value || "";
+    const mail = form.querySelector("#mail")?.value || form.mail?.value || "";
+    const phone =
+      form.querySelector("#phone")?.value || form.phone?.value || "";
+    const password =
+      form.querySelector("#password")?.value || form.password?.value || "";
 
-    const name = form.name.value;
-    const mail = form.mail.value;
-    const password = form.password.value;
+    try {
+      // create Firebase Authentication user
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        mail,
+        password
+      );
+      const user = userCredential.user;
 
-    createUserWithEmailAndPassword(auth, mail, password)
-      .then((userCredential) => {
-        // Created and signed in
-        const user = userCredential.user;
-        createUser(user.uid, name, mail); // creating a new user in the database
-      })
-      .catch((error) => {
-        let code = error.code; // saving error code in variable
-        console.log(code);
-        code = code.replaceAll("-", " "); // some JS string magic to display error message. See the log above in the console
-        code = code.replaceAll("auth/", "");
-        //setErrorMessage(code);
-      });
+      // build profile payload (write both danish keys and legacy english keys for compatibility)
+      const payload = {
+        fornavn,
+        efternavn,
+        mail,
+        phone,
+      };
 
-    navigate({ Update });
+      // persist profile to Realtime DB using PATCH so we don't overwrite other fields
+      await createUser(user.uid, payload);
+
+      // fetch saved profile (best-effort) and store full object locally so UI updates
+      let savedProfile = null;
+      const firebaseDbUrlBase = import.meta.env.VITE_FIREBASE_DATABASE_URL;
+      if (firebaseDbUrlBase) {
+        try {
+          const resp = await fetch(
+            `${firebaseDbUrlBase}/users/${user.uid}.json`
+          );
+          if (resp.ok) savedProfile = await resp.json();
+        } catch {
+          console.warn("Could not fetch saved profile after create");
+        }
+      }
+
+      // persist currentUser locally so UI updates immediately
+      const storageObj = savedProfile
+        ? { uid: user.uid, mail: user.mail, profile: savedProfile }
+        : { uid: user.uid, mail: user.mail, profile: { fornavn, efternavn } };
+      setCurrentUserStorage(storageObj);
+
+      // navigate to update route (use the new uid so UpdateCard persists after auth change)
+      navigate(`/update/${user.uid}`);
+    } catch (error) {
+      let code = error.code || error.message || "unknown error";
+      try {
+        code = String(code).replaceAll("-", " ").replaceAll("auth/", "");
+      } catch {
+        /* noop */
+      }
+      // revert optimistic UI if signup failed
+      setShowUpdate(false);
+      setErrorMessage(code);
+    }
   }
 
-  async function createUser(uid, name, mail) {
+  async function createUser(uid, payload) {
     const url = `${
       import.meta.env.VITE_FIREBASE_DATABASE_URL
     }/users/${uid}.json`;
-    const response = await fetch(url, {
-      method: "PUT",
-      body: JSON.stringify({ name, mail }),
-    });
-    if (response.ok) {
+    try {
+      const response = await fetch(url, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!response.ok) {
+        const text = await response.text();
+        console.error("Failed to create user record:", response.status, text);
+        throw new Error("Failed to create user record");
+      }
       const data = await response.json();
       console.log("New user created: ", data);
-    } else {
+      return data;
+    } catch (err) {
       setErrorMessage("Sorry, something went wrong");
+      throw err;
     }
   }
 
@@ -57,7 +115,9 @@ export default function SignUpPage() {
           <img id="login-logo" src={Logo} alt="Bordtennisportalen.dk logo" />
         </div>
         <div className="profile-info-parent">
-          <div className="profile-info-parent">
+          {showUpdate ? (
+            <Update />
+          ) : (
             <div className="profile-card">
               <div>
                 <form
@@ -66,7 +126,7 @@ export default function SignUpPage() {
                   onSubmit={handleSignUp}
                 >
                   <input
-                    id="name"
+                    id="fornavn"
                     type="text"
                     name="name"
                     className="profile-form-content"
@@ -74,9 +134,9 @@ export default function SignUpPage() {
                     required
                   />
                   <input
-                    id="lastname"
+                    id="efternavn"
                     type="text"
-                    name="lastname"
+                    name="efternavn"
                     className="profile-form-content"
                     placeholder="Efternavn"
                     required
@@ -113,21 +173,18 @@ export default function SignUpPage() {
                     <p>{errorMessage}</p>
                   </div>
                   <div className="profile-btns-actions">
-                    <button
-                      className="profile-btns profile-btns-actions-seperat"
-                      id="save-btn"
-                    >
+                    <button className="profile-btns profile-btns-actions-seperat profile-btn-actions-lightred">
                       Opret konto
                     </button>
                   </div>
                 </form>
               </div>
-
-              <p className="text-center">
-                Har du allerede en konto? <Link to="/sign-in">Log på</Link>
-              </p>
             </div>
-          </div>
+          )}
+          <br />
+          <p className="text-center">
+            Har du allerede en konto? <Link to="/sign-in">Log på</Link>
+          </p>
         </div>
       </div>
     </div>

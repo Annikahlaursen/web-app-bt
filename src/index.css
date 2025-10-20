@@ -114,6 +114,8 @@ form {
   position: fixed;
   right: 0;
   text-align: center;
+  align-items: center;
+  justify-items: center;
   bottom: 0;
   padding: 1.5em 3em;
   grid-template-columns: 1fr 1fr 1fr;
@@ -161,7 +163,7 @@ form {
   color: inherit;
   transition: all 0.3s ease;
   cursor: pointer;
-  border-radius: 12px;
+  border-radius: var(--border-radius);
 }
 
 .navprofile:hover {
@@ -188,10 +190,11 @@ form {
 }
 
 .profileinfo {
-  line-height: 0.7rem;
+  line-height: 10px;
+  align-items: center;
 }
 
-.profileinfo h3 {
+.profileinfo h4 {
   margin: 0;
 }
 
@@ -227,7 +230,7 @@ form {
   color: var(--text-color-dark);
   align-self: center;
   z-index: 2002;
-  border-radius: 20px;
+  border-radius: var(--border-radius);
   padding: 1rem;
   margin-bottom: 1.3rem;
 }
@@ -245,14 +248,6 @@ form {
   grid-template-columns: 1fr;
 }
 
-.profile-info-card-image {
-  background-color: var(--grey);
-  width: 6em;
-  height: 6em;
-  border-radius: 50%;
-  padding: 1rem;
-}
-
 .profile-card-content {
   margin: 1rem 0 2rem;
   justify-self: center;
@@ -262,7 +257,7 @@ form {
   background-color: var(--grey);
   justify-self: center;
   width: 85%;
-  border-radius: 20px;
+  border-radius: var(--border-radius);
   text-align: center;
   line-height: 0.5rem;
   padding: 2% 0 2% 0;
@@ -276,20 +271,43 @@ form {
 
 .profile-btns-actions-seperat {
   width: 100%;
-  border: var(--black) solid 2px;
-  border-radius: 20px;
+  color: var(--white);
+  border-radius: var(--border-radius);
   gap: 1rem;
   padding: 1rem 0;
+  border: none;
+}
+
+.profile-btns-actions-white {
+  background-color: var(--white);
+  color: var(--black);
+}
+
+.profile-btn-actions-red {
+  background-color: var(--darkred);
+}
+
+.profile-btn-actions-lightred {
+  background-color: var(--lightred);
+}
+
+.profile-btn-actions-blackborder {
+  border: var(--black) solid 2px;
+  background-color: var(--white);
+  color: var(--black);
+}
+
+.profile-btn-actions-nobackground {
+  background-color: transparent;
+}
+
+.profile-btns-actions-style {
+  background-color: var(--lightred);
+  border: var(--white) solid 2px;
 }
 
 .profile-btns-actions p {
   text-align: center;
-}
-
-#save-btn {
-  background-color: var(--lightred);
-  color: var(--white);
-  border: none;
 }
 
 .profile-btns-seperate {
@@ -325,7 +343,7 @@ form {
   padding: 2rem;
   animation: fadeIn 0.3s ease-in-out;
   background-color: var(--grey);
-  border-radius: 20px;
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
 }
 
 .profile-form {
@@ -342,7 +360,11 @@ form {
   display: flex;
   gap: 1rem;
   padding: 1rem 1rem;
-  border-radius: 20px;
+  border-radius: var(--border-radius);
+}
+
+.text-center {
+  text-align: center;
 }
 
 /* ---------- Login, Create and Update Page Styling ---------- */
@@ -353,6 +375,7 @@ form {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  text-align: center;
 }
 
 .login-page-logo {
@@ -376,6 +399,40 @@ form {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* Upload spinner overlay inside profile image */
+.upload-spinner-overlay {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  z-index: 50;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top-color: var(--lightred);
+  animation: spin 1s linear infinite;
+}
+
+.upload-percent {
+  color: var(--white);
+  font-weight: 600;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .overlay-background {
@@ -497,7 +554,7 @@ form {
   width: 90%;
   align-self: center;
   z-index: 2002;
-  border-radius: 20px;
+  border-radius: var(--border-radius);
   padding: 1.5rem;
   animation: slideUpFromBottom 0.3s ease-out;
 }
@@ -701,8 +758,13 @@ form {
   display: none;
 }
 
-.image-preview {
+.profile-image-preview {
   cursor: pointer;
+  height: 6em;
+  width: 6em;
+  border-radius: 50%;
+  background-color: var(--grey);
+  padding: 1rem;
 }
 
 /*------------ Blåboks Styling -------------*/
@@ -1132,10 +1194,11 @@ form {
 
 .kamp-info-section {
   margin-top: -4rem;
+  margin-bottom: 4rem;
   background-color: var(--white);
   border-radius: var(--border-radius);
   padding: 2rem;
-  min-height: 50rem;
+  min-height: 55rem;
 }
 
 .kamp-info {
@@ -1159,6 +1222,11 @@ form {
   text-align: center;
 }
 
+.kamp-info-section.stevne{
+  min-height: 110vh;
+  height: auto;
+}
+
 /* ---------- Button Styling ---------- */
 .btn {
   background-color: var(--lightred);
@@ -1169,7 +1237,7 @@ form {
   font-size: 1rem;
   font-family: var(--display-font);
   position: sticky;
-  top: 42rem;
+  top: 80%;
   margin: 0 auto;
   display: block;
 }
@@ -1204,7 +1272,7 @@ form {
 
 /* ---------- forside Styling ---------- */
 .forside {
-  padding: 0.5em 2em 2em;
+  padding: 0.5em 2em 7em;
   border-radius: var(--border-radius) var(--border-radius) 0 0;
   background-color: var(--white);
   margin-top: -3rem;
@@ -1246,6 +1314,11 @@ form {
   max-width: 200px;
   height: auto;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+.update-card {
+  color: var(--black);
+  text-align: left;
 }
 
 @keyframes pulse {

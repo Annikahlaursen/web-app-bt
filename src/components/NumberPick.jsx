@@ -4,20 +4,26 @@
 // "numbers = 10, then its all good, but if its does
 //  not equal 10, then it comes with an error messege"
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-export default function NumberPick() {
+export default function NumberPick({ onChangeH, onChangeU }) {
   const [num1, setNum1] = useState("pick");
   const [num2, setNum2] = useState("pick");
 
-  const sum =
-    (num1 !== "pick" ? Number(num1) : 0) + (num2 !== "pick" ? Number(num2) : 0);
+  const sum = (num1 ? Number(num1) : 0) + (num2 ? Number(num2) : 0);
 
   const showError = num1 !== "pick" && num2 !== "pick" && sum !== 10;
 
+  useEffect(() => {
+    if (onChangeH) onChangeH({ num1 });
+  }, [num1]);
+
+  useEffect(() => {
+    if (onChangeU) onChangeU({ num2 });
+  }, [num2]);
   return (
     <div className="number-picker">
-      <select value={num1} onChange={(e) => setNum1(e.target.value)}>
+      <select value={num1} onChange={(e) => setNum1(Number(e.target.value))}>
         <option value="pick">Vælg</option>
         {[...Array(11).keys()].map((n) => (
           <option key={n} value={n}>
@@ -25,7 +31,7 @@ export default function NumberPick() {
           </option>
         ))}
       </select>
-      <select value={num2} onChange={(e) => setNum2(e.target.value)}>
+      <select value={num2} onChange={(e) => setNum2(Number(e.target.value))}>
         <option value="pick">Vælg</option>
         {[...Array(11).keys()].map((n) => (
           <option key={n} value={n}>

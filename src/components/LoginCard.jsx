@@ -51,8 +51,8 @@ export default function SignInPage() {
             id: Date.now(),
             email: mail,
             profile: {
-              firstName: firebaseUser.displayName?.split(" ")[0] || "User",
-              lastName: firebaseUser.displayName?.split(" ")[1] || "",
+              fornavn: firebaseUser.displayName?.split(" ")[0] || "User",
+              efternavn: firebaseUser.displayName?.split(" ")[1] || "",
               gender: "",
               birthday: "",
               email: mail,
