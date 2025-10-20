@@ -1051,6 +1051,7 @@ form {
 .kamp-container {
   display: flex;
   justify-content: space-between;
+  align-items: baseline;
   padding-right: 1rem;
   padding-left: 1rem;
 }

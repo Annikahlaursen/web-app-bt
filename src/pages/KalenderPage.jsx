@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useLayoutEffect } from "react";
 import KalenderFilter from "../components/KalenderFilter";
 import StevneCard from "../components/StevneCard";
 import KampCard from "../components/KampCard";
@@ -41,7 +41,7 @@ export default function KalenderPage() {
     fetchEvents();
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     // Scroll to the next upcoming event
     if (nextEventRef.current) {
       nextEventRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
