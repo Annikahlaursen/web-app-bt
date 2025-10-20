@@ -14,7 +14,14 @@ export default function StevneCard({stevne}) {
           <p>{stevne?.dato ?? "Ingen dato tilgængelig"}</p>
         </div>
         <div className="stevne-container">
-          <p>Senior, Junior, Ungdom</p>
+          <ul>
+            {stevne.rækkerLørdag.map((række, index) => (
+              <li key={index}>{række}</li>
+            ))}
+            {stevne.rækkerSøndag.map((række, index) => (
+              <li key={index}>{række}</li>
+            ))}
+          </ul>
           <div className="location">
             <img src={location} alt="Location pin icon" />
             <p>{stevne?.lokation ?? "Brabrand hallerne"}</p>

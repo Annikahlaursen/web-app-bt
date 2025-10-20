@@ -62,15 +62,15 @@ export default function StevnePage() {
         <h2>Rækker</h2>
         <p>LØRDAG</p>
         <ul>
-          <li>Dame Junior Elite</li>
-          <li>Herre klasse 2</li>
-          <li>Herre Junior Elite</li>
+          {stevne.rækkerLørdag?.map((række, index) => (
+            <li key={index}>{række}</li>
+          ))}
         </ul>
         <p>SØNDAG</p>
         <ul>
-          <li>Dame Elite</li>
-          <li>Drenge B</li>
-          <li>Puslinge A</li>
+          {stevne.rækkerSøndag?.map((række, index) => (
+            <li key={index}>{række}</li>
+          ))}
         </ul>
         {stevne.ertilmeldt && (
           <div>
