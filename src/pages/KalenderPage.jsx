@@ -1,11 +1,94 @@
+import { useEffect, useState, useRef } from "react";
 import KalenderFilter from "../components/KalenderFilter";
+import StevneCard from "../components/StevneCard";
+import KampCard from "../components/KampCard";
 
 export default function KalenderPage() {
+  const [events, setEvents] = useState([]);
+  const nextEventRef = useRef(null);
+
+  useEffect(() => {
+    async function fetchEvents() {
+      // Fetch stevne data
+      const stevneResponse = await fetch(
+        `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/staevner.json`
+      );
+      const stevneData = await stevneResponse.json();
+      const stevneArray = Object.keys(stevneData).map((id) => ({
+        id,
+        ...stevneData[id],
+        type: "stevne", // Add type to distinguish between stevne and kamp
+      }));
+
+      // Fetch kamp data
+      const kampResponse = await fetch(
+        `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/kampe.json`
+      );
+      const kampData = await kampResponse.json();
+      const kampArray = Object.keys(kampData).map((id) => ({
+        id,
+        ...kampData[id],
+        type: "kamp", // Add type to distinguish between stevne and kamp
+      }));
+
+      // Combine and sort events by date
+      const combinedEvents = [...stevneArray, ...kampArray].sort(
+        (a, b) => new Date(a.date) - new Date(b.date)
+      );
+
+      setEvents(combinedEvents);
+    }
+
+    fetchEvents();
+  }, []);
+
+  useEffect(() => {
+    // Scroll to the next upcoming event
+    if (nextEventRef.current) {
+      nextEventRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [events]);
+
+  // Helper function to format the month header
+  const formatMonth = (dato) => {
+    const options = { month: "long", year: "numeric" };
+    return new Date(dato).toLocaleDateString("da-DK", options);
+  };
+
+  // Group events by month
+  const groupedEvents = events.reduce((acc, event) => {
+    const month = formatMonth(event.dato);
+    if (!acc[month]) acc[month] = [];
+    acc[month].push(event);
+    return acc;
+  }, {});
+
   return (
     <section className="page">
       <KalenderFilter />
-
-      
+      {Object.keys(groupedEvents).map((month) => (
+        <div key={month}>
+          <h2>{month}</h2>
+          {groupedEvents[month].map((event, index) => {
+            const isNextEvent =
+              new Date(event.date) > new Date() &&
+              !nextEventRef.current; // Find the first upcoming event
+            return event.type === "stevne" ? (
+              <StevneCard
+                key={event.id}
+                stevne={event}
+                ref={isNextEvent ? nextEventRef : null}
+              />
+            ) : (
+              <KampCard
+                key={event.id}
+                kamp={event}
+                ref={isNextEvent ? nextEventRef : null}
+              />
+            );
+          })}
+        </div>
+      ))}
     </section>
   );
 }
