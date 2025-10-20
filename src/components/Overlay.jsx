@@ -1,13 +1,80 @@
 import { Fragment, useState, useEffect } from "react";
 import { NavLink } from "react-router";
-import Profile from "/user-solid-full.svg";
+import Placeholder from "/user-solid-full.svg";
 import SignOut from "/right-from-bracket-solid-full.svg";
 import Close from "/xmark-solid-full.svg";
 import SignOutCard from "./SignOutCard";
+import { auth } from "../firebase-config";
 
 export default function Overlay({ isOpen, onClose }) {
   const [isClosing, setIsClosing] = useState(false);
   const [showSignOutCard, setShowSignOutCard] = useState(false);
+  const [displayName, setDisplayName] = useState("");
+  const [displayImage, setDisplayImage] = useState(Placeholder);
+
+  // Load display name and image from Realtime DB when available; otherwise fallback to localStorage
+  useEffect(() => {
+    async function loadFromDbOrLocal() {
+      try {
+        const uid = auth?.currentUser?.uid;
+        const firebaseDbUrlBase = import.meta.env.VITE_FIREBASE_DATABASE_URL;
+        if (uid && firebaseDbUrlBase) {
+          const url = `${firebaseDbUrlBase}/users/${uid}.json`;
+          const resp = await fetch(url);
+          if (resp.ok) {
+            const data = await resp.json();
+            if (data) {
+              const fornavn = data.fornavn || data.name || "";
+              const efternavn = data.efternavn || data.lastname || "";
+              setDisplayName(
+                `${fornavn}${
+                  fornavn || efternavn ? " " : ""
+                }${efternavn}`.trim() || ""
+              );
+              setDisplayImage(data.image || Placeholder);
+              return;
+            }
+          }
+        }
+
+        // fallback to localStorage
+        const currentUserRaw = localStorage.getItem("currentUser");
+        if (currentUserRaw) {
+          const currentUser = JSON.parse(currentUserRaw);
+          const p = currentUser.profile || {};
+          const fornavn = p.fornavn || p.firstName || "";
+          const efternavn = p.efternavn || p.lastName || "";
+          setDisplayName(
+            `${fornavn}${fornavn || efternavn ? " " : ""}${efternavn}`.trim() ||
+              ""
+          );
+          setDisplayImage(p.image || Placeholder);
+          return;
+        }
+      } catch (err) {
+        console.error(err);
+      }
+
+      // fallback
+      setDisplayName("");
+      setDisplayImage(Placeholder);
+    }
+
+    loadFromDbOrLocal();
+
+    function onStorage(e) {
+      if (e.key === "currentUser") loadFromDbOrLocal();
+    }
+    function onCurrentUserChanged() {
+      loadFromDbOrLocal();
+    }
+    window.addEventListener("storage", onStorage);
+    window.addEventListener("currentUserChanged", onCurrentUserChanged);
+    return () => {
+      window.removeEventListener("storage", onStorage);
+      window.removeEventListener("currentUserChanged", onCurrentUserChanged);
+    };
+  }, []);
 
   const handleClose = () => {
     setIsClosing(true);
@@ -48,10 +115,14 @@ export default function Overlay({ isOpen, onClose }) {
           >
             <NavLink to="/profile" className="navprofile" onClick={handleClose}>
               <div>
-                <img src={Profile} alt="Profile" className="profile-image" />
+                <img
+                  src={displayImage || Placeholder}
+                  alt="Placeholder image"
+                  className="profile-image"
+                />
               </div>
               <div className="profileinfo">
-                <h3>Heidi Astrup</h3>
+                <h4>{displayName || "Din profil"}</h4>
                 <p>Rating</p>
                 <span style={{ textDecoration: "underline" }}>Se profil →</span>
               </div>

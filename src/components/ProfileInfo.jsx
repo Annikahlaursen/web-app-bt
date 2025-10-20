@@ -1,16 +1,23 @@
 import { Fragment, useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router";
 import { auth } from "../firebase-config";
+import {
+  getStorage,
+  ref as storageRef,
+  uploadBytes,
+  getDownloadURL,
+} from "firebase/storage";
 import { signOut } from "firebase/auth";
 import pen from "/pen-solid-full.svg";
 import trash from "/trash-solid-full.svg";
+import Placeholder from "/image-solid-full.svg";
 
 export default function ProfileInfo() {
   const navigate = useNavigate();
 
   // Profile fields
-  const [name, setName] = useState("");
-  const [lastname, setLastname] = useState("");
+  const [fornavn, setFornavn] = useState("");
+  const [efternavn, setEfternavn] = useState("");
   const [gender, setGender] = useState("");
   const [birthday, setBirthday] = useState("");
   const [adress, setAdress] = useState("");
@@ -41,8 +48,9 @@ export default function ProfileInfo() {
           if (!response.ok) throw new Error("Failed to fetch user data");
           const data = await response.json();
           if (data) {
-            setName(data.name || "");
-            setLastname(data.lastname || "");
+            // prefer danish keys (fornavn/efternavn) but fall back to legacy keys
+            setFornavn(data.fornavn || data.name || "");
+            setEfternavn(data.efternavn || data.lastname || "");
             setGender(data.gender || "");
             setBirthday(data.birthday || "");
             setAdress(data.adress || "");
@@ -65,8 +73,8 @@ export default function ProfileInfo() {
         if (currentUserRaw) {
           const currentUser = JSON.parse(currentUserRaw);
           const p = currentUser.profile || {};
-          setName(p.firstName || "");
-          setLastname(p.lastName || "");
+          setFornavn(p.fornavn || "");
+          setEfternavn(p.efternavn || "");
           setGender(p.gender || "");
           setBirthday(p.birthday || "");
           setAdress(p.adress || "");
@@ -91,9 +99,10 @@ export default function ProfileInfo() {
 
     setErrorMessage("");
 
+    // Persist both danish keys and legacy keys for compatibility
     const user = {
-      name,
-      lastname,
+      fornavn: fornavn,
+      efternavn: efternavn,
       gender,
       birthday,
       adress,
@@ -127,18 +136,22 @@ export default function ProfileInfo() {
       if (currentUserRaw) {
         const currentUser = JSON.parse(currentUserRaw);
         currentUser.profile = {
-          firstName: name,
-          lastName: lastname,
+          fornavn: fornavn,
+          efternavn: efternavn,
           gender,
           birthday,
           adress,
           city,
           zip,
-          email: mail,
+          mail,
           phone,
           image,
         };
         localStorage.setItem("currentUser", JSON.stringify(currentUser));
+        // notify listeners in same tab immediately
+        window.dispatchEvent(
+          new CustomEvent("currentUserChanged", { detail: currentUser })
+        );
       }
     } catch (err) {
       console.error(err);
@@ -165,22 +178,22 @@ export default function ProfileInfo() {
   }
 
   async function uploadImage(imageFile) {
-    const firebaseProjectId = import.meta.env.VITE_FIREBASE_PROJECT_ID;
-    const url = `https://firebasestorage.googleapis.com/v0/b/${firebaseProjectId}.appspot.com/o/${imageFile.name}`;
-    // POST request to upload image
-    const response = await fetch(url, {
-      method: "POST",
-      body: imageFile,
-      headers: { "Content-Type": imageFile.type },
-    });
-
-    if (!response.ok) {
-      setErrorMessage("Upload image failed"); // set errorMessage state with error message
-      throw new Error("Upload image failed"); // throw an error
+    try {
+      // Initialize storage and upload the file to a user-specific path when possible
+      const storage = getStorage();
+      const uid = auth?.currentUser?.uid || "public";
+      const fileRef = storageRef(
+        storage,
+        `profile_images/${uid}/${Date.now()}_${imageFile.name}`
+      );
+      const snapshot = await uploadBytes(fileRef, imageFile);
+      const downloadUrl = await getDownloadURL(snapshot.ref);
+      return downloadUrl;
+    } catch (err) {
+      console.error("Upload image failed:", err);
+      setErrorMessage("Upload image failed");
+      throw err;
     }
-
-    const imageUrl = `${url}?alt=media`; // get the image URL
-    return imageUrl; // return the image URL
   }
 
   async function handleSignOut() {
@@ -201,6 +214,53 @@ export default function ProfileInfo() {
     navigate("/");
   }
 
+  // Delete profile from Realtime Database and sign the user out locally
+  async function handleDeleteProfile() {
+    const confirm = window.confirm(
+      "Er du sikker på, at du vil slette din profil? Denne handling kan ikke fortrydes."
+    );
+    if (!confirm) return;
+
+    setErrorMessage("");
+
+    // Attempt to delete the DB record when we have a uid and DB base URL
+    if (uid && firebaseDbUrlBase) {
+      try {
+        const url = `${firebaseDbUrlBase}/users/${uid}.json`;
+        const resp = await fetch(url, { method: "DELETE" });
+        if (!resp.ok) {
+          const text = await resp.text();
+          console.error("Failed to delete user record:", resp.status, text);
+          setErrorMessage("Kunne ikke slette profilen på serveren.");
+          return;
+        }
+      } catch (err) {
+        console.error("Delete profile request failed:", err);
+        setErrorMessage("Kunne ikke slette profilen. Prøv igen senere.");
+        return;
+      }
+    }
+
+    // Clear local session and sign out from Firebase auth
+    try {
+      try {
+        await signOut(auth);
+      } catch (err) {
+        // If signOut fails, continue to clear local data anyway
+        console.warn("Sign out after delete failed:", err);
+      }
+
+      try {
+        localStorage.removeItem("currentUser");
+      } catch (err) {
+        console.warn("Could not clear local currentUser after delete:", err);
+      }
+    } finally {
+      // Redirect to sign-in page
+      navigate("/sign-in");
+    }
+  }
+
   return (
     <Fragment>
       <div className="profile-info-parent">
@@ -218,22 +278,22 @@ export default function ProfileInfo() {
             />
             <img
               id="image"
-              className={"image-preview"}
-              src={
-                image
-                  ? image
-                  : "https://placehold.co/600x400?text=Click+here+to+select+an+image"
-              }
+              className={"profile-image-preview"}
+              src={image || Placeholder}
               alt="Choose"
-              onError={(e) =>
-                (e.target.src =
-                  "https://placehold.co/600x400?text=Error+loading+image")
-              }
+              onError={(e) => {
+                // if the image fails to load, use the placeholder image
+                e.target.onerror = null; // prevent infinite loop
+                e.target.src = Placeholder;
+              }}
               onClick={() => fileInputRef.current.click()}
-            />{" "}
+            />
           </div>
           <div className="profile-card-actions">
-            <a id="profile-card-actions-seperat">
+            <a
+              id="profile-card-actions-seperat"
+              onClick={() => fileInputRef.current.click()}
+            >
               <img src={pen} alt="Edit icon" style={{ width: "1.5rem" }} />
               Rediger
             </a>
@@ -256,18 +316,18 @@ export default function ProfileInfo() {
                 id="name"
                 name="name"
                 placeholder="Fornavn"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={fornavn}
+                onChange={(e) => setFornavn(e.target.value)}
               />
 
               <input
                 type="text"
                 className="profile-form-content"
-                id="lastname"
-                name="lastname"
+                id="efternavn"
+                name="efternavn"
                 placeholder="Efternavn"
-                value={lastname}
-                onChange={(e) => setLastname(e.target.value)}
+                value={efternavn}
+                onChange={(e) => setEfternavn(e.target.value)}
               />
 
               <select
@@ -349,7 +409,7 @@ export default function ProfileInfo() {
               <div className="profile-btns-actions">
                 <button
                   type="submit"
-                  className="profile-btns profile-btns-actions-seperat"
+                  className="profile-btns profile-btns-actions-seperat profile-btn-actions-lightred"
                   id="save-btn"
                 >
                   Gem
@@ -360,22 +420,25 @@ export default function ProfileInfo() {
 
           <div className="profile-btns-actions">
             <button
-              className="profile-btns profile-btns-actions-seperat"
+              className="profile-btns profile-btns-actions-seperat profile-btn-actions-blackborder"
               onClick={handleSignOut}
             >
               Log ud
             </button>
-            <button className="profile-btns profile-btns-actions-seperat">
+            <button className="profile-btns profile-btns-actions-seperat profile-btn-actions-blackborder">
               Opdater adgangskode
             </button>
-            <button className="profile-btns profile-btns-actions-seperat">
+            <button className="profile-btns profile-btns-actions-seperat profile-btn-actions-blackborder">
               Tilknyt login til Face ID
             </button>
-            <button className="profile-btns profile-btns-actions-seperat">
+            <button className="profile-btns profile-btns-actions-seperat profile-btn-actions-blackborder">
               Indstillinger
             </button>
             <br />
-            <button className="profile-btns profile-btns-actions-seperat">
+            <button
+              className="profile-btns profile-btns-actions-seperat profile-btn-actions-blackborder"
+              onClick={handleDeleteProfile}
+            >
               Slet profil
             </button>
           </div>

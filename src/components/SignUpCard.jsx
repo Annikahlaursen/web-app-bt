@@ -1,12 +1,63 @@
-import { Fragment, useState } from "react";
+import { Fragment, useState, useRef } from "react";
 import UpdateCard from "./UpdateCard";
+import Placeholder from "/user-solid-full.svg";
+import {
+  getStorage,
+  ref as storageRef,
+  uploadBytes,
+  getDownloadURL,
+} from "firebase/storage";
+import { auth } from "../firebase-config";
+import { setCurrentUserStorage } from "../utils/currentUserEvents";
 
 export default function CreateCard() {
   const [showUpdateCard, setShowUpdateCard] = useState(false);
+  const [image, setImage] = useState("");
+  const fileInputRef = useRef(null);
 
   const handleSave = () => {
     setShowUpdateCard(true);
   };
+
+  async function handleImageChange(event) {
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
+
+    try {
+      const storage = getStorage();
+      const uid = auth?.currentUser?.uid || "public";
+      const fileRef = storageRef(
+        storage,
+        `profile_images/${uid}/${Date.now()}_${file.name}`
+      );
+      const snap = await uploadBytes(fileRef, file);
+      const downloadUrl = await getDownloadURL(snap.ref);
+      setImage(downloadUrl);
+
+      // Update localStorage.currentUser so Overlay/ProfileInfo react
+      try {
+        const raw = localStorage.getItem("currentUser");
+        if (raw) {
+          const cur = JSON.parse(raw);
+          cur.profile = cur.profile || {};
+          cur.profile.image = downloadUrl;
+          setCurrentUserStorage(cur);
+        } else {
+          // no currentUser yet; store minimal profile so UI can show image
+          setCurrentUserStorage({
+            uid: null,
+            email: null,
+            profile: { image: downloadUrl },
+          });
+        }
+      } catch (err) {
+        console.warn("Could not update currentUser in localStorage:", err);
+      }
+    } catch (err) {
+      console.error("Upload failed:", err);
+      // keep placeholder if upload fails
+    }
+  }
 
   if (showUpdateCard) {
     return <UpdateCard />;
@@ -15,6 +66,25 @@ export default function CreateCard() {
   return (
     <Fragment>
       <div className="profile-info-parent">
+        <div className="profile-card">
+          <div className="profile-info-card-image profile-card-content">
+            <input
+              type="file"
+              className="hide"
+              accept="image/*"
+              onChange={handleImageChange}
+              ref={fileInputRef}
+            />
+            <img
+              src={image || Placeholder}
+              alt="Placeholder image"
+              style={{ width: "100%", cursor: "pointer" }}
+              onClick={() =>
+                fileInputRef.current && fileInputRef.current.click()
+              }
+            />
+          </div>
+        </div>
         <div className="profile-card">
           <div>
             <form action="ProfileInfo" className="profile-form">

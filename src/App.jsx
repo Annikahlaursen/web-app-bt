@@ -18,6 +18,7 @@ import RatingPage from "./pages/RatingPage";
 import KalenderPage from "./pages/KalenderPage";
 import StevneSearchPage from "./pages/StevneSearchPage";
 import KampCard from "./components/KampCard";
+import UpdateCard from "./components/UpdateCard";
 
 
 export default function App() {
@@ -64,6 +65,7 @@ export default function App() {
   // variable holding all public routes without nav bar
   const publicRoutes = (
     <Routes>
+      <Route path="/update/:id" element={<UpdateCard />} />
       <Route path="/sign-in" element={<SignInPage />} />
       <Route path="/sign-up" element={<SignUpPage />} />
       <Route path="*" element={<Navigate to="/sign-in" />} />
