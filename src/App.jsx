@@ -18,7 +18,7 @@ import RatingPage from "./pages/RatingPage";
 import KalenderPage from "./pages/KalenderPage";
 import StevneSearchPage from "./pages/StevneSearchPage";
 import KampCard from "./components/KampCard";
-import UpdateCard from "./components/UpdateCard";
+import UpdateCard from "./pages/UpdatePage";
 
 
 export default function App() {
@@ -40,25 +40,23 @@ export default function App() {
   const privateRoutes = (
     <>
       <Nav />
-      <main>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/rating" element={<RatingPage />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="*" element={<Navigate to="/" />} />
-          <Route path="*" element={<Navigate to="/error" />} />
-          <Route path="/kamp/:id" element={<KampPage />} />
-          <Route path="/kamp/:id/resultat" element={<KampResultatPage />} />
-          <Route path="/stevne/:id" element={<StevnePage />} />
-          <Route path="/error" element={<Error />} />
-          <Route path="/stevne/:id/tilmeld" element={<Error />} />
-          <Route path="/kalender" element={<KalenderPage />} />
-          <Route path="/:id" element={<KampCard />} />
-          <Route path="/stevnesearch" element={<StevneSearchPage />} />
-        </Routes>
-      </main>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/rating" element={<RatingPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="*" element={<Navigate to="/" />} />
+        <Route path="*" element={<Navigate to="/error" />} />
+        <Route path="/kamp/:id" element={<KampPage />} />
+        <Route path="/kamp/:id/resultat" element={<KampResultatPage />} />
+        <Route path="/stevne/:id" element={<StevnePage />} />
+        <Route path="/error" element={<Error />} />
+        <Route path="/stevne/:id/tilmeld" element={<Error />} />
+        <Route path="/kalender" element={<KalenderPage />} />
+        <Route path="/:id" element={<KampCard />} />
+                    <Route path="/stevnesearch" element={<StevneSearchPage />} />
+      </Routes>
     </>
   );
 
