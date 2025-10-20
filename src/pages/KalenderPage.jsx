@@ -67,29 +67,35 @@ export default function KalenderPage() {
   return (
     <section className="page">
       <KalenderFilter />
-      {Object.keys(groupedEvents).map((month) => (
-        <div key={month}>
-          <h2>{month}</h2>
-          {groupedEvents[month].map((event, index) => {
-            const isNextEvent =
-              new Date(event.dato) > new Date() &&
-              !nextEventRef.current; // Find the first upcoming event
-            return event.type === "stevne" ? (
-              <StevneCard
-                key={event.id}
-                stevne={event}
-                ref={isNextEvent ? nextEventRef : null}
-              />
-            ) : (
-              <KampCard
-                key={event.id}
-                kamp={event}
-                ref={isNextEvent ? nextEventRef : null}
-              />
-            );
-          })}
-        </div>
-      ))}
+      {(() => {
+        let nextEventFound = false; // Track if the next event has been found across all months
+        return Object.keys(groupedEvents).map((month) => (
+          <div key={month}>
+            <h2>{month}</h2>
+            {groupedEvents[month].map((event, index) => {
+              const isNextEvent =
+                !nextEventFound && new Date(event.dato) > new Date(); // Only mark the first upcoming event
+              if (isNextEvent) {
+                nextEventFound = true; // Mark that the next event has been found
+                console.log("Next event found:", event);
+              }
+              return event.type === "stevne" ? (
+                <StevneCard
+                  key={event.id}
+                  stevne={event}
+                  ref={isNextEvent ? nextEventRef : null} // Attach ref to the next event
+                />
+              ) : (
+                <KampCard
+                  key={event.id}
+                  kamp={event}
+                  ref={isNextEvent ? nextEventRef : null} // Attach ref to the next event
+                />
+              );
+            })}
+          </div>
+        ));
+      })()}
     </section>
   );
 }
