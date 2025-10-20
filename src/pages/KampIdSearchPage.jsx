@@ -1,10 +1,8 @@
-import FilterOverlay from "../components/FilterOvelay";
 import { useState, useEffect } from "react";
 import KampCard from "../components/KampCard";
 import useFilters from "../hooks/useFilters";
 
 export default function KampIdSearchPage() {
-  const [showFilter, setShowOverlay] = useState(false);
   const [kamp, setKamp] = useState([]);
   const url = `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/kampe.json`;
 
@@ -41,9 +39,6 @@ export default function KampIdSearchPage() {
 
     getKamp();
   }, [url]);
-
-  const toggleOverlay = () => setShowOverlay((prev) => !prev);
-  const closeOverlay = () => setShowOverlay(false);
 
   const { filteredData, filterCriteria, updateFilterCriteria } = useFilters(
     kamp,
