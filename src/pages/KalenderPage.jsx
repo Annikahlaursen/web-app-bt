@@ -46,7 +46,7 @@ export default function KalenderPage() {
     if (nextEventRef.current) {
       nextEventRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
     }
-  }, [groupedEvents]);
+  }, [events]);
 
   // Helper function to format the month header
   const formatMonth = (dato) => {
