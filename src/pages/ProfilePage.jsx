@@ -77,14 +77,16 @@ export default function Profile() {
 
   return (
     <div className="profile">
-      <div className="profile-background">
-        <div className="profile-placeholder">
-          <img src={displayImage || Placeholder} alt="Placeholder image" />
-        </div>
-        <div className="profile-text">
-          <h4>{displayName || "Din profil"}</h4>
-          <h4>Rating:</h4>
-        </div>
+      <div className="profile-placeholder">
+        <img
+          className="profile-head-image"
+          src={displayImage || Placeholder}
+          alt="Placeholder image"
+        />
+      </div>
+      <div className="profile-text">
+        <h4>{displayName || "Din profil"}</h4>
+        <h4>Rating:</h4>
       </div>
       <div>
         <div className="profile-btns">

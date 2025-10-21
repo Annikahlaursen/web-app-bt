@@ -12,7 +12,6 @@ import { signOut } from "firebase/auth";
 import pen from "/pen-solid-full.svg";
 import trash from "/trash-solid-full.svg";
 import Placeholder from "/image-solid-full.svg";
-import { style } from "motion/react-client";
 
 export default function ProfileInfo() {
   const navigate = useNavigate();
