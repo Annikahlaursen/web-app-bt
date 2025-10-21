@@ -48,7 +48,7 @@ export default function KampPage() {
   }
 
   if (kamp.harResultat) {
-    kamp.resultat = kamp.resultatHjemme + " - " + kamp.resultatUde;
+    kamp.resultat = kamp.resultatHjemme.num1 + " - " + kamp.resultatUde.num2;
   } else {
     kamp.resultat = "Afventer";
   }
