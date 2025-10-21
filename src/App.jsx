@@ -18,7 +18,7 @@ import RatingPage from "./pages/RatingPage";
 import KalenderPage from "./pages/KalenderPage";
 import StevneSearchPage from "./pages/StevneSearchPage";
 import KampCard from "./components/KampCard";
-import UpdateCard from "./components/UpdateCard";
+import UpdateCard from "./pages/UpdatePage";
 import KampIdSearchPage from "./pages/KampIdSearchPage";
 
 export default function App() {
