@@ -455,7 +455,6 @@ export default function ProfileInfo() {
                 id="image"
                 className={"profile-image-preview"}
                 src={image || Placeholder}
-                style={{ padding: "1em" }}
                 alt="Choose"
                 onError={(e) => {
                   // if the image fails to load, use the placeholder image
