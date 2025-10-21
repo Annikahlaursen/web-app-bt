@@ -44,7 +44,7 @@ export default function KampResultatPage() {
 
     if (response.ok) {
       console.log("Tillykke, kamp er blevet opdateret");
-      navigate(`/kamp/${params.id}`);
+      navigate(`/kamp/${params.id}`, { state: { spillere: valgteSpillere } });
     } else {
       console.log("Error updating kamp resultat");
     }

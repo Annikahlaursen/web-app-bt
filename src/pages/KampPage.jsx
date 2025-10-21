@@ -10,6 +10,7 @@ import { useState, useEffect } from "react";
 export default function KampPage() {
   const navigate = useNavigate();
   const [kamp, setKamp] = useState({});
+  const [valgteSpillere, setValgteSpillere] = useState([]);
 
   const params = useParams();
 
@@ -29,6 +30,20 @@ export default function KampPage() {
       } else {
         console.warn(`Ingen kamp fundet med id: ${params.id}`);
       }
+
+      // Kun de valgte spillere i kamp.spillere
+      // Forudsætter at kamp.spillere er et array med uid'er eller objekter med id'er
+      const valgte = (data.spillere || []).map((spiller) => {
+        if (typeof spiller === "string") {
+          // Hvis det bare er uid'er, hent navnet fra data eller hold en reference
+          return { id: spiller, navn: spiller }; // eller slå op i users-array
+        } else {
+          // Hvis spiller allerede er et objekt
+          return spiller;
+        }
+      });
+
+      setValgteSpillere(valgte);
 
       setKamp(data);
       //if (data) {
@@ -54,14 +69,13 @@ export default function KampPage() {
   }
 
   if (kamp.harResultat) {
-    kamp.spillere =
-      "Spiller A1, Spiller A2, Spiller A3, Spiller B1, Spiller B2, Spiller B3";
+    kamp.spillere = valgteSpillere.map((spiller) => spiller.label).join(", ");
   } else {
     kamp.spillere = "Afventer";
   }
 
   console.log(kamp.harResultat);
-  console.log(kamp.resultatUde);
+  console.log(valgteSpillere);
 
   return (
     <>
