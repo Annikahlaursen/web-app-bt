@@ -70,6 +70,7 @@ export default function SearchSpiller({ kamp, onSpillerChange }) {
   return (
     <>
       <Select
+        className="select-boks"
         isMulti
         options={userOptions}
         //value={selectedOption}
