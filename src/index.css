@@ -114,6 +114,8 @@ form {
   position: fixed;
   right: 0;
   text-align: center;
+  align-items: center;
+  justify-items: center;
   bottom: 0;
   padding: 1.5em 3em;
   grid-template-columns: 1fr 1fr 1fr;
@@ -397,6 +399,40 @@ form {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* Upload spinner overlay inside profile image */
+.upload-spinner-overlay {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  z-index: 50;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top-color: var(--lightred);
+  animation: spin 1s linear infinite;
+}
+
+.upload-percent {
+  color: var(--white);
+  font-weight: 600;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .overlay-background {
@@ -899,8 +935,18 @@ form {
 }
 
 /*-------------Kalender Filter Styling------------*/
+.kalender-filter{
+  display: flex;
+  position: sticky;
+  top: 0;
+  padding: 2rem 0 0;
+  background-color: var(--white);
+  z-index: 2;
+  height: auto;
+  box-sizing: content-box;
+}
+
 .kalender-filter-container {
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -909,6 +955,7 @@ form {
   padding: 0.5rem 1rem;
   border-radius: var(--border-radius);
   overflow: hidden;
+  position: relative;
 }
 
 .kalender-filter-button {
@@ -919,7 +966,7 @@ form {
   padding: 0.5rem 1rem;
   border-radius: var(--border-radius);
   cursor: pointer;
-  z-index: 2;
+  /* z-index: 3; */
   color: #000;
 }
 
@@ -929,16 +976,26 @@ form {
   bottom: 0;
   border-radius: var(--border-radius);
   z-index: 1;
+  height: 100%;
 }
 
 .filter-label {
   position: relative;
-  z-index: 3;
+  z-index: 1;
   transition: color 0.2s ease;
 }
 
 .filter-label.active-label {
   color: #fff;
+}
+
+.month-header {
+  position: sticky;
+  top: 5rem;
+  background-color: var(--white);
+  z-index: 1;
+  padding: 1.3rem 1rem 1rem;
+  margin:0;
 }
 
 /*-----------NyhedsCard Styling-------------*/
@@ -1041,7 +1098,7 @@ form {
   background-color: var(--blue);
   border-radius: var(--border-radius);
   color: #fff;
-  margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 
 .stevne-card #streg {
@@ -1071,11 +1128,13 @@ form {
   background-color: var(--lightred);
   border-radius: var(--border-radius);
   color: #fff;
+  margin-bottom: 2rem;
 }
 
 .kamp-container {
   display: flex;
   justify-content: space-between;
+  align-items: baseline;
   padding-right: 1rem;
   padding-left: 1rem;
 }
@@ -1135,10 +1194,11 @@ form {
 
 .kamp-info-section {
   margin-top: -4rem;
+  margin-bottom: 4rem;
   background-color: var(--white);
   border-radius: var(--border-radius);
   padding: 2rem;
-  min-height: 50rem;
+  min-height: 55rem;
 }
 
 .kamp-info {
@@ -1162,6 +1222,11 @@ form {
   text-align: center;
 }
 
+.kamp-info-section.stevne{
+  min-height: 110vh;
+  height: auto;
+}
+
 /* ---------- Button Styling ---------- */
 .btn {
   background-color: var(--lightred);
@@ -1172,7 +1237,7 @@ form {
   font-size: 1rem;
   font-family: var(--display-font);
   position: sticky;
-  top: 42rem;
+  top: 80%;
   margin: 0 auto;
   display: block;
 }
@@ -1207,7 +1272,7 @@ form {
 
 /* ---------- forside Styling ---------- */
 .forside {
-  padding: 0.5em 2em 2em;
+  padding: 0.5em 2em 7em;
   border-radius: var(--border-radius) var(--border-radius) 0 0;
   background-color: var(--white);
   margin-top: -3rem;

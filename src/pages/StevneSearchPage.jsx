@@ -53,12 +53,16 @@ export default function StevneSearchPage() {
         type="text"
         name="search"
         placeholder="Søg efter stævne"
-        value={filterCriteria.name || ""}
-        onChange={(e) => updateFilterCriteria("name", e.target.value)}
+        value={filterCriteria.titel || ""}
+        onChange={(e) => updateFilterCriteria("titel", e.target.value)}
         style={{ flex: 1, padding: "10px" }}
       />
       {filteredData.map((stevne) => (
-        <StevneCard stevne={stevne} key={stevne.id} />
+        <StevneCard
+          stevne={stevne}
+          key={stevne.id}
+          onCLick={() => navigate(`/stevne/${stevne.id}`)}
+        />
       ))}
     </section>
   );
