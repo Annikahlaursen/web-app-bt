@@ -48,9 +48,15 @@ export default function KalenderPage() {
 
   useLayoutEffect(() => {
     if (nextEventRef.current) {
-      nextEventRef.current.scrollIntoView({
+      const offset = 150; // Juster denne værdi baseret på din layout
+      const elementPosition = nextEventRef.current.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
         behavior: "smooth",
-        block: "start",
+        // block: "start",
+        // inline: "nearest",
       });
     } 
   }, [events]);
