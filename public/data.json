@@ -504,68 +504,144 @@
   "staevner": {
     "-Spj1FGjQTUUJkqdPUoc": {
       "lokation": "Brabrand Hallerne",
-      "dato": "2023-10-06",
+      "dato": "2025-11-08",
       "pris": 150,
       "titel": "Sisu Open",
-      "rækker": "Herre junior C",
+      "rækkerLørdag": ["Herre junior C", "Herre klasse 2", "Drenge B"],
+      "rækkerSøndag": ["Dame Elite", "Puslinge A", "Dame Junior Elite"],
       "beskrivelse": "A competitive tournament for junior players.",
       "ertilmeldt": true,
       "tilmeldt": ["Herre junior C", "Herre klasse 2"],
       "harnotifikationer": false
     },
     "-SBTdSjTtmIBsP1PqCea": {
-      "lokation": "Brabrand Hallerne",
-      "dato": "2023-10-06",
-      "pris": 150,
-      "titel": "Sisu Open",
-      "rækker": "Herre junior C",
+      "lokation": "Brobjerrevej 4, 8800 Viborg",
+      "dato": "2025-12-06",
+      "pris": 100,
+      "titel": "Viborg Open",
+      "rækkerLørdag": [
+        "Senior Elite",
+        "Senior A",
+        "Senior B",
+        "Senior C",
+        "U13 A+B",
+        "U13 C"
+      ],
+      "rækkerSøndag": [
+        "Junior 2",
+        "Junior 3",
+        "Ungdom alle",
+        "Senior 1",
+        "Senior 2",
+        "Senior 3"
+      ],
       "beskrivelse": "A competitive tournament for junior players.",
-      "ertilmeldt": true,
-      "tilmeldt": ["Herre junior C", "Herre klasse 2"],
+      "ertilmeldt": false,
+      "tilmeldt": [],
       "harnotifikationer": false
     },
     "-SpyRzlczl0AGjIHHLUw": {
-      "lokation": "Brabrand Hallerne",
-      "dato": "2023-10-06",
+      "lokation": "Søndre Blvd. 17A, 5000 Odense",
+      "dato": "2025-11-29",
       "pris": 150,
-      "titel": "Sisu Open",
-      "rækker": "Herre junior C",
+      "titel": "OB Bordtennis Open",
+      "rækkerLørdag": [
+        "Herre Junior Elite",
+        "Dame Junior Elite",
+        "Herre Elite",
+        "Dame Elite",
+        "Drenge Elite",
+        "Pige Elite"
+      ],
+      "rækkerSøndag": [
+        "Herre U21 Elite",
+        "Dame U21 Elite",
+        "Herre kl. 1",
+        "Dame kl. 1",
+        "Herre kl. 3",
+        "Herre Junior B"
+      ],
       "beskrivelse": "A competitive tournament for junior players.",
-      "ertilmeldt": true,
-      "tilmeldt": ["Herre junior C", "Herre klasse 2"],
+      "ertilmeldt": false,
+      "tilmeldt": [],
       "harnotifikationer": false
     },
     "-SUGWDyz4smaIPsKgSpw": {
-      "lokation": "Brabrand Hallerne",
-      "dato": "2023-10-06",
+      "lokation": "Toksværd Hallen",
+      "dato": "2025-11-15",
       "pris": 150,
-      "titel": "Sisu Open",
-      "rækker": "Herre junior C",
-      "beskrivelse": "A competitive tournament for junior players.",
+      "titel": "Frisør Hos Peter Open",
+      "rækkerLørdag": [
+        "Senior E",
+        "Senior 1",
+        "Senior 2",
+        "Ungdom 1",
+        "Ungdom 2",
+        "Ungdom 3"
+      ],
+      "rækkerSøndag": [
+        "Veteran 60+",
+        "Klasse 6",
+        "Ungdom B",
+        "Ungdom D",
+        "Senior Elite",
+        "Åben Alle"
+      ],
+      "beskrivelse": "Vi spiller vi i Toksværd Hallen der ligger 200m fra klublokalerne, med plads til 20-22 borde. Der er flotte spillerpræmier, hygge, kiosk med alverdens lækkerier, og en stor Tombola med super fede præmier.",
       "ertilmeldt": true,
-      "tilmeldt": ["Herre junior C", "Herre klasse 2"],
+      "tilmeldt": ["Ungdom 1", "Ungdom D"],
       "harnotifikationer": false
     },
     "-SaRURJieZst9QUWqu4T": {
-      "lokation": "Brabrand Hallerne",
-      "dato": "2023-10-06",
-      "pris": 150,
-      "titel": "Sisu Open",
-      "rækker": "Herre junior C",
+      "lokation": "Ribe Fritidscenter",
+      "dato": "2026-01-10",
+      "pris": 100,
+      "titel": "Ribe Stævne",
+      "rækkerLørdag": [
+        "Drenge A",
+        "Drenge B",
+        "Pige A",
+        "Pige B",
+        "Senior 1",
+        "Senior 2"
+      ],
+      "rækkerSøndag": [
+        "U21 A",
+        "U21 B",
+        "U21 c",
+        "Veteran A",
+        "Veteran B",
+        "Veteran C"
+      ],
       "beskrivelse": "A competitive tournament for junior players.",
       "ertilmeldt": true,
-      "tilmeldt": ["Herre junior C", "Herre klasse 2"],
+      "tilmeldt": ["Senior 1"],
       "harnotifikationer": false
     },
     "-S7VAzf19ERk6MFnuLOM": {
-      "lokation": "Brabrand Hallerne",
-      "dato": "2023-10-06",
+      "lokation": "Brøndby Hallen",
+      "dato": "2026-02-07",
       "pris": 150,
       "titel": "Sisu Open",
-      "rækker": "Herre junior C",
+      "rækkerLørdag": [
+        "Herre Junior Elite",
+        "Dame Junior Elite",
+        "Herre Klasse 4",
+        "Dame Ungdom 1",
+        "Yngre Drenge C",
+        "Yngre Drenge A"
+      ],
+      "rækkerSøndag": [
+        "Herre U21 Elite",
+        "Dame U21 Elite",
+        "Herre kl. 1",
+        "Yngre Drenge E",
+        "Herre kl. 3",
+        "Herre Junior B"
+      ],
       "beskrivelse": "A competitive tournament for junior players.",
-      "ertilmeldt": true,
-      "tilmeldt": ["Herre junior C", "Herre klasse 2"],
+      "ertilmeldt": false,
+      "tilmeldt": [],
       "harnotifikationer": false
     }
   },

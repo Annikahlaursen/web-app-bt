@@ -170,7 +170,7 @@ export default function Overlay({ isOpen, onClose }) {
                 ) : null}
               </div>
               <NavLink
-                to="/kamp/resultat"
+                to="/searchKampID"
                 className="overlay-link"
                 onClick={handleClose}
               >

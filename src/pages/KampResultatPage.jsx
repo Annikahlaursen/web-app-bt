@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import NumberPick from "../components/NumberPick";
 import SearchSpiller from "../components/SearchSpiller";
 import { useNavigate, useParams } from "react-router";
+import { Link } from "react-router";
+import arrowBlack from "/public/arrow-left-black.svg";
 
 export default function KampResultatPage() {
   const [kamp, setKamp] = useState({});
@@ -32,6 +34,7 @@ export default function KampResultatPage() {
       spillere: valgteSpillere, //data fra searchSpillere
       resultatHjemme: resultatHjem, //data fra numberPick
       resultatUde: resultatUde, //data fra numberPick
+      harResultat: true,
     };
 
     const response = await fetch(url, {
@@ -41,7 +44,7 @@ export default function KampResultatPage() {
 
     if (response.ok) {
       console.log("Tillykke, kamp er blevet opdateret");
-      navigate(`/kamp/${params.id}`);
+      navigate(`/kamp/${params.id}`, { state: { spillere: valgteSpillere } });
     } else {
       console.log("Error updating kamp resultat");
     }
@@ -49,6 +52,13 @@ export default function KampResultatPage() {
 
   return (
     <section className="page">
+      <Link to="...">
+        <img
+          className="arrow"
+          src={arrowBlack}
+          alt="Arrow back to previus page"
+        />
+      </Link>
       <h1>Kamp Resultat Page</h1>
       <p>KampID: {kamp?.id}</p>
       <SearchSpiller
