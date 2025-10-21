@@ -16,14 +16,7 @@ const StevneCard = forwardRef(({ stevne }, ref) => {
           <p>{stevne?.dato ?? "Ingen dato tilgængelig"}</p>
         </div>
         <div className="stevne-container">
-          <ul>
-            {stevne.rækkerLørdag.map((række, index) => (
-              <li key={index}>{række}</li>
-            ))}
-            {stevne.rækkerSøndag.map((række, index) => (
-              <li key={index}>{række}</li>
-            ))}
-          </ul>
+         <p>{stevne.beskrivelse}</p>
           <div className="location">
             <img src={location} alt="Location pin icon" />
             <p>{stevne?.lokation ?? "Brabrand hallerne"}</p>
