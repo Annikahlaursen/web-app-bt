@@ -19,6 +19,7 @@ import KalenderPage from "./pages/KalenderPage";
 import StevneSearchPage from "./pages/StevneSearchPage";
 import KampCard from "./components/KampCard";
 import UpdateCard from "./pages/UpdatePage";
+import { matchPath } from "react-router";
 
 export default function App() {
   const [isAuth, setIsAuth] = useState(localStorage.getItem("isAuth")); // default value comes from localStorage
@@ -35,27 +36,39 @@ export default function App() {
     }
   });
 
+  // decide whether to hide top navigation for certain routes (e.g. update/profile flow)
+  function hideNavFor(path) {
+    // hide for update route with uid param and for auth pages
+    if (matchPath("/update/:id", path)) return true;
+    if ((path === "/sign-in", path === "/sign-up", path === "/login"))
+      return true;
+    return false;
+  }
+
   // variable holding all private routes including the nav bar
   const privateRoutes = (
     <>
-      <Nav />
+      {!hideNavFor(location.pathname) && <Nav />}
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/rating" element={<RatingPage />} />
-        <Route path="/contact" element={<ContactPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="*" element={<Navigate to="/" />} />
-        <Route path="*" element={<Navigate to="/error" />} />
-        <Route path="/kamp/:id" element={<KampPage />} />
-        <Route path="/kamp/:id/resultat" element={<KampResultatPage />} />
-        <Route path="/stevne/:id" element={<StevnePage />} />
-        <Route path="/error" element={<Error />} />
-        <Route path="/stevne/:id/tilmeld" element={<Error />} />
-        <Route path="/kalender" element={<KalenderPage />} />
-        <Route path="/:id" element={<KampCard />} />
-        <Route path="/stevnesearch" element={<StevneSearchPage />} />
-        <Route path="/update/:id" element={<UpdateCard />} />
+        {isAuth && (
+          <>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/rating" element={<RatingPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="*" element={<Navigate to="/" />} />
+            <Route path="*" element={<Navigate to="/error" />} />
+            <Route path="/kamp/:id" element={<KampPage />} />
+            <Route path="/kamp/:id/resultat" element={<KampResultatPage />} />
+            <Route path="/stevne/:id" element={<StevnePage />} />
+            <Route path="/error" element={<Error />} />
+            <Route path="/stevne/:id/tilmeld" element={<Error />} />
+            <Route path="/kalender" element={<KalenderPage />} />
+            <Route path="/:id" element={<KampCard />} />
+            <Route path="/stevnesearch" element={<StevneSearchPage />} />
+          </>
+        )}
       </Routes>
     </>
   );
@@ -63,6 +76,7 @@ export default function App() {
   // variable holding all public routes without nav bar
   const publicRoutes = (
     <Routes>
+      <Route path="/update/:id" element={<UpdateCard />} />
       <Route path="/sign-in" element={<SignInPage />} />
       <Route path="/sign-up" element={<SignUpPage />} />
       <Route path="*" element={<Navigate to="/sign-in" />} />

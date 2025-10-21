@@ -11,6 +11,7 @@ import { uploadBytesResumable } from "firebase/storage";
 import { auth } from "../firebase-config";
 import Placeholder from "/image-solid-full.svg";
 import { setCurrentUserStorage } from "../utils/currentUserEvents";
+import Select from "react-select";
 
 export default function Update() {
   const navigate = useNavigate();
@@ -168,6 +169,48 @@ export default function Update() {
     }
   }
 
+  const [klubber, setKlubber] = useState([]);
+  const [hold, setHold] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const klubResponse = await fetch(
+        `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/klubber.json`
+      );
+      const klubData = await klubResponse.json();
+      const klubArray = Object.keys(klubData).map((key) => ({
+        id: key,
+        ...klubData[key],
+      }));
+      // setKlubber(klubArray); --- IGNORE ---
+
+      setKlubber(klubArray);
+
+      const holdResponse = await fetch(
+        `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/hold.json`
+      );
+      const holdData = await holdResponse.json();
+      const holdArray = Object.keys(holdData).map((key) => ({
+        id: key,
+        ...holdData[key],
+      }));
+
+      setHold(holdArray);
+    }
+
+    fetchData();
+  }, []);
+
+  const klubOptions = klubber.map((klubber) => ({
+    value: klubber.id,
+    label: klubber.navn,
+  }));
+
+  const holdOptions = hold.map((hold) => ({
+    value: hold.id,
+    label: hold.navn,
+  }));
+
   // uploadImage helper removed — using uploadBytesResumable in handleImageChange for progress
 
   return (
@@ -239,27 +282,21 @@ export default function Update() {
               <div className="profile-card-header">
                 <h3>Personlige oplysninger</h3>
               </div>
-              <div>
-                <form action="ProfileInfo" className="profile-form">
-                  <select
-                    id="gender"
-                    name="gender"
-                    className="profile-form-content"
-                  >
-                    <option value="women">Kvinde</option>
-                    <option value="men">Mand</option>
-                    <option value="other">Andet</option>
-                  </select>
-                  <select
-                    id="gender"
-                    name="gender"
-                    className="profile-form-content"
-                  >
-                    <option value="women">Kvinde</option>
-                    <option value="men">Mand</option>
-                    <option value="other">Andet</option>
-                  </select>
-                </form>
+              <div className="profile-form">
+                <Select
+                  options={klubOptions}
+                  placeholder="Vælg klub"
+                  isClearable
+                  isMulti
+                  isSearchable
+                ></Select>
+                <Select
+                  options={holdOptions}
+                  placeholder="Vælg hold"
+                  isClearable
+                  isMulti
+                  isSearchable
+                ></Select>
               </div>
               <div className="profile-btns-actions">
                 <button

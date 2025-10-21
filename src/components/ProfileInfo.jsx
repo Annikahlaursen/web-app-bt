@@ -4,8 +4,9 @@ import { auth } from "../firebase-config";
 import {
   getStorage,
   ref as storageRef,
-  uploadBytes,
+  uploadBytesResumable,
   getDownloadURL,
+  deleteObject,
 } from "firebase/storage";
 import { signOut } from "firebase/auth";
 import pen from "/pen-solid-full.svg";
@@ -25,8 +26,11 @@ export default function ProfileInfo() {
   const [zip, setZip] = useState("");
   const [mail, setMail] = useState("");
   const [phone, setPhone] = useState("");
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState(""); // image download URL
+  const [storagePath, setStoragePath] = useState(""); // storage path used for deletion
+  const [uploadProgress, setUploadProgress] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
 
   const fileInputRef = useRef(null);
 
@@ -37,30 +41,29 @@ export default function ProfileInfo() {
   useEffect(() => {
     // Load profile either from Firebase (if logged in) or from localStorage fallback
     async function loadProfile() {
-      // Reset error
       setErrorMessage("");
 
-      // If a Firebase user id exists, try to load from realtime database
       if (uid && firebaseDbUrlBase) {
         try {
           const url = `${firebaseDbUrlBase}/users/${uid}.json`;
           const response = await fetch(url);
-          if (!response.ok) throw new Error("Failed to fetch user data");
-          const data = await response.json();
-          if (data) {
-            // prefer danish keys (fornavn/efternavn) but fall back to legacy keys
-            setFornavn(data.fornavn || data.name || "");
-            setEfternavn(data.efternavn || data.lastname || "");
-            setGender(data.gender || "");
-            setBirthday(data.birthday || "");
-            setAdress(data.adress || "");
-            setCity(data.city || "");
-            setZip(data.zip || "");
-            setMail(data.mail || "");
-            setPhone(data.phone || "");
-            setImage(data.image || "");
+          if (response.ok) {
+            const data = await response.json();
+            if (data) {
+              setFornavn(data.fornavn || data.name || "");
+              setEfternavn(data.efternavn || data.lastname || "");
+              setGender(data.gender || "");
+              setBirthday(data.birthday || "");
+              setAdress(data.adress || "");
+              setCity(data.city || "");
+              setZip(data.zip || "");
+              setMail(data.mail || "");
+              setPhone(data.phone || "");
+              setImage(data.image || "");
+              setStoragePath(data.storagePath || "");
+              return;
+            }
           }
-          return;
         } catch (err) {
           console.error(err);
           setErrorMessage("Could not load profile from server");
@@ -83,6 +86,7 @@ export default function ProfileInfo() {
           setMail(p.email || "");
           setPhone(p.phone || "");
           setImage(p.image || "");
+          setStoragePath(p.storagePath || "");
         }
       } catch (err) {
         console.error(err);
@@ -96,13 +100,12 @@ export default function ProfileInfo() {
 
   async function handleSaveUser(event) {
     event.preventDefault();
-
+    setIsSaving(true);
     setErrorMessage("");
 
-    // Persist both danish keys and legacy keys for compatibility
     const user = {
-      fornavn: fornavn,
-      efternavn: efternavn,
+      fornavn,
+      efternavn,
       gender,
       birthday,
       adress,
@@ -111,6 +114,7 @@ export default function ProfileInfo() {
       mail,
       phone,
       image,
+      storagePath,
     };
 
     // If we have a Firebase UID and DB base URL, save to Firebase realtime DB
@@ -126,6 +130,7 @@ export default function ProfileInfo() {
       } catch (err) {
         console.error(err);
         setErrorMessage("Sorry, something went wrong saving to server.");
+        setIsSaving(false);
         return;
       }
     }
@@ -136,8 +141,8 @@ export default function ProfileInfo() {
       if (currentUserRaw) {
         const currentUser = JSON.parse(currentUserRaw);
         currentUser.profile = {
-          fornavn: fornavn,
-          efternavn: efternavn,
+          fornavn,
+          efternavn,
           gender,
           birthday,
           adress,
@@ -146,6 +151,7 @@ export default function ProfileInfo() {
           mail,
           phone,
           image,
+          storagePath,
         };
         localStorage.setItem("currentUser", JSON.stringify(currentUser));
         // notify listeners in same tab immediately
@@ -157,6 +163,7 @@ export default function ProfileInfo() {
       console.error(err);
     }
 
+    setIsSaving(false);
     // After saving, navigate to the update view so the user can continue
     navigate("/profile/update");
   }
@@ -173,10 +180,93 @@ export default function ProfileInfo() {
     const MAX_BYTES = 2_000_000; // 2 MB
     console.debug("Selected file:", file.name, file.size, "bytes");
     if (file.size <= MAX_BYTES) {
-      // if file size is below or equal to 2MB
-      const imageUrl = await uploadImage(file); // call the uploadImage function
-      setImage(imageUrl); // set the image state with the image URL
-      setErrorMessage(""); // reset errorMessage state
+      // show an immediate preview while uploading
+      const previewUrl = URL.createObjectURL(file);
+      setImage(previewUrl);
+      setErrorMessage("");
+
+      try {
+        const storage = getStorage();
+        const uidSafe = auth?.currentUser?.uid || "public";
+        const path = `profile_images/${uidSafe}/${Date.now()}_${file.name}`;
+        const fileRef = storageRef(storage, path);
+        const uploadTask = uploadBytesResumable(fileRef, file);
+
+        uploadTask.on(
+          "state_changed",
+          (snapshot) => {
+            const percent = Math.round(
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+            );
+            setUploadProgress(percent);
+          },
+          (err) => {
+            console.error("Upload failed:", err);
+            setErrorMessage("Upload image failed");
+            setUploadProgress(null);
+            // revoke preview if it was created (ignore any revoke errors)
+            try {
+              URL.revokeObjectURL(previewUrl);
+            } catch {
+              /* ignore */
+            }
+          },
+          async () => {
+            // success
+            try {
+              const downloadUrl = await getDownloadURL(fileRef);
+              setImage(downloadUrl);
+              setStoragePath(path);
+
+              // update DB/localStorage immediately with the new image so other components reflect change
+              if (uid && firebaseDbUrlBase) {
+                try {
+                  const url = `${firebaseDbUrlBase}/users/${uid}.json`;
+                  await fetch(url, {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                      image: downloadUrl,
+                      storagePath: path,
+                    }),
+                  });
+                } catch (err) {
+                  console.warn("Failed to persist image URL to DB:", err);
+                }
+              }
+
+              try {
+                const currentUserRaw = localStorage.getItem("currentUser");
+                if (currentUserRaw) {
+                  const currentUser = JSON.parse(currentUserRaw);
+                  currentUser.profile = currentUser.profile || {};
+                  currentUser.profile.image = downloadUrl;
+                  currentUser.profile.storagePath = path;
+                  localStorage.setItem(
+                    "currentUser",
+                    JSON.stringify(currentUser)
+                  );
+                  window.dispatchEvent(
+                    new CustomEvent("currentUserChanged", {
+                      detail: currentUser,
+                    })
+                  );
+                }
+              } catch (err) {
+                console.warn(
+                  "Failed to update local currentUser after upload:",
+                  err
+                );
+              }
+            } finally {
+              setUploadProgress(null);
+            }
+          }
+        );
+      } catch (err) {
+        console.error("Upload image failed:", err);
+        setErrorMessage("Upload image failed");
+      }
     } else {
       // if too big display an informative error message
       const sizeMB = (file.size / 1024 / 1024).toFixed(2);
@@ -187,25 +277,6 @@ export default function ProfileInfo() {
           1024
         ).toFixed(2)} MB.`
       );
-    }
-  }
-
-  async function uploadImage(imageFile) {
-    try {
-      // Initialize storage and upload the file to a user-specific path when possible
-      const storage = getStorage();
-      const uid = auth?.currentUser?.uid || "public";
-      const fileRef = storageRef(
-        storage,
-        `profile_images/${uid}/${Date.now()}_${imageFile.name}`
-      );
-      const snapshot = await uploadBytes(fileRef, imageFile);
-      const downloadUrl = await getDownloadURL(snapshot.ref);
-      return downloadUrl;
-    } catch (err) {
-      console.error("Upload image failed:", err);
-      setErrorMessage("Upload image failed");
-      throw err;
     }
   }
 
@@ -274,6 +345,95 @@ export default function ProfileInfo() {
     }
   }
 
+  // Remove profile image: delete storage object when possible, clear DB/local state and UI
+  async function handleRemoveImage() {
+    const confirmRemove = window.confirm("Vil du fjerne dit profilbillede?");
+    if (!confirmRemove) return;
+
+    setErrorMessage("");
+
+    // Try deleting the storage object using stored storagePath first
+    if (storagePath) {
+      try {
+        const storage = getStorage();
+        const imgRef = storageRef(storage, storagePath);
+        await deleteObject(imgRef);
+      } catch (err) {
+        console.warn("Failed to delete storage object by storagePath:", err);
+        setErrorMessage(
+          "Kunne ikke fjerne billedet fra Storage, men profilen vil blive opdateret."
+        );
+        // continue
+      }
+    } else if (image) {
+      // Fallback: try to parse a firebase storage URL and delete by decoded path
+      try {
+        const parsed = new URL(image);
+        if (
+          parsed.hostname.includes("firebasestorage.googleapis.com") &&
+          parsed.pathname.includes("/o/")
+        ) {
+          const encodedPath = parsed.pathname.split("/o/")[1];
+          const path = decodeURIComponent(encodedPath);
+          const storage = getStorage();
+          const imgRef = storageRef(storage, path);
+          await deleteObject(imgRef);
+        }
+      } catch (err) {
+        console.warn("Failed to delete storage object by parsing URL:", err);
+        setErrorMessage(
+          "Kunne ikke fjerne billedet fra Storage, men profilen vil blive opdateret."
+        );
+      }
+    }
+
+    // Clear DB record
+    if (uid && firebaseDbUrlBase) {
+      try {
+        const url = `${firebaseDbUrlBase}/users/${uid}.json`;
+        const resp = await fetch(url, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ image: "", storagePath: "" }),
+        });
+        if (!resp.ok) {
+          const txt = await resp.text();
+          console.error("Failed to clear image on server:", resp.status, txt);
+          setErrorMessage("Kunne ikke fjerne billedet på serveren.");
+          return;
+        }
+      } catch (err) {
+        console.error("Error clearing image on server:", err);
+        setErrorMessage("Kunne ikke fjerne billedet på serveren.");
+        return;
+      }
+    }
+
+    // Update localStorage fallback copy and notify listeners
+    try {
+      const currentUserRaw = localStorage.getItem("currentUser");
+      if (currentUserRaw) {
+        const currentUser = JSON.parse(currentUserRaw);
+        currentUser.profile = currentUser.profile || {};
+        currentUser.profile.image = "";
+        currentUser.profile.storagePath = "";
+        localStorage.setItem("currentUser", JSON.stringify(currentUser));
+        window.dispatchEvent(
+          new CustomEvent("currentUserChanged", { detail: currentUser })
+        );
+      }
+    } catch (err) {
+      console.error(
+        "Failed to update local currentUser after removing image:",
+        err
+      );
+    }
+
+    // finally update component state so UI shows placeholder
+    setImage("");
+    setStoragePath("");
+  }
+
   return (
     <Fragment>
       <div className="profile-info-parent">
@@ -289,18 +449,27 @@ export default function ProfileInfo() {
               onChange={handleImageChange}
               ref={fileInputRef}
             />
-            <img
-              id="image"
-              className={"profile-image-preview"}
-              src={image || Placeholder}
-              alt="Choose"
-              onError={(e) => {
-                // if the image fails to load, use the placeholder image
-                e.target.onerror = null; // prevent infinite loop
-                e.target.src = Placeholder;
-              }}
-              onClick={() => fileInputRef.current.click()}
-            />
+            <div style={{ position: "relative" }}>
+              <img
+                id="image"
+                className={"profile-image-preview"}
+                src={image || Placeholder}
+                alt="Choose"
+                onError={(e) => {
+                  // if the image fails to load, use the placeholder image
+                  e.target.onerror = null; // prevent infinite loop
+                  e.target.src = Placeholder;
+                }}
+                onClick={() => fileInputRef.current.click()}
+              />
+
+              {uploadProgress !== null && (
+                <div className="upload-spinner-overlay">
+                  <div className="spinner" />
+                  <div className="upload-percent">{uploadProgress}%</div>
+                </div>
+              )}
+            </div>
           </div>
           <div className="profile-card-actions">
             <a
@@ -310,78 +479,7 @@ export default function ProfileInfo() {
               <img src={pen} alt="Edit icon" style={{ width: "1.5rem" }} />
               Rediger
             </a>
-            <a
-              id="profile-card-actions-seperat"
-              onClick={async () => {
-                // remove image handler
-                async function handleRemoveImage() {
-                  setErrorMessage("");
-
-                  // first try to update the server record if possible
-                  if (uid && firebaseDbUrlBase) {
-                    try {
-                      const url = `${firebaseDbUrlBase}/users/${uid}.json`;
-                      const resp = await fetch(url, {
-                        method: "PATCH",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ image: "" }),
-                      });
-                      if (!resp.ok) {
-                        const txt = await resp.text();
-                        console.error(
-                          "Failed to clear image on server:",
-                          resp.status,
-                          txt
-                        );
-                        setErrorMessage(
-                          "Kunne ikke fjerne billedet på serveren."
-                        );
-                        return;
-                      }
-                    } catch (err) {
-                      console.error("Error clearing image on server:", err);
-                      setErrorMessage(
-                        "Kunne ikke fjerne billedet på serveren."
-                      );
-                      return;
-                    }
-                  }
-
-                  // Update localStorage fallback copy and notify listeners
-                  try {
-                    const currentUserRaw = localStorage.getItem("currentUser");
-                    if (currentUserRaw) {
-                      const currentUser = JSON.parse(currentUserRaw);
-                      currentUser.profile = currentUser.profile || {};
-                      currentUser.profile.image = "";
-                      localStorage.setItem(
-                        "currentUser",
-                        JSON.stringify(currentUser)
-                      );
-                      window.dispatchEvent(
-                        new CustomEvent("currentUserChanged", {
-                          detail: currentUser,
-                        })
-                      );
-                    }
-                  } catch (err) {
-                    console.error(
-                      "Failed to update local currentUser after removing image:",
-                      err
-                    );
-                  }
-
-                  // finally update component state so UI shows placeholder
-                  setImage("");
-                }
-
-                // ask user for confirmation before removing image
-                const confirmRemove = window.confirm(
-                  "Vil du fjerne dit profilbillede?"
-                );
-                if (confirmRemove) await handleRemoveImage();
-              }}
-            >
+            <a id="profile-card-actions-seperat" onClick={handleRemoveImage}>
               <img src={trash} alt="Delete icon" style={{ width: "1.5rem" }} />
               Fjern
             </a>
@@ -496,7 +594,7 @@ export default function ProfileInfo() {
                   className="profile-btns profile-btns-actions-seperat profile-btn-actions-lightred"
                   id="save-btn"
                 >
-                  Gem
+                  {isSaving ? "Gemmer..." : "Gem"}
                 </button>
               </div>
             </form>
