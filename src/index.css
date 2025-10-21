@@ -941,7 +941,7 @@ form {
   top: 0;
   padding: 2rem 0 0;
   background-color: var(--white);
-  z-index: 4;
+  z-index: 2;
   height: auto;
   box-sizing: content-box;
 }
@@ -981,7 +981,7 @@ form {
 
 .filter-label {
   position: relative;
-  z-index: 3;
+  z-index: 1;
   transition: color 0.2s ease;
 }
 
