@@ -48,9 +48,15 @@ export default function KalenderPage() {
 
   useLayoutEffect(() => {
     if (nextEventRef.current) {
-      nextEventRef.current.scrollIntoView({
+      const offset = 155; // Juster denne værdi baseret på din layout
+      const elementPosition = nextEventRef.current.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
         behavior: "smooth",
-        block: "start",
+        // block: "start",
+        // inline: "nearest",
       });
     } 
   }, [events]);
@@ -93,11 +99,15 @@ export default function KalenderPage() {
      );
 
      // Observe all month headers
-     monthHeadersRef.current.forEach((header) => observer.observe(header));
+     monthHeadersRef.current.forEach((header) => {
+       if (header) observer.observe(header); // Ensure header is not null or undefined
+     });
 
      return () => {
        // Cleanup observer on unmount
-       monthHeadersRef.current.forEach((header) => observer.unobserve(header));
+       monthHeadersRef.current.forEach((header) => {
+         if (header) observer.unobserve(header); // Ensure header is not null or undefined
+       });
      };
    }, []);
 

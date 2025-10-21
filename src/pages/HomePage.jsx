@@ -15,8 +15,7 @@ export default function HomePage() {
 
   useEffect(() => {
     async function fetchUsers() {
-      const url =
-        "https://web-app-bt-124b8-default-rtdb.firebaseio.com/users.json";
+      const url = `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/users.json`;
       const response = await fetch(url);
       const data = await response.json();
 
