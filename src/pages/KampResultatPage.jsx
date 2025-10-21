@@ -34,6 +34,7 @@ export default function KampResultatPage() {
       spillere: valgteSpillere, //data fra searchSpillere
       resultatHjemme: resultatHjem, //data fra numberPick
       resultatUde: resultatUde, //data fra numberPick
+      harResultat: true,
     };
 
     const response = await fetch(url, {

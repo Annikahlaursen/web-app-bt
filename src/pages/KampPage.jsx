@@ -61,6 +61,7 @@ export default function KampPage() {
   }
 
   console.log(kamp.harResultat);
+  console.log(kamp.resultatUde);
 
   return (
     <>
