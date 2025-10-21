@@ -9,7 +9,7 @@ export default function KalenderPage() {
   const monthHeadersRef = useRef([]);
   const [activeFilter, setActiveFilter] = useState("alle");
 
-  //----------------------------Henter Data----------------------------// 
+  //----------------------------Henter Data----------------------------//
   useEffect(() => {
     async function fetchEvents() {
       // Fetch stevne data
@@ -47,7 +47,7 @@ export default function KalenderPage() {
   //----------------------------Scroll til næste Event----------------------------//
 
   useLayoutEffect(() => {
-    if (nextEventRef.current) {
+    if (events.length > 0 && nextEventRef.current) {
       const offset = 155; // Juster denne værdi baseret på din layout
       const elementPosition = nextEventRef.current.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - offset;
@@ -55,10 +55,8 @@ export default function KalenderPage() {
       window.scrollTo({
         top: offsetPosition,
         behavior: "smooth",
-        // block: "start",
-        // inline: "nearest",
       });
-    } 
+    }
   }, [events]);
 
   //------------------------Hjælpefunktioner formaterer månedheader og grupperer cards------------------------//
@@ -77,42 +75,41 @@ export default function KalenderPage() {
     return acc;
   }, {});
 
-   useEffect(() => {
-     const observer = new IntersectionObserver(
-       (entries) => {
-         entries.forEach((entry) => {
-           const header = entry.target;
-           if (entry.isIntersecting) {
-             // Add sticky class to the current month header
-             header.classList.add("sticky");
-           } else {
-             // Remove sticky class when it's no longer in view
-             header.classList.remove("sticky");
-           }
-         });
-       },
-       {
-         root: null, // Observe within the viewport
-         rootMargin: "-70px 0px 0px 0px", // Account for the KalenderFilter height
-         threshold: 0, // Trigger when the header enters or exits the viewport
-       }
-     );
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const header = entry.target;
+          if (entry.isIntersecting) {
+            // Add sticky class to the current month header
+            header.classList.add("sticky");
+          } else {
+            // Remove sticky class when it's no longer in view
+            header.classList.remove("sticky");
+          }
+        });
+      },
+      {
+        root: null, // Observe within the viewport
+        rootMargin: "-70px 0px 0px 0px", // Account for the KalenderFilter height
+        threshold: 0, // Trigger when the header enters or exits the viewport
+      }
+    );
 
-     // Observe all month headers
-     monthHeadersRef.current.forEach((header) => {
-       if (header) observer.observe(header); // Ensure header is not null or undefined
-     });
+    // Observe all month headers
+    monthHeadersRef.current.forEach((header) => {
+      if (header) observer.observe(header); // Ensure header is not null or undefined
+    });
 
-     return () => {
-       // Cleanup observer on unmount
-       monthHeadersRef.current.forEach((header) => {
-         if (header) observer.unobserve(header); // Ensure header is not null or undefined
-       });
-     };
-   }, []);
+    return () => {
+      // Cleanup observer on unmount
+      monthHeadersRef.current.forEach((header) => {
+        if (header) observer.unobserve(header); // Ensure header is not null or undefined
+      });
+    };
+  }, []);
 
-
-/*---------------------------Filtrerer events baseret på type-property----------------------- */
+  /*---------------------------Filtrerer events baseret på type-property----------------------- */
   const filteredEvents = Object.keys(groupedEvents).reduce((acc, month) => {
     const events = groupedEvents[month].filter((event) => {
       if (activeFilter === "alle") return true;
@@ -127,19 +124,25 @@ export default function KalenderPage() {
     return acc;
   }, {});
 
-
   /*-------------------------------JSX---------------------------------- */
   return (
     <section className="page">
-      <KalenderFilter setFilter={setActiveFilter}/>
+      <KalenderFilter setFilter={setActiveFilter} />
       {(() => {
         let nextEventFound = false; // Track if the next event has been found across all months
         return Object.keys(filteredEvents).map((month, index) => (
           <div key={month}>
-            <h2 className="month-header" ref={(el)=>(monthHeadersRef.current[index] = el)}>{month}</h2>
+            <h2
+              className="month-header"
+              ref={(el) => (monthHeadersRef.current[index] = el)}
+            >
+              {month}
+            </h2>
             {filteredEvents[month].map((event) => {
               const isNextEvent =
-                !nextEventFound &&  new Date(event.dato).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0);
+                !nextEventFound &&
+                new Date(event.dato).setHours(0, 0, 0, 0) >=
+                  new Date().setHours(0, 0, 0, 0);
               if (isNextEvent) {
                 nextEventFound = true; // Mark that the next event has been found
               }
