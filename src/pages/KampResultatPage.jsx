@@ -4,6 +4,7 @@ import SearchSpiller from "../components/SearchSpiller";
 import { useNavigate, useParams } from "react-router";
 import { Link } from "react-router";
 import arrowBlack from "/public/arrow-left-black.svg";
+import KampCard from "../components/KampCard";
 
 export default function KampResultatPage() {
   const [kamp, setKamp] = useState({});
@@ -51,7 +52,10 @@ export default function KampResultatPage() {
   }
 
   return (
-    <section className="page">
+    <section className="resultat-page">
+      <button className="btn" onClick={handleSave}>
+        Gem resulatat
+      </button>
       <Link to="...">
         <img
           className="arrow"
@@ -59,21 +63,29 @@ export default function KampResultatPage() {
           alt="Arrow back to previus page"
         />
       </Link>
-      <h1>Kamp Resultat Page</h1>
-      <p>KampID: {kamp?.id}</p>
-      <SearchSpiller
-        key={kamp.id}
-        kamp={kamp}
-        onSpillerChange={(spillere) => setValgteSpillere(spillere)}
-      />
-      <p>Her kan du se kampens resultat og statistik. {kamp.dato} </p>
-      <NumberPick
-        onChangeH={(nytHjemResultat) => setResultatHjem(nytHjemResultat)}
-        onChangeU={(nytUdeResultat) => setResultatUde(nytUdeResultat)}
-      />
-      <button className="btn" onClick={handleSave}>
-        Gem resulatat
-      </button>
+      <KampCard kamp={kamp} oplysninger="kunOplysninger" />
+      <section className="updateResult">
+        <p>Vælg spillere (hjemmehold)</p>
+        <SearchSpiller
+          key={kamp.id}
+          kamp={kamp}
+          onSpillerChange={(spillere) => setValgteSpillere(spillere)}
+        />
+
+        {
+          "" /* her skal spillere fra udehold være - det skal måske gøre ved at man inde i kampPage skriver spillere ind på en anden måde */
+        }
+        <p>Vælg spillere {kamp.udehold}</p>
+        <SearchSpiller
+          key={kamp.id}
+          kamp={kamp}
+          onSpillerChange={(spillere) => setValgteSpillere(spillere)}
+        />
+        <NumberPick
+          onChangeH={(nytHjemResultat) => setResultatHjem(nytHjemResultat)}
+          onChangeU={(nytUdeResultat) => setResultatUde(nytUdeResultat)}
+        />
+      </section>
     </section>
   );
 }
