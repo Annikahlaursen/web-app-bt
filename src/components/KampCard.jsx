@@ -124,9 +124,8 @@ const KampCard = forwardRef(({ kamp, oplysninger }, ref) => {
           </div>
         </div>
       </div>
-    </div>
   );
-});
+}});
 
 export default KampCard;
 
