@@ -48,7 +48,7 @@ export default function KalenderPage() {
 
   useLayoutEffect(() => {
     if (nextEventRef.current) {
-      const offset = 150; // Juster denne værdi baseret på din layout
+      const offset = 155; // Juster denne værdi baseret på din layout
       const elementPosition = nextEventRef.current.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - offset;
 
@@ -99,11 +99,15 @@ export default function KalenderPage() {
      );
 
      // Observe all month headers
-     monthHeadersRef.current.forEach((header) => observer.observe(header));
+     monthHeadersRef.current.forEach((header) => {
+       if (header) observer.observe(header); // Ensure header is not null or undefined
+     });
 
      return () => {
        // Cleanup observer on unmount
-       monthHeadersRef.current.forEach((header) => observer.unobserve(header));
+       monthHeadersRef.current.forEach((header) => {
+         if (header) observer.unobserve(header); // Ensure header is not null or undefined
+       });
      };
    }, []);
 
