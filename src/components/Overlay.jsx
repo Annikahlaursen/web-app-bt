@@ -5,12 +5,15 @@ import SignOut from "/right-from-bracket-solid-full.svg";
 import Close from "/xmark-solid-full.svg";
 import SignOutCard from "./SignOutCard";
 import { auth } from "../firebase-config";
+import Star from "/star-solid-full.svg";
 
 export default function Overlay({ isOpen, onClose }) {
   const [isClosing, setIsClosing] = useState(false);
   const [showSignOutCard, setShowSignOutCard] = useState(false);
   const [displayName, setDisplayName] = useState("");
   const [displayImage, setDisplayImage] = useState(Placeholder);
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(!open);
 
   // Load display name and image from Realtime DB when available; otherwise fallback to localStorage
   useEffect(() => {
@@ -98,6 +101,7 @@ export default function Overlay({ isOpen, onClose }) {
       setIsClosing(false);
     }
   }, [isOpen]);
+
   return (
     <Fragment>
       {(isOpen || isClosing) && (
@@ -127,14 +131,44 @@ export default function Overlay({ isOpen, onClose }) {
                 <span style={{ textDecoration: "underline" }}>Se profil →</span>
               </div>
             </NavLink>
-            <nav className="overlay-nav">
-              <NavLink
-                to="/"
-                className="overlay-link overlay-linkcolorchange"
-                onClick={handleClose}
-              >
-                <span>Favorit</span>
-              </NavLink>
+            <nav>
+              <div className="dropdown">
+                <button
+                  className="dropdown-favorit overlay-link overlay-linkcolorchange"
+                  onClick={handleOpen}
+                >
+                  Favorit
+                  {open ? (
+                    <div style={{ fontSize: "20px" }}>&#9656;</div>
+                  ) : (
+                    <div style={{ fontSize: "20px" }}>&#9662;</div>
+                  )}
+                </button>
+                {open ? (
+                  <ul className="menu">
+                    <li className="menu-item">
+                      <li>
+                        <button className="menu-rund">
+                          <img src={Star} alt="" />
+                        </button>
+                        <p>Favoritter</p>
+                      </li>
+                      <li>
+                        <button className="menu-rund">
+                          <img src={Star} alt="" />
+                        </button>
+                        <p>Favoritter</p>
+                      </li>
+                      <li>
+                        <button className="menu-rund">
+                          <img src={Star} alt="" />
+                        </button>
+                        <p>Favoritter</p>
+                      </li>
+                    </li>
+                  </ul>
+                ) : null}
+              </div>
               <NavLink
                 to="/searchKampID"
                 className="overlay-link"

@@ -11,13 +11,17 @@ export default function SignInCard() {
     event.preventDefault();
     setErrorMessage("");
 
-    const email = event.target.mail.value;
+    const mail = event.target.mail.value;
     const password = event.target.password.value;
+
+    console.log(auth);
+
+    console.log(mail, password);
 
     try {
       const userCredential = await signInWithEmailAndPassword(
         auth,
-        email,
+        mail,
         password
       );
       const user = userCredential.user;
@@ -39,7 +43,7 @@ export default function SignInCard() {
       }
 
       if (profile) {
-        const currentUser = { uid: user.uid, email: user.email, profile };
+        const currentUser = { uid: user.uid, mail: user.email, profile };
         setCurrentUserStorage(currentUser);
       } else {
         // fallback: store minimal info so UI still reacts

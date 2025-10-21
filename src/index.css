@@ -50,6 +50,11 @@ h5 {
   margin: 0.5em 0 0;
 }
 
+ul {
+  padding: 0;
+  margin: 0;
+}
+
 /*--------------Search Styling----------*/
 input {
   background-color: var(--light-grey);
@@ -178,7 +183,6 @@ form {
 .profile-image {
   background-color: var(--white);
   text-align: center;
-  padding: 16px 16px;
   text-decoration: none;
   letter-spacing: 0.1em;
   font-weight: 500;
@@ -217,7 +221,7 @@ form {
 }
 
 .profile-placeholder {
-  max-width: 50%;
+  max-width: 100vh;
   margin: auto;
   display: flex;
   padding: 1rem 0 0;
@@ -502,6 +506,34 @@ form {
   width: 100%;
 }
 
+.dropdown {
+  background-color: var(--lightred);
+}
+
+.dropdown li {
+  list-style: none;
+}
+
+.dropdown-favorit {
+  border: none;
+  justify-content: space-between;
+}
+
+.menu-item {
+  display: flex;
+  justify-content: center;
+  gap: 0.8rem;
+}
+
+.menu-rund {
+  width: 5em;
+  height: 5em;
+  border-radius: 50%;
+  border: 2px solid var(--white);
+  padding: 10px;
+  background-color: transparent;
+}
+
 .overlay-linkcolorchange {
   background-color: var(--lightred);
 }
@@ -764,7 +796,6 @@ form {
   width: 6em;
   border-radius: 50%;
   background-color: var(--grey);
-  padding: 1rem;
 }
 
 /*------------ Blåboks Styling -------------*/
