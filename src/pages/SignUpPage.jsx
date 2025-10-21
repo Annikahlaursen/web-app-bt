@@ -48,6 +48,8 @@ export default function SignUpPage() {
 
       // persist profile to Realtime DB using PATCH so we don't overwrite other fields
       await createUser(user.uid, payload);
+      // navigate to update route (use the new uid so UpdateCard persists after auth change)
+      navigate(`/update/${user.uid}`);
 
       // fetch saved profile (best-effort) and store full object locally so UI updates
       let savedProfile = null;
@@ -68,9 +70,6 @@ export default function SignUpPage() {
         ? { uid: user.uid, mail: user.mail, profile: savedProfile }
         : { uid: user.uid, mail: user.mail, profile: { fornavn, efternavn } };
       setCurrentUserStorage(storageObj);
-
-      // navigate to update route (use the new uid so UpdateCard persists after auth change)
-      navigate(`/update/${user.uid}`);
     } catch (error) {
       let code = error.code || error.message || "unknown error";
       try {

@@ -50,6 +50,11 @@ h5 {
   margin: 0.5em 0 0;
 }
 
+ul {
+  padding: 0;
+  margin: 0;
+}
+
 /*--------------Search Styling----------*/
 input {
   background-color: var(--light-grey);
@@ -502,6 +507,20 @@ form {
 
 .dropdown {
   background-color: var(--lightred);
+}
+
+.dropdown li {
+  list-style: none;
+}
+
+.dropdown-favorit {
+  border: none;
+}
+
+.menu-item {
+  display: flex;
+  justify-content: center;
+  gap: 0.8rem;
 }
 
 .menu-rund {

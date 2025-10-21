@@ -20,7 +20,6 @@ import StevneSearchPage from "./pages/StevneSearchPage";
 import KampCard from "./components/KampCard";
 import UpdateCard from "./pages/UpdatePage";
 
-
 export default function App() {
   const [isAuth, setIsAuth] = useState(localStorage.getItem("isAuth")); // default value comes from localStorage
 
@@ -55,7 +54,8 @@ export default function App() {
         <Route path="/stevne/:id/tilmeld" element={<Error />} />
         <Route path="/kalender" element={<KalenderPage />} />
         <Route path="/:id" element={<KampCard />} />
-                    <Route path="/stevnesearch" element={<StevneSearchPage />} />
+        <Route path="/stevnesearch" element={<StevneSearchPage />} />
+        <Route path="/update/:id" element={<UpdateCard />} />
       </Routes>
     </>
   );
@@ -63,7 +63,6 @@ export default function App() {
   // variable holding all public routes without nav bar
   const publicRoutes = (
     <Routes>
-      <Route path="/update/:id" element={<UpdateCard />} />
       <Route path="/sign-in" element={<SignInPage />} />
       <Route path="/sign-up" element={<SignUpPage />} />
       <Route path="*" element={<Navigate to="/sign-in" />} />
