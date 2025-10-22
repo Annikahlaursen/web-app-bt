@@ -10,6 +10,7 @@ export default function Profile() {
   const [activeView, setActiveView] = useState("info"); // 'info' eller 'kontakt'
   const [displayName, setDisplayName] = useState("");
   const [displayImage, setDisplayImage] = useState(Placeholder);
+  const [displayRating, setDisplayRating] = useState(null);
 
   // Load display name and image from Realtime DB when available; otherwise fallback to localStorage
   useEffect(() => {
@@ -31,6 +32,7 @@ export default function Profile() {
                 }${efternavn}`.trim() || ""
               );
               setDisplayImage(data.image || Placeholder);
+              setDisplayRating(data.rating ?? null);
               return;
             }
           }
@@ -48,6 +50,7 @@ export default function Profile() {
               ""
           );
           setDisplayImage(p.image || Placeholder);
+          setDisplayRating(p.rating ?? null);
           return;
         }
       } catch (err) {
@@ -86,7 +89,12 @@ export default function Profile() {
       </div>
       <div className="profile-text">
         <h4>{displayName || "Din profil"}</h4>
-        <h4>Rating:</h4>
+        <h4>
+          Rating:{" "}
+          {displayRating !== null && displayRating !== undefined
+            ? displayRating
+            : "-"}
+        </h4>
       </div>
       <div>
         <div className="profile-btns">

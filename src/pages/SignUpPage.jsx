@@ -38,12 +38,16 @@ export default function SignUpPage() {
       );
       const user = userCredential.user;
 
+      // assign a random rating between 1000 and 1500 for new users
+      const rating = Math.floor(Math.random() * (1500 - 1000 + 1)) + 1000;
+
       // build profile payload (write both danish keys and legacy english keys for compatibility)
       const payload = {
         fornavn,
         efternavn,
         mail,
         phone,
+        rating,
       };
 
       // persist profile to Realtime DB using PATCH so we don't overwrite other fields
@@ -68,7 +72,11 @@ export default function SignUpPage() {
       // persist currentUser locally so UI updates immediately
       const storageObj = savedProfile
         ? { uid: user.uid, mail: user.mail, profile: savedProfile }
-        : { uid: user.uid, mail: user.mail, profile: { fornavn, efternavn } };
+        : {
+            uid: user.uid,
+            mail: user.mail,
+            profile: { fornavn, efternavn, rating },
+          };
       setCurrentUserStorage(storageObj);
     } catch (error) {
       let code = error.code || error.message || "unknown error";
