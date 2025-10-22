@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Select from "react-select/base";
+import Select from "react-select";
 
 export default function HoldSearchPage() {
   const [hold, setHold] = useState([]);
@@ -27,17 +27,24 @@ export default function HoldSearchPage() {
     label: hold.navn,
   }));
 
+  const handleSelectChange = (selectedOption) => {
+    console.log("Selected hold:", selectedOption);
+    // You can add further logic here to handle the selected hold
+  };
+
+  holdOptions.sort((a, b) => a.label.localeCompare(b.label));
+
   return (
     <>
       <h1>Søg på hold her</h1>
       <Select
         options={holdOptions}
         //value={selectedOption}
-        //onChange={handleSelectChange}
+        onChange={handleSelectChange}
         placeholder="Søg efter hold eller kampe"
         isClearable
         isSearchable
-      />
+      ></Select>
     </>
   );
 }
