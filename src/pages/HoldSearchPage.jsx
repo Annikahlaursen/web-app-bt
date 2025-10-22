@@ -7,6 +7,7 @@ import arrowBlack from "/arrow-left-black.svg";
 
 export default function HoldSearchPage() {
   const [hold, setHold] = useState([]);
+  const [klub, setKlub] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,6 +22,19 @@ export default function HoldSearchPage() {
         ...data[holdId],
       })); // map the data to an array of objects
 
+      //klub data fetch
+      const klubResponse = await fetch(
+        `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/klubber.json`
+      ); // fetch data from the url
+      const klubData = await klubResponse.json(); // get the data from the response and parse it
+
+      const klubArray = Object.keys(klubData).map((klubId) => ({
+        id: klubId,
+        ...data[klubId],
+      }));
+
+      setKlub(klubArray);
+
       setHold(holdArray); // set the posts state with the postsArray
     }
 
@@ -32,12 +46,15 @@ export default function HoldSearchPage() {
     label: hold.navn,
   }));
 
+  const klubOptions = klub.map((klub) => ({
+    value: klub.id,
+    label: klub.navn,
+  }));
+
   const handleSelectChange = (selectedOption) => {
-    console.log("Selected hold:", selectedOption);
+    console.log("Selected klub:", selectedOption);
     // You can add further logic here to handle the selected hold
   };
-
-  holdOptions.sort((a, b) => a.label.localeCompare(b.label));
 
   return (
     <div className="page-topmargin">
@@ -48,18 +65,20 @@ export default function HoldSearchPage() {
           alt="Arrow back to previous page"
           onClick={() => navigate(-1)}
         />
-        <h1>Søg på hold her</h1>
+        <h1>Søg på klubber her</h1>
         <Select
-          options={holdOptions}
+          options={klubOptions}
           //value={selectedOption}
           onChange={handleSelectChange}
-          placeholder="Søg efter hold eller kampe"
+          placeholder="Søg efter klubber"
           isClearable
           isSearchable
         ></Select>
       </div>
       <div className="holdkampe-background page">
-        <HoldBoks key={hold.id} hold={hold} />
+        {klubOptions.map((hold, klub) => (
+          <HoldBoks key={hold.id} klub={klub.id} hold={hold.id} />
+        ))}
 
         {holdOptions.map((hold) => (
           <KampCard

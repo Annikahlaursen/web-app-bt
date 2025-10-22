@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 
-export default function HoldBoks({ hold }) {
+export default function HoldBoks() {
   const [isFilled, setIsFilled] = useState(false);
-  //const [hold, setHold] = useState({});
+  const [hold, setHold] = useState({});
   const [klub, setKlub] = useState({});
   const [isFavorite, setIsFavorite] = useState(false);
-  //const url = `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/hold.json`;
+  const holdUrl = `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/hold.json`;
   const klubUrl = `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/klubber.json`;
 
   useEffect(() => {
@@ -13,13 +13,17 @@ export default function HoldBoks({ hold }) {
       const klubResponse = await fetch(klubUrl);
       const klubData = await klubResponse.json();
       setKlub(klubData);
+
+      const holdResponse = await fetch(holdUrl);
+      const holdData = await holdResponse.json();
+      setHold(holdData);
     }
 
     fetchData();
-  }, [klubUrl]);
+  }, [klubUrl, holdUrl]);
 
-  console.log("hold data:", hold?.navn);
-  console.log("klub data:", klub.navn);
+  console.log("hold data:", hold);
+  console.log("klub data:", klub?.navn);
 
   function handleStarClick() {
     setIsFilled((prev) => !prev);
