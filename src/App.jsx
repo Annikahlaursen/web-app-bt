@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router";
+import { Routes, Route, Navigate, useLocation } from "react-router";
 import { useState } from "react";
 import { auth } from "./firebase-config";
 import { onAuthStateChanged } from "firebase/auth";
@@ -25,6 +25,7 @@ import HoldSearchPage from "./pages/HoldSearchPage";
 
 export default function App() {
   const [isAuth, setIsAuth] = useState(localStorage.getItem("isAuth")); // default value comes from localStorage
+  const location = useLocation();
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -42,7 +43,12 @@ export default function App() {
   function hideNavFor(path) {
     // hide for update route with uid param and for auth pages
     if (matchPath("/update/:id", path)) return true;
-    if ((path === "/sign-in" || path === "/sign-up" || path === "/login"))
+    if (
+      path === "/sign-in" ||
+      path === "/sign-up" ||
+      path === "/login" ||
+      path === "/error"
+    )
       return true;
     return false;
   }
@@ -62,10 +68,10 @@ export default function App() {
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="*" element={<Navigate to="/" />} />
             <Route path="*" element={<Navigate to="/error" />} />
+            <Route path="/error" element={<Error />} />
             <Route path="/kamp/:id" element={<KampPage />} />
             <Route path="/kamp/:id/resultat" element={<KampResultatPage />} />
             <Route path="/stevne/:id" element={<StevnePage />} />
-            <Route path="/error" element={<Error />} />
             <Route path="/stevne/:id/tilmeld" element={<Error />} />
             <Route path="/kalender" element={<KalenderPage />} />
             <Route path="/:id" element={<KampCard />} />

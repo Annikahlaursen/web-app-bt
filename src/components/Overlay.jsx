@@ -191,7 +191,7 @@ export default function Overlay({ isOpen, onClose }) {
                 <span>Find Stævne</span>
               </NavLink>
               <NavLink
-                to="/"
+                to="/error"
                 className="overlay-link overlay-linkcolorchange"
                 onClick={handleClose}
               >

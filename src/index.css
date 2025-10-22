@@ -663,12 +663,6 @@ form {
   color: var(--white);
 }
 
-/* ---------- Page Styling ---------- */
-.page {
-  animation: fadeIn 0.5s;
-  padding: 2em 2em 7em;
-}
-
 /* ---------- Container Styling ---------- */
 .container {
   max-width: 700px;
@@ -833,6 +827,19 @@ form {
   flex-direction: row;
   align-items: center;
   gap: 10px;
+}
+
+.holdkampe-background {
+  margin-top: 2rem;
+  padding: 2rem;
+}
+
+.search-pages {
+  margin: 0 2rem 0;
+}
+
+.search-pages h1 {
+  font-size: 33px;
 }
 
 .klublogo-container {
@@ -1415,4 +1422,20 @@ div .css-13cymwt-control {
 /*default styling name - fix to rounded corners on picked item*/
 div .css-1p3m7a8-multiValue {
   border-radius: var(--border-radius);
+}
+
+/* ---------- Page Styling ---------- */
+.page {
+  animation: fadeIn 0.5s;
+  padding-bottom: 7em;
+}
+
+.page-grey-background {
+  animation: fadeIn 0.5s;
+  padding-bottom: 7em;
+  background-color: var(--grey);
+}
+
+.page-topmargin {
+  margin-top: 2rem;
 }
