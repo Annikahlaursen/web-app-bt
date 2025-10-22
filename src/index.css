@@ -830,10 +830,8 @@ form {
 }
 
 .holdkampe-background {
-  background-color: var(--grey);
-  border-radius: var(--border-radius) var(--border-radius) 0 0;
   margin-top: 2rem;
-  padding: 2rem 2rem;
+  padding: 2rem;
 }
 
 .search-pages {
@@ -1426,7 +1424,7 @@ div .css-1p3m7a8-multiValue {
 /* ---------- Page Styling ---------- */
 .page {
   animation: fadeIn 0.5s;
-  padding: 2em 0 7em;
+  padding-bottom: 7em;
 }
 
 .page-grey-background {

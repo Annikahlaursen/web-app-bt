@@ -57,10 +57,9 @@ export default function HoldSearchPage() {
           isSearchable
         ></Select>
       </div>
-      <div className="holdkampe-background page-grey-background">
+      <div className="holdkampe-background page">
         {holdOptions.map((kampe) => (
           <KampCard
-            oplysninger="kunOplysninger"
             kampe={kampe}
             key={kampe.id}
             onCLick={() => navigate(`/kampe/${kampe.id}`)}
