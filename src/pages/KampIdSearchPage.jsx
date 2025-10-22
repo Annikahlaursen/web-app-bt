@@ -54,24 +54,26 @@ export default function KampIdSearchPage() {
   );
 
   return (
-    <div className="page">
-      <Link to="...">
-        <img
-          className="arrow"
-          src={arrowBlack}
-          alt="Arrow back to previus page"
+    <div className="page-topmargin">
+      <div className="search-pages">
+        <Link to="...">
+          <img
+            className="arrow"
+            src={arrowBlack}
+            alt="Arrow back to previus page"
+          />
+        </Link>
+        <input
+          className="searchbar"
+          type="text"
+          name="search"
+          placeholder="Søg efter KampID"
+          value={filterCriteria.id || ""}
+          onChange={(e) => updateFilterCriteria("id", e.target.value)}
+          style={{ flex: 1, padding: "10px", width: "40vh" }}
         />
-      </Link>
-      <input
-        className="searchbar"
-        type="text"
-        name="search"
-        placeholder="Søg efter KampID"
-        value={filterCriteria.id || ""}
-        onChange={(e) => updateFilterCriteria("id", e.target.value)}
-        style={{ flex: 1, padding: "10px", width: "40vh" }}
-      />
-      <section className="opdel">
+      </div>
+      <section className="opdel holdkampe-background page">
         {filteredData.length > 0 ? (
           filteredData.map((kamp) => (
             <KampCard key={kamp.id} kamp={kamp} oplysninger="kunOplysninger" />

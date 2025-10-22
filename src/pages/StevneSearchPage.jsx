@@ -41,29 +41,33 @@ export default function StevneSearchPage() {
   );
 
   return (
-    <section className="page">
-      <img
-        className="arrow"
-        src={arrowBlack}
-        alt="Arrow back to previous page"
-        onClick={() => navigate(-1)}
-      />
-      <h1>Stævner</h1>
-      <input
-        type="text"
-        name="search"
-        placeholder="Søg efter stævne"
-        value={filterCriteria.titel || ""}
-        onChange={(e) => updateFilterCriteria("titel", e.target.value)}
-        style={{ flex: 1, padding: "10px" }}
-      />
-      {filteredData.map((stevne) => (
-        <StevneCard
-          stevne={stevne}
-          key={stevne.id}
-          onCLick={() => navigate(`/stevne/${stevne.id}`)}
+    <section className="page-topmargin">
+      <div className="search-pages">
+        <img
+          className="arrow"
+          src={arrowBlack}
+          alt="Arrow back to previous page"
+          onClick={() => navigate(-1)}
         />
-      ))}
+        <h1>Stævner</h1>
+        <input
+          type="text"
+          name="search"
+          placeholder="Søg efter stævne"
+          value={filterCriteria.titel || ""}
+          onChange={(e) => updateFilterCriteria("titel", e.target.value)}
+          style={{ flex: 1, padding: "10px" }}
+        />
+      </div>
+      <div className="holdkampe-background page">
+        {filteredData.map((stevne) => (
+          <StevneCard
+            stevne={stevne}
+            key={stevne.id}
+            onCLick={() => navigate(`/stevne/${stevne.id}`)}
+          />
+        ))}
+      </div>
     </section>
   );
 }

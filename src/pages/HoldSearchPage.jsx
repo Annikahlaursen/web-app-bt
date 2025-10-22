@@ -58,11 +58,11 @@ export default function HoldSearchPage() {
         ></Select>
       </div>
       <div className="holdkampe-background page">
-        {holdOptions.map((kampe) => (
+        {holdOptions.map((hold) => (
           <KampCard
-            kampe={kampe}
-            key={kampe.id}
-            onCLick={() => navigate(`/kampe/${kampe.id}`)}
+            kampe={hold}
+            key={hold.id}
+            onCLick={() => navigate(`/hold/${hold.id}`)}
           />
         ))}
       </div>
