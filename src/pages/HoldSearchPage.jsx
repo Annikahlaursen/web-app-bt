@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Select from "react-select";
+import HoldBoks from "../components/HoldBoks";
 import KampCard from "../components/KampCard";
 import { useNavigate } from "react-router";
 import arrowBlack from "/arrow-left-black.svg";
@@ -58,6 +59,8 @@ export default function HoldSearchPage() {
         ></Select>
       </div>
       <div className="holdkampe-background page">
+        <HoldBoks key={hold.id} hold={hold} />
+
         {holdOptions.map((hold) => (
           <KampCard
             kampe={hold}
