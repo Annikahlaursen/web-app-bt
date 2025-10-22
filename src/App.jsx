@@ -41,7 +41,7 @@ export default function App() {
   function hideNavFor(path) {
     // hide for update route with uid param and for auth pages
     if (matchPath("/update/:id", path)) return true;
-    if ((path === "/sign-in", path === "/sign-up", path === "/login"))
+    if ((path === "/sign-in" || path === "/sign-up" || path === "/login"))
       return true;
     return false;
   }
@@ -54,6 +54,7 @@ export default function App() {
         {isAuth && (
           <>
             <Route path="/" element={<HomePage />} />
+            <Route path="/update/:id" element={<UpdateCard />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/rating" element={<RatingPage />} />
             <Route path="/contact" element={<ContactPage />} />

@@ -51,7 +51,7 @@ export default function SignInCard() {
       }
 
       // navigate to home on success
-      navigate("/home");
+      navigate("/");
     } catch (error) {
       let code = error.code || error.message || "Login failed";
       // normalize known Firebase auth codes

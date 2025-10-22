@@ -4,18 +4,14 @@ import { Link, useNavigate } from "react-router";
 import { auth } from "../firebase-config";
 import { setCurrentUserStorage } from "../utils/currentUserEvents";
 import Logo from "/btp-logo.png";
-import Update from "./UpdatePage";
-// import Update from "../components/UpdateCard"; (not used)
 
 export default function SignUpPage() {
   const [errorMessage, setErrorMessage] = useState("");
-  const [showUpdate, setShowUpdate] = useState(false);
   const navigate = useNavigate();
 
   async function handleSignUp(event) {
     event.preventDefault();
     // show the UpdateCard immediately so user can continue with profile details
-    setShowUpdate(true);
     setErrorMessage("");
 
     const form = event.target;
@@ -86,7 +82,6 @@ export default function SignUpPage() {
         /* noop */
       }
       // revert optimistic UI if signup failed
-      setShowUpdate(false);
       setErrorMessage(code);
     }
   }
@@ -122,9 +117,6 @@ export default function SignUpPage() {
           <img id="login-logo" src={Logo} alt="Bordtennisportalen.dk logo" />
         </div>
         <div className="profile-info-parent">
-          {showUpdate ? (
-            <Update />
-          ) : (
             <div className="profile-card">
               <div>
                 <form
@@ -187,7 +179,6 @@ export default function SignUpPage() {
                 </form>
               </div>
             </div>
-          )}
           <br />
           <p className="text-center">
             Har du allerede en konto? <Link to="/sign-in">Log på</Link>

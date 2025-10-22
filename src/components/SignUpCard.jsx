@@ -1,5 +1,5 @@
 import { Fragment, useState, useRef } from "react";
-import UpdateCard from "../pages/UpdatePage";
+import { useNavigate } from "react-router";
 import Placeholder from "/user-solid-full.svg";
 import {
   getStorage,
@@ -11,12 +11,12 @@ import { auth } from "../firebase-config";
 import { setCurrentUserStorage } from "../utils/currentUserEvents";
 
 export default function CreateCard() {
-  const [showUpdateCard, setShowUpdateCard] = useState(false);
   const [image, setImage] = useState("");
   const fileInputRef = useRef(null);
+  const navigate = useNavigate();
 
   const handleSave = () => {
-    setShowUpdateCard(true);
+    navigate(`/update/${auth?.currentUser?.uid}`);
   };
 
   async function handleImageChange(event) {
@@ -59,9 +59,6 @@ export default function CreateCard() {
     }
   }
 
-  if (showUpdateCard) {
-    return <UpdateCard />;
-  }
 
   return (
     <Fragment>
