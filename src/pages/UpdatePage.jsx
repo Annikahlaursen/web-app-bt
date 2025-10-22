@@ -30,9 +30,38 @@ export default function Update() {
     navigate("/");
   };
 
-  const handleSave = () => {
-    navigate("/");
-  };
+  async function handleSave(event) {
+    event.preventDefault();
+    const url = `${firebaseDbUrlBase}/users/${uid}.json`;
+
+    const response = await fetch(url);
+
+    const currentUserData = await response.json();
+
+    const selectedKlub = klubber.find((k) => k.id === klubOptions[0].value);
+    const selectedHold = hold.find((h) => h.id === holdOptions[0].value);
+
+    const updatedUserData = {
+      ...currentUserData,
+      kid: selectedKlub ? selectedKlub.id : null,
+      hid: selectedHold ? selectedHold.id : null,
+      image: image || currentUserData.image || null,
+    };
+
+    const patchResponse = await fetch(url, {
+method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updatedUserData),
+    });
+     if (!patchResponse.ok) throw new Error("Failed to update user data.");
+
+    if (patchResponse.ok) {
+      console.log("klub og hold er tilføjet");
+      navigate("/");
+    } else {
+      console.error("Fejl ved opdatering af brugerdata");
+    }
+  }
 
   useEffect(() => {
     // Load profile either from Firebase (if logged in) or from localStorage fallback
