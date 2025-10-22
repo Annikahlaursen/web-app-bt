@@ -31,7 +31,7 @@ export default function Update() {
   };
 
   const handleSave = () => {
-    navigate("/update/:id");
+    navigate("/");
   };
 
   useEffect(() => {
