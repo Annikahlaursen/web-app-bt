@@ -8,7 +8,9 @@ import KampCard from "../components/KampCard";
 
 export default function KampResultatPage() {
   const [kamp, setKamp] = useState({});
-  const [valgteSpillere, setValgteSpillere] = useState([]);
+  const [valgteSpillereHjem, setValgteSpillereHjem] = useState([]);
+  const [valgteSpillereUde, setValgteSpillereUde] = useState([]);
+
   const [resultatHjem, setResultatHjem] = useState(0);
   const [resultatUde, setResultatUde] = useState(0);
 
@@ -29,10 +31,43 @@ export default function KampResultatPage() {
     getKamp();
   }, [params.id, url]);
 
+  // helper to extract user ids (react-select returns {value,label}, other variants may be id or user object)
+  function extractIds(arr) {
+    if (!Array.isArray(arr)) return [];
+    return arr.map((s) => s?.value ?? s?.id ?? s).filter(Boolean);
+  }
+
   async function handleSave() {
+    // collect unique user ids from both selections
+    const hjemIds = extractIds(valgteSpillereHjem);
+    const udeIds = extractIds(valgteSpillereUde);
+    const allIds = Array.from(new Set([...hjemIds, ...udeIds]));
+
+    // update each user's rating by +10
+    const updatePromises = allIds.map(async (uid) => {
+      const userUrl = `${
+        import.meta.env.VITE_FIREBASE_DATABASE_URL
+      }/users/${uid}.json`;
+      try {
+        const res = await fetch(userUrl);
+        const user = await res.json();
+        const newRating = (user?.rating ?? 0) + 10;
+        return fetch(userUrl, {
+          method: "PATCH",
+          body: JSON.stringify({ rating: newRating }),
+        });
+      } catch (err) {
+        console.warn("Failed to update user", uid, err);
+        return null;
+      }
+    });
+
+    await Promise.all(updatePromises);
+
     const updatedKamp = {
       ...kamp,
-      spillere: valgteSpillere, //data fra searchSpillere
+      spillereHjemme: valgteSpillereHjem, //data fra searchSpillere
+      spillereUde: valgteSpillereUde, //data fra searchSpillere
       resultatHjemme: resultatHjem, //data fra numberPick
       resultatUde: resultatUde, //data fra numberPick
       harResultat: true,
@@ -45,7 +80,9 @@ export default function KampResultatPage() {
 
     if (response.ok) {
       console.log("Tillykke, kamp er blevet opdateret");
-      navigate(`/kamp/${params.id}`, { state: { spillere: valgteSpillere } });
+      navigate(`/kamp/${params.id}`, {
+        state: { spillere: valgteSpillereHjem },
+      });
     } else {
       console.log("Error updating kamp resultat");
     }
@@ -69,17 +106,13 @@ export default function KampResultatPage() {
         <SearchSpiller
           key={kamp.id}
           kamp={kamp}
-          onSpillerChange={(spillere) => setValgteSpillere(spillere)}
+          onSpillerChange={(spillere) => setValgteSpillereHjem(spillere)}
         />
-
-        {
-          "" /* her skal spillere fra udehold være - det skal måske gøre ved at man inde i kampPage skriver spillere ind på en anden måde */
-        }
         <p>Vælg spillere {kamp.udehold}</p>
         <SearchSpiller
           key={kamp.id}
           kamp={kamp}
-          onSpillerChange={(spillere) => setValgteSpillere(spillere)}
+          onSpillerChange={(spillere) => setValgteSpillereUde(spillere)}
         />
         <section className="result-number">
           <p>Resultat</p>

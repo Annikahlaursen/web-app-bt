@@ -10,7 +10,8 @@ import { useState, useEffect } from "react";
 export default function KampPage() {
   const navigate = useNavigate();
   const [kamp, setKamp] = useState({});
-  const [valgteSpillere, setValgteSpillere] = useState([]);
+  const [valgteSpillereHjem, setValgteSpillereHjem] = useState([]);
+  const [valgteSpillereUde, setValgteSpillereUde] = useState([]);
 
   const params = useParams();
 
@@ -33,7 +34,16 @@ export default function KampPage() {
 
       // Kun de valgte spillere i kamp.spillere
       // Forudsætter at kamp.spillere er et array med uid'er eller objekter med id'er
-      const valgte = (data.spillere || []).map((spiller) => {
+      const valgteH = (data.spillereHjemme || []).map((spiller) => {
+        if (typeof spiller === "string") {
+          // Hvis det bare er uid'er, hent navnet fra data eller hold en reference
+          return { id: spiller, navn: spiller }; // eller slå op i users-array
+        } else {
+          // Hvis spiller allerede er et objekt
+          return spiller;
+        }
+      });
+      const valgteU = (data.spillereUde || []).map((spiller) => {
         if (typeof spiller === "string") {
           // Hvis det bare er uid'er, hent navnet fra data eller hold en reference
           return { id: spiller, navn: spiller }; // eller slå op i users-array
@@ -43,7 +53,8 @@ export default function KampPage() {
         }
       });
 
-      setValgteSpillere(valgte);
+      setValgteSpillereHjem(valgteH);
+      setValgteSpillereUde(valgteU);
 
       setKamp(data);
       //if (data) {
@@ -69,13 +80,24 @@ export default function KampPage() {
   }
 
   if (kamp.harResultat) {
-    kamp.spillere = valgteSpillere.map((spiller) => spiller.label).join(", ");
+    kamp.spillereHjemme = valgteSpillereHjem
+      .map((spillereHjemme) => spillereHjemme.label)
+      .join(", ");
+  } else {
+    kamp.spillere = "Afventer";
+  }
+
+  if (kamp.harResultat) {
+    kamp.spillereUde = valgteSpillereUde
+      .map((spillereUde) => spillereUde.label)
+      .join(", ");
   } else {
     kamp.spillere = "Afventer";
   }
 
   console.log(kamp.harResultat);
-  console.log(valgteSpillere);
+  console.log(valgteSpillereHjem);
+  console.log(valgteSpillereUde);
 
   return (
     <>
@@ -111,7 +133,8 @@ export default function KampPage() {
         </div>
         <br />
         <p>Kamp resultat: {kamp?.resultat ?? "Afventer"}</p>
-        <p>Spillere: {kamp?.spillere ?? "Afventer"}</p>
+        <p>Spillere (Hjemmehold): {kamp?.spillereHjemme ?? "Afventer"}</p>
+        <p>Spillere (Udehold): {kamp?.spillereUde ?? "Afventer"}</p>
       </section>
     </>
   );

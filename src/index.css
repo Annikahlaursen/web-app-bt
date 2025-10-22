@@ -1270,6 +1270,7 @@ form {
   top: 80%;
   margin: 0 auto;
   display: block;
+  min-width: 25vh;
 }
 
 .error {
@@ -1384,10 +1385,11 @@ form {
 }
 /*---------- kamp resultat page Styling ----------*/
 .resultat-page .kamp-card {
-  width: 90%;
+  width: 85%;
   margin: auto;
   margin-bottom: 3rem;
   font-size: larger;
+  position: relative;
 }
 
 .resultat-page .updateResult p {
@@ -1398,10 +1400,11 @@ form {
 .updateResult {
   border-radius: var(--border-radius) var(--border-radius) 0 0;
   background-color: var(--grey);
-  padding: 2rem;
+  padding: 6rem 2rem;
   min-height: 100vh;
   width: 100%;
   font-size: larger;
+  margin-top: -8rem;
 }
 
 /*default styling name - fix to rounded corners on Select*/

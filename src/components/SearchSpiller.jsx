@@ -1,13 +1,8 @@
 import { useState, useEffect } from "react";
-import RatingBoks from "./RatingBoks";
 import Select from "react-select";
 
-export default function SearchSpiller({ kamp, onSpillerChange }) {
-  const [searchQuery, setSearchQuery] = useState(""); // set the initial state to an empty string
+export default function SearchSpiller({ onSpillerChange }) {
   const [users, setUsers] = useState([]); // set the initial state to an empty array
-  const [showResults, setShowResults] = useState(false); // Track input focus
-  const [showUdeResults, setShowUdeResults] = useState(false); // Track input focus
-  const [selectedOption, setSelectedOption] = useState({});
   const [selectedPlayers, setSelectedPlayers] = useState([]);
 
   // Fetch data from the API
@@ -29,9 +24,11 @@ export default function SearchSpiller({ kamp, onSpillerChange }) {
     fetchUsers();
   }, []);
 
-  // Only users with hid: -HnAd4o6AtIlkW2SCf6R
+  //Disse 2 linjer vil måske kunne bruges til at filtere og først vie dem der er på hjemmeholdet
+  /* Only users with hid: -HnAd4o6AtIlkW2SCf6R
   const teamHid = kamp.hjemmehold;
   const teamUsers = users.filter((user) => user.hid === teamHid);
+  */
 
   // dynamiske options til react-select
   const userOptions = users.map((user) => ({
@@ -39,33 +36,10 @@ export default function SearchSpiller({ kamp, onSpillerChange }) {
     label: `${user.fornavn} ${user.efternavn ?? ""}`.trim(),
   }));
 
-  const handleChange = (option) => {
-    setSelectedOption(option);
-    setShowResults(true);
-  };
-
-  // Filter posts based on the search query
-  const filteredUsers = (
-    selectedOption
-      ? users.filter((user) => user.id === selectedOption.value)
-      : teamUsers
-  ).filter((user) => (user.fornavn ?? "").toLowerCase().includes(searchQuery));
-
   function handleSelectChange(selectedOptions) {
     setSelectedPlayers(selectedOptions);
     if (onSpillerChange) onSpillerChange(selectedOptions); // 🔥 send data op
   }
-
-  const udeTeamHid = kamp.udehold;
-  const udeTeamUsers = users.filter((user) => user.hid === udeTeamHid);
-  // Filter posts based on the search query
-  /*const filteredUsers = teamUsers.filter((user) =>
-    (user.fornavn ?? "").toLowerCase().includes(searchQuery)
-  );*/
-
-  const filteredUdeUsers = udeTeamUsers.filter((user) =>
-    (user.fornavn ?? "").toLowerCase().includes(searchQuery)
-  );
 
   return (
     <>
@@ -73,28 +47,12 @@ export default function SearchSpiller({ kamp, onSpillerChange }) {
         className="select-boks"
         isMulti
         options={userOptions}
-        //value={selectedOption}
+        value={selectedPlayers}
         onChange={handleSelectChange}
         placeholder="Søg efter spiller"
         isClearable
         isSearchable
       />
-
-      {showResults && (
-        <div>
-          {filteredUsers.map((user, idx) => (
-            <RatingBoks key={user.id} user={user} placering={idx + 1} />
-          ))}
-        </div>
-      )}
-
-      {showUdeResults && (
-        <div>
-          {filteredUdeUsers.map((user, idx) => (
-            <RatingBoks key={user.id} user={user} placering={idx + 1} />
-          ))}
-        </div>
-      )}
     </>
   );
 }
