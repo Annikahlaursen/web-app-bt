@@ -20,6 +20,8 @@ export default function Update() {
   const [errorMessage, setErrorMessage] = useState("");
   const [image, setImage] = useState("");
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [selectedKlubber, setSelectedKlubber] = useState([]);
+  const [selectedHold, setSelectedHold] = useState([]);
 
   const fileInputRef = useRef(null);
 
@@ -38,25 +40,48 @@ export default function Update() {
 
     const currentUserData = await response.json();
 
-    const selectedKlub = klubber.find((k) => k.id === klubOptions[0].value);
-    const selectedHold = hold.find((h) => h.id === holdOptions[0].value);
+    // Use first selected item (if multi-select) as the primary klub/hold
+    const firstKlub =
+      selectedKlubber && selectedKlubber.length > 0 ? selectedKlubber[0] : null;
+    const firstHold =
+      selectedHold && selectedHold.length > 0 ? selectedHold[0] : null;
 
     const updatedUserData = {
       ...currentUserData,
-      kid: selectedKlub ? selectedKlub.id : null,
-      hid: selectedHold ? selectedHold.id : null,
+      kid: firstKlub ? firstKlub.value : null,
+      kidNavn: firstKlub ? firstKlub.label : "",
+      hid: firstHold ? firstHold.value : null,
+      hidNavn: firstHold ? firstHold.label : "",
       image: image || currentUserData.image || null,
     };
 
     const patchResponse = await fetch(url, {
-method: "PATCH",
+      method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updatedUserData),
     });
-     if (!patchResponse.ok) throw new Error("Failed to update user data.");
+    if (!patchResponse.ok) throw new Error("Failed to update user data.");
 
     if (patchResponse.ok) {
       console.log("klub og hold er tilføjet");
+      // update localStorage so Overlay and other components update immediately
+      try {
+        const raw = localStorage.getItem("currentUser");
+        if (raw) {
+          const cur = JSON.parse(raw);
+          cur.profile = cur.profile || {};
+          cur.profile.kid = updatedUserData.kid;
+          cur.profile.kidNavn = updatedUserData.kidNavn;
+          cur.profile.hid = updatedUserData.hid;
+          cur.profile.hidNavn = updatedUserData.hidNavn;
+          localStorage.setItem("currentUser", JSON.stringify(cur));
+          window.dispatchEvent(
+            new CustomEvent("currentUserChanged", { detail: cur })
+          );
+        }
+      } catch (err) {
+        console.warn("Could not update local currentUser after save:", err);
+      }
       navigate("/");
     } else {
       console.error("Fejl ved opdatering af brugerdata");
@@ -76,6 +101,15 @@ method: "PATCH",
             const data = await response.json();
             if (data && data.image) {
               setImage(data.image);
+              // restore selected klub/hold if present
+              if (data.kid)
+                setSelectedKlubber([
+                  { value: data.kid, label: data.kidNavn || "" },
+                ]);
+              if (data.hid)
+                setSelectedHold([
+                  { value: data.hid, label: data.hidNavn || "" },
+                ]);
               return;
             }
           }
@@ -320,14 +354,18 @@ method: "PATCH",
                   isClearable
                   isMulti
                   isSearchable
-                ></Select>
+                  value={selectedKlubber}
+                  onChange={(v) => setSelectedKlubber(v || [])}
+                />
                 <Select
                   options={holdOptions}
                   placeholder="Vælg hold"
                   isClearable
                   isMulti
                   isSearchable
-                ></Select>
+                  value={selectedHold}
+                  onChange={(v) => setSelectedHold(v || [])}
+                />
               </div>
               <div className="profile-btns-actions">
                 <button

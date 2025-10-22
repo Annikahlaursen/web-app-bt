@@ -194,7 +194,6 @@ form {
 }
 
 .profileinfo {
-  line-height: 10px;
   align-items: center;
 }
 
@@ -474,11 +473,14 @@ form {
 }
 
 .overlay-controls {
+  position: absolute;
   display: flex;
-  justify-content: space-evenly;
+  width: 100%;
+  justify-content: space-around;
   margin-bottom: 0 !important;
-  margin-top: 42%;
-  padding-right: 1.7rem;
+  margin-top: 223%;
+  padding-right: 1.3rem;
+  white-space: nowrap;
 }
 
 .overlay-close {
