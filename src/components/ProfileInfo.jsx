@@ -12,7 +12,6 @@ import { signOut } from "firebase/auth";
 import pen from "/pen-solid-full.svg";
 import trash from "/trash-solid-full.svg";
 import Placeholder from "/image-solid-full.svg";
-import { style } from "motion/react-client";
 
 export default function ProfileInfo() {
   const navigate = useNavigate();
@@ -29,7 +28,6 @@ export default function ProfileInfo() {
   const [phone, setPhone] = useState("");
   const [image, setImage] = useState(""); // image download URL
   const [storagePath, setStoragePath] = useState(""); // storage path used for deletion
-  const [uploadProgress, setUploadProgress] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [isSaving, setIsSaving] = useState(false);
 
@@ -196,15 +194,13 @@ export default function ProfileInfo() {
         uploadTask.on(
           "state_changed",
           (snapshot) => {
-            const percent = Math.round(
-              (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-            );
-            setUploadProgress(percent);
+            // keep a no-op reference to snapshot so linters don't complain
+            // about an unused parameter
+            void snapshot;
           },
           (err) => {
             console.error("Upload failed:", err);
             setErrorMessage("Upload image failed");
-            setUploadProgress(null);
             // revoke preview if it was created (ignore any revoke errors)
             try {
               URL.revokeObjectURL(previewUrl);
@@ -260,7 +256,12 @@ export default function ProfileInfo() {
                 );
               }
             } finally {
-              setUploadProgress(null);
+              // revoke preview if it was created (ignore any revoke errors)
+              try {
+                URL.revokeObjectURL(previewUrl);
+              } catch {
+                /* ignore */
+              }
             }
           }
         );
@@ -301,12 +302,44 @@ export default function ProfileInfo() {
 
   // Delete profile from Realtime Database and sign the user out locally
   async function handleDeleteProfile() {
-    const confirm = window.confirm(
+    const confirmed = window.confirm(
       "Er du sikker på, at du vil slette din profil? Denne handling kan ikke fortrydes."
     );
-    if (!confirm) return;
+    if (!confirmed) return;
 
     setErrorMessage("");
+
+    // If the user has an uploaded profile image, try to delete it from Storage first
+    if (storagePath) {
+      try {
+        const storage = getStorage();
+        const imgRef = storageRef(storage, storagePath);
+        await deleteObject(imgRef);
+      } catch (err) {
+        console.warn("Failed to delete profile image from Storage:", err);
+        // we continue even if deleting the image failed
+      }
+    } else if (image) {
+      // try to parse a firebase storage URL and delete by decoded path
+      try {
+        const parsed = new URL(image);
+        if (
+          parsed.hostname.includes("firebasestorage.googleapis.com") &&
+          parsed.pathname.includes("/o/")
+        ) {
+          const encodedPath = parsed.pathname.split("/o/")[1];
+          const path = decodeURIComponent(encodedPath);
+          const storage = getStorage();
+          const imgRef = storageRef(storage, path);
+          await deleteObject(imgRef);
+        }
+      } catch (err) {
+        console.warn(
+          "Failed to parse or delete storage object for image:",
+          err
+        );
+      }
+    }
 
     // Attempt to delete the DB record when we have a uid and DB base URL
     if (uid && firebaseDbUrlBase) {
@@ -463,13 +496,6 @@ export default function ProfileInfo() {
                 }}
                 onClick={() => fileInputRef.current.click()}
               />
-
-              {uploadProgress !== null && (
-                <div className="upload-spinner-overlay">
-                  <div className="spinner" />
-                  <div className="upload-percent">{uploadProgress}%</div>
-                </div>
-              )}
             </div>
           </div>
           <div className="profile-card-actions">
