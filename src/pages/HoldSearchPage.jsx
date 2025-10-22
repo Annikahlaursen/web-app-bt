@@ -1,8 +1,12 @@
 import { useState, useEffect } from "react";
 import Select from "react-select";
+import KampCard from "../components/KampCard";
+import { useNavigate } from "react-router";
+import arrowBlack from "/arrow-left-black.svg";
 
 export default function HoldSearchPage() {
   const [hold, setHold] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchHold() {
@@ -35,16 +39,34 @@ export default function HoldSearchPage() {
   holdOptions.sort((a, b) => a.label.localeCompare(b.label));
 
   return (
-    <>
-      <h1>Søg på hold her</h1>
-      <Select
-        options={holdOptions}
-        //value={selectedOption}
-        onChange={handleSelectChange}
-        placeholder="Søg efter hold eller kampe"
-        isClearable
-        isSearchable
-      ></Select>
-    </>
+    <div className="page-topmargin">
+      <div className="search-pages">
+        <img
+          className="arrow"
+          src={arrowBlack}
+          alt="Arrow back to previous page"
+          onClick={() => navigate(-1)}
+        />
+        <h1>Søg på hold her</h1>
+        <Select
+          options={holdOptions}
+          //value={selectedOption}
+          onChange={handleSelectChange}
+          placeholder="Søg efter hold eller kampe"
+          isClearable
+          isSearchable
+        ></Select>
+      </div>
+      <div className="holdkampe-background page-grey-background">
+        {holdOptions.map((kampe) => (
+          <KampCard
+            oplysninger="kunOplysninger"
+            kampe={kampe}
+            key={kampe.id}
+            onCLick={() => navigate(`/kampe/${kampe.id}`)}
+          />
+        ))}
+      </div>
+    </div>
   );
 }
