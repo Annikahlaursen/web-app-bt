@@ -21,6 +21,7 @@ import KampCard from "./components/KampCard";
 import UpdateCard from "./pages/UpdatePage";
 import { matchPath } from "react-router";
 import KampIdSearchPage from "./pages/KampIdSearchPage";
+import HoldSearchPage from "./pages/HoldSearchPage";
 
 export default function App() {
   const [isAuth, setIsAuth] = useState(localStorage.getItem("isAuth")); // default value comes from localStorage
@@ -70,6 +71,7 @@ export default function App() {
             <Route path="/:id" element={<KampCard />} />
             <Route path="/stevnesearch" element={<StevneSearchPage />} />
             <Route path="/searchKampID" element={<KampIdSearchPage />} />
+            <Route path="/holdsearch" element={<HoldSearchPage />} />
           </>
         )}
       </Routes>

@@ -177,7 +177,7 @@ export default function Overlay({ isOpen, onClose }) {
                 <span>Indskriv Kampresultat</span>
               </NavLink>
               <NavLink
-                to="/"
+                to="/holdsearch"
                 className="overlay-link overlay-linkcolorchange"
                 onClick={handleClose}
               >
