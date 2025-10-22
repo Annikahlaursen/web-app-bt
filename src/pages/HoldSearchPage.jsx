@@ -1,9 +1,13 @@
 import { useState, useEffect } from "react";
 import Select from "react-select";
 import HoldBoks from "../components/HoldBoks";
+import KampCard from "../components/KampCard";
+import { useNavigate } from "react-router";
+import arrowBlack from "/arrow-left-black.svg";
 
 export default function HoldSearchPage() {
   const [hold, setHold] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchHold() {
@@ -36,17 +40,35 @@ export default function HoldSearchPage() {
   holdOptions.sort((a, b) => a.label.localeCompare(b.label));
 
   return (
-    <>
-      <h1>Søg på hold her</h1>
-      <Select
-        options={holdOptions}
-        //value={selectedOption}
-        onChange={handleSelectChange}
-        placeholder="Søg efter hold eller kampe"
-        isClearable
-        isSearchable
-      ></Select>
-      <HoldBoks key={hold.id} hold={hold} />
-    </>
+    <div className="page-topmargin">
+      <div className="search-pages">
+        <img
+          className="arrow"
+          src={arrowBlack}
+          alt="Arrow back to previous page"
+          onClick={() => navigate(-1)}
+        />
+        <h1>Søg på hold her</h1>
+        <Select
+          options={holdOptions}
+          //value={selectedOption}
+          onChange={handleSelectChange}
+          placeholder="Søg efter hold eller kampe"
+          isClearable
+          isSearchable
+        ></Select>
+      </div>
+      <div className="holdkampe-background page">
+        <HoldBoks key={hold.id} hold={hold} />
+
+        {holdOptions.map((hold) => (
+          <KampCard
+            kampe={hold}
+            key={hold.id}
+            onCLick={() => navigate(`/hold/${hold.id}`)}
+          />
+        ))}
+      </div>
+    </div>
   );
 }

@@ -106,7 +106,7 @@ export default function HomePage() {
           <NyhedsCard />
           <NyhedsCard />
           <NyhedsCard />
-          <Link className="flex-pil" to="/nyheder">
+          <Link className="flex-pil" to="/error">
             <p>Se alle nyheder</p>
             <img src={arrow} alt="Pil til nyheder" />
           </Link>
