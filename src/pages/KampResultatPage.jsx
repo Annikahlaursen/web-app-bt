@@ -8,7 +8,9 @@ import KampCard from "../components/KampCard";
 
 export default function KampResultatPage() {
   const [kamp, setKamp] = useState({});
-  const [valgteSpillere, setValgteSpillere] = useState([]);
+  const [valgteSpillereHjem, setValgteSpillereHjem] = useState([]);
+  const [valgteSpillereUde, setValgteSpillereUde] = useState([]);
+
   const [resultatHjem, setResultatHjem] = useState(0);
   const [resultatUde, setResultatUde] = useState(0);
 
@@ -32,7 +34,8 @@ export default function KampResultatPage() {
   async function handleSave() {
     const updatedKamp = {
       ...kamp,
-      spillere: valgteSpillere, //data fra searchSpillere
+      spillereHjemme: valgteSpillereHjem, //data fra searchSpillere
+      spillereUde: valgteSpillereUde, //data fra searchSpillere
       resultatHjemme: resultatHjem, //data fra numberPick
       resultatUde: resultatUde, //data fra numberPick
       harResultat: true,
@@ -45,7 +48,9 @@ export default function KampResultatPage() {
 
     if (response.ok) {
       console.log("Tillykke, kamp er blevet opdateret");
-      navigate(`/kamp/${params.id}`, { state: { spillere: valgteSpillere } });
+      navigate(`/kamp/${params.id}`, {
+        state: { spillere: valgteSpillereHjem },
+      });
     } else {
       console.log("Error updating kamp resultat");
     }
@@ -69,17 +74,13 @@ export default function KampResultatPage() {
         <SearchSpiller
           key={kamp.id}
           kamp={kamp}
-          onSpillerChange={(spillere) => setValgteSpillere(spillere)}
+          onSpillerChange={(spillere) => setValgteSpillereHjem(spillere)}
         />
-
-        {
-          "" /* her skal spillere fra udehold være - det skal måske gøre ved at man inde i kampPage skriver spillere ind på en anden måde */
-        }
         <p>Vælg spillere {kamp.udehold}</p>
         <SearchSpiller
           key={kamp.id}
           kamp={kamp}
-          onSpillerChange={(spillere) => setValgteSpillere(spillere)}
+          onSpillerChange={(spillere) => setValgteSpillereUde(spillere)}
         />
         <section className="result-number">
           <p>Resultat</p>
