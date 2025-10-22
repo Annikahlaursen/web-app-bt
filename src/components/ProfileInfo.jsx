@@ -28,6 +28,7 @@ export default function ProfileInfo() {
   const [phone, setPhone] = useState("");
   const [image, setImage] = useState(""); // image download URL
   const [storagePath, setStoragePath] = useState(""); // storage path used for deletion
+  const [uploadProgress, setUploadProgress] = useState(null); // percent 0-100 or null
   const [errorMessage, setErrorMessage] = useState("");
   const [isSaving, setIsSaving] = useState(false);
 
@@ -194,13 +195,19 @@ export default function ProfileInfo() {
         uploadTask.on(
           "state_changed",
           (snapshot) => {
-            // keep a no-op reference to snapshot so linters don't complain
-            // about an unused parameter
-            void snapshot;
+            try {
+              const percent = Math.round(
+                (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+              );
+              setUploadProgress(percent);
+            } catch {
+              // ignore any errors computing progress
+            }
           },
-          (err) => {
-            console.error("Upload failed:", err);
+          (_err) => {
+            console.error("Upload failed:", _err);
             setErrorMessage("Upload image failed");
+            setUploadProgress(null);
             // revoke preview if it was created (ignore any revoke errors)
             try {
               URL.revokeObjectURL(previewUrl);
@@ -214,6 +221,7 @@ export default function ProfileInfo() {
               const downloadUrl = await getDownloadURL(fileRef);
               setImage(downloadUrl);
               setStoragePath(path);
+              setUploadProgress(null);
 
               // update DB/localStorage immediately with the new image so other components reflect change
               if (uid && firebaseDbUrlBase) {
@@ -497,6 +505,33 @@ export default function ProfileInfo() {
                 onClick={() => fileInputRef.current.click()}
               />
             </div>
+            {uploadProgress !== null && (
+              <div style={{ marginTop: 8 }}>
+                <div
+                  style={{
+                    height: 8,
+                    width: "100%",
+                    background: "#eee",
+                    borderRadius: 4,
+                    overflow: "hidden",
+                  }}
+                >
+                  <div
+                    style={{
+                      height: "100%",
+                      width: `${Math.max(0, Math.min(100, uploadProgress))}%`,
+                      background: "#4caf50",
+                      transition: "width 200ms linear",
+                    }}
+                  />
+                </div>
+                <div
+                  style={{ fontSize: "0.85rem", color: "#666", marginTop: 4 }}
+                >
+                  Upload: {uploadProgress}%
+                </div>
+              </div>
+            )}
           </div>
           <div className="profile-card-actions">
             <a

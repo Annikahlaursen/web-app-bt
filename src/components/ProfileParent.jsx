@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import { NavLink } from "react-router";
 
 export default function ProfileParent() {
   return (
@@ -15,8 +16,12 @@ export default function ProfileParent() {
             </p>
           </div>
           <div className="profile-card-actions">
-            <a className="invite-parent">Inviter</a>
-            <a className="plus-parent">Tilføj</a>
+            <NavLink to="/error" className="plus-parent">
+              Inviter
+            </NavLink>
+            <NavLink to="/error" className="plus-parent">
+              Tilføj
+            </NavLink>
           </div>
         </div>
 
@@ -31,7 +36,9 @@ export default function ProfileParent() {
             </p>
           </div>
           <div className="profile-card-actions profile-card-oneaction">
-            <a className="plus-parent">Tilføj</a>
+            <NavLink to="/error" className="plus-parent">
+              Tilføj
+            </NavLink>
           </div>
         </div>
       </div>
