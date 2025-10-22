@@ -18,8 +18,11 @@ import Select from "react-select";
 export default function Update() {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
-  const [image, setImage] = useState("");
+  const [imagePreview, setImagePreview] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [selectedKlub, setSelectedKlub] = useState(null);
+  const [selectedHold, setSelectedHold] = useState(null);
 
   const fileInputRef = useRef(null);
 
@@ -34,33 +37,67 @@ export default function Update() {
     event.preventDefault();
     const url = `${firebaseDbUrlBase}/users/${uid}.json`;
 
-    const response = await fetch(url);
+    try {
+      const response = await fetch(url);
+      const currentUserData = await response.json();
 
-    const currentUserData = await response.json();
+      console.log("Current user data from Firebase:", currentUserData);
+      console.log("Current imageUrl state:", imageUrl);
 
-    const selectedKlub = klubber.find((k) => k.id === klubOptions[0].value);
-    const selectedHold = hold.find((h) => h.id === holdOptions[0].value);
+      // Ensure the image URL is valid (not a blob URL)
+      const finalImageUrl = imageUrl?.startsWith("blob:")
+        ? currentUserData.image || null
+        : imageUrl || currentUserData.image || null;
 
-    const updatedUserData = {
-      ...currentUserData,
-      kid: selectedKlub ? selectedKlub.id : null,
-      hid: selectedHold ? selectedHold.id : null,
-      image: image || currentUserData.image || null,
-    };
+         console.log("Final image URL to be saved:", finalImageUrl);
 
-    const patchResponse = await fetch(url, {
-method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updatedUserData),
-    });
-     if (!patchResponse.ok) throw new Error("Failed to update user data.");
+      // Prepare the updated user data
+      const updatedUserData = {
+        ...currentUserData,
+        kid: selectedKlub || null,
+        hid: selectedHold || null,
+        image:finalImageUrl,
+      };
 
-    if (patchResponse.ok) {
+      console.log("Updated user data to be patched:", updatedUserData);
+      // Push the updated data to Firebase
+      const patchResponse = await fetch(url, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedUserData),
+      });
+
+      if (!patchResponse.ok) throw new Error("Failed to update user data.");
+
+      // Update the currentUser object in localStorage
+      const currentUser = {
+        ...JSON.parse(localStorage.getItem("currentUser") || "{}"),
+        profile: {
+          ...(JSON.parse(localStorage.getItem("currentUser") || "{}").profile ||
+            {}),
+          kid: updatedUserData.kid,
+          hid: updatedUserData.hid,
+          image: updatedUserData.image,
+        },
+      };
+
+      console.log("Updated currentUser object for localStorage:", currentUser);
+      setCurrentUserStorage(currentUser); // Update localStorage and broadcast changes
+
       console.log("klub og hold er tilføjet");
       navigate("/");
-    } else {
-      console.error("Fejl ved opdatering af brugerdata");
+    } catch (error) {
+      console.error("Fejl ved opdatering af brugerdata:", error);
+      setErrorMessage("Kunne ikke opdatere brugerdata. Prøv igen.");
     }
+
+    console.log("Saving:", {
+      uid,
+      selectedKlub,
+      selectedHold,
+      imageUrl,
+      imagePreview,
+    });
   }
 
   useEffect(() => {
@@ -75,7 +112,7 @@ method: "PATCH",
           if (response.ok) {
             const data = await response.json();
             if (data && data.image) {
-              setImage(data.image);
+              setImageUrl(data.image);
               return;
             }
           }
@@ -91,7 +128,7 @@ method: "PATCH",
         if (currentUserRaw) {
           const currentUser = JSON.parse(currentUserRaw);
           const p = currentUser.profile || {};
-          if (p.image) setImage(p.image);
+          if (p.image) setImageUrl(p.image);
         }
       } catch (err) {
         console.error("Could not load local profile data:", err);
@@ -128,7 +165,7 @@ method: "PATCH",
 
     // show immediate local preview
     const preview = URL.createObjectURL(file);
-    setImage(preview);
+    setImagePreview(preview);
     setErrorMessage("");
 
     try {
@@ -140,60 +177,65 @@ method: "PATCH",
       );
       const uploadTask = uploadBytesResumable(fileRef, file);
 
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          const pct = Math.round(
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-          );
-          setUploadProgress(pct);
-        },
-        (err) => {
-          console.error("Upload failed:", err);
-          setErrorMessage("Upload failed, prøv igen");
-          URL.revokeObjectURL(preview);
-        },
-        async () => {
-          const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref);
-          setImage(downloadUrl);
-          setUploadProgress(100);
+   uploadTask.on(
+     "state_changed",
+     (snapshot) => {
+       const pct = Math.round(
+         (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+       );
+       setUploadProgress(pct);
+     },
+     (err) => {
+       console.error("Upload failed:", err);
+       setErrorMessage("Upload failed, prøv igen");
+       URL.revokeObjectURL(preview);
+     },
+     async () => {
+       try {
+         console.log(
+           "Upload completed successfully. Retrieving download URL..."
+         );
+         const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref);
+         console.log("Download URL retrieved:", downloadUrl);
 
-          // Persist to DB when authenticated
-          if (uid && firebaseDbUrlBase) {
-            try {
-              const url = `${firebaseDbUrlBase}/users/${uid}.json`;
-              await fetch(url, {
-                method: "PATCH",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ image: downloadUrl }),
-              });
-            } catch (err) {
-              console.warn("Could not persist image to DB:", err);
-            }
-          }
+         setImageUrl(downloadUrl); // Set the public URL
+         setUploadProgress(100);
 
-          // Update localStorage so Overlay/ProfileInfo react immediately
-          try {
-            const raw = localStorage.getItem("currentUser");
-            if (raw) {
-              const cur = JSON.parse(raw);
-              cur.profile = cur.profile || {};
-              cur.profile.image = downloadUrl;
-              setCurrentUserStorage(cur);
-            } else {
-              setCurrentUserStorage({
-                uid: uid || null,
-                email: auth?.currentUser?.email || null,
-                profile: { image: downloadUrl },
-              });
-            }
-          } catch (err) {
-            console.warn("Could not update currentUser in localStorage:", err);
-          }
+         // Persist to DB when authenticated
+         if (uid && firebaseDbUrlBase) {
+           const url = `${firebaseDbUrlBase}/users/${uid}.json`;
+           console.log("Persisting image URL to Firebase:", url);
+           await fetch(url, {
+             method: "PATCH",
+             headers: { "Content-Type": "application/json" },
+             body: JSON.stringify({ image: downloadUrl }),
+           });
+           console.log("Image URL persisted to Firebase.");
+         }
 
-          URL.revokeObjectURL(preview);
-        }
-      );
+         // Update localStorage
+         const raw = localStorage.getItem("currentUser");
+         if (raw) {
+           const cur = JSON.parse(raw);
+           cur.profile = cur.profile || {};
+           cur.profile.image = downloadUrl;
+           setCurrentUserStorage(cur);
+           console.log("Image URL updated in localStorage:", downloadUrl);
+         } else {
+           setCurrentUserStorage({
+             uid: uid || null,
+             email: auth?.currentUser?.email || null,
+             profile: { image: downloadUrl },
+           });
+         }
+
+         URL.revokeObjectURL(preview);
+       } catch (error) {
+         console.error("Error in upload success handler:", error);
+         setErrorMessage("An error occurred after upload. Please try again.");
+       }
+     }
+   );
     } catch (err) {
       console.error("Unexpected upload error:", err);
       setErrorMessage("Upload image failed");
@@ -267,7 +309,7 @@ method: "PATCH",
                 <img
                   id="image"
                   className={"profile-image-preview"}
-                  src={image || Placeholder}
+                  src={imagePreview || imageUrl || Placeholder}
                   alt="Choose"
                   onError={(e) => {
                     // if the image fails to load, use the placeholder image
@@ -317,15 +359,21 @@ method: "PATCH",
                 <Select
                   options={klubOptions}
                   placeholder="Vælg klub"
+                  onChange={(option) =>
+                    setSelectedKlub(option ? option.value : null)
+                  }
                   isClearable
-                  isMulti
+                  // isMulti
                   isSearchable
                 ></Select>
                 <Select
                   options={holdOptions}
                   placeholder="Vælg hold"
+                  onChange={(option) =>
+                    setSelectedHold(option ? option.value : null)
+                  }
                   isClearable
-                  isMulti
+                  // isMulti
                   isSearchable
                 ></Select>
               </div>
@@ -334,8 +382,11 @@ method: "PATCH",
                   className="profile-btns profile-btns-actions-seperat profile-btn-actions-lightred"
                   id="save-btn"
                   onClick={handleSave}
+                  disabled={uploadProgress > 0 && uploadProgress < 100}
                 >
-                  Gem
+                  {uploadProgress > 0 && uploadProgress < 100
+                    ? "Uploader..."
+                    : "Gem"}
                 </button>
               </div>
             </div>
