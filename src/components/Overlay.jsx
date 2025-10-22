@@ -12,6 +12,7 @@ export default function Overlay({ isOpen, onClose }) {
   const [showSignOutCard, setShowSignOutCard] = useState(false);
   const [displayName, setDisplayName] = useState("");
   const [displayImage, setDisplayImage] = useState(Placeholder);
+  const [displayRating, setDisplayRating] = useState(null);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(!open);
 
@@ -35,6 +36,7 @@ export default function Overlay({ isOpen, onClose }) {
                 }${efternavn}`.trim() || ""
               );
               setDisplayImage(data.image || Placeholder);
+              setDisplayRating(data.rating ?? null);
               return;
             }
           }
@@ -52,6 +54,7 @@ export default function Overlay({ isOpen, onClose }) {
               ""
           );
           setDisplayImage(p.image || Placeholder);
+          setDisplayRating(p.rating ?? null);
           return;
         }
       } catch (err) {
@@ -127,7 +130,12 @@ export default function Overlay({ isOpen, onClose }) {
               </div>
               <div className="profileinfo">
                 <h4>{displayName || "Din profil"}</h4>
-                <p>Rating</p>
+                <h4>
+                  Rating:{" "}
+                  {displayRating !== null && displayRating !== undefined
+                    ? displayRating
+                    : "-"}
+                </h4>
                 <span style={{ textDecoration: "underline" }}>Se profil →</span>
               </div>
             </NavLink>
