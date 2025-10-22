@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Select from "react-select";
+import HoldBoks from "../components/HoldBoks";
 
 export default function HoldSearchPage() {
   const [hold, setHold] = useState([]);
@@ -45,6 +46,7 @@ export default function HoldSearchPage() {
         isClearable
         isSearchable
       ></Select>
+      <HoldBoks key={hold.id} hold={hold} />
     </>
   );
 }
