@@ -31,7 +31,39 @@ export default function KampResultatPage() {
     getKamp();
   }, [params.id, url]);
 
+  // helper to extract user ids (react-select returns {value,label}, other variants may be id or user object)
+  function extractIds(arr) {
+    if (!Array.isArray(arr)) return [];
+    return arr.map((s) => s?.value ?? s?.id ?? s).filter(Boolean);
+  }
+
   async function handleSave() {
+    // collect unique user ids from both selections
+    const hjemIds = extractIds(valgteSpillereHjem);
+    const udeIds = extractIds(valgteSpillereUde);
+    const allIds = Array.from(new Set([...hjemIds, ...udeIds]));
+
+    // update each user's rating by +10
+    const updatePromises = allIds.map(async (uid) => {
+      const userUrl = `${
+        import.meta.env.VITE_FIREBASE_DATABASE_URL
+      }/users/${uid}.json`;
+      try {
+        const res = await fetch(userUrl);
+        const user = await res.json();
+        const newRating = (user?.rating ?? 0) + 10;
+        return fetch(userUrl, {
+          method: "PATCH",
+          body: JSON.stringify({ rating: newRating }),
+        });
+      } catch (err) {
+        console.warn("Failed to update user", uid, err);
+        return null;
+      }
+    });
+
+    await Promise.all(updatePromises);
+
     const updatedKamp = {
       ...kamp,
       spillereHjemme: valgteSpillereHjem, //data fra searchSpillere
