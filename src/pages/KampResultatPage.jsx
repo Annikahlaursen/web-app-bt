@@ -81,10 +81,13 @@ export default function KampResultatPage() {
           kamp={kamp}
           onSpillerChange={(spillere) => setValgteSpillere(spillere)}
         />
-        <NumberPick
-          onChangeH={(nytHjemResultat) => setResultatHjem(nytHjemResultat)}
-          onChangeU={(nytUdeResultat) => setResultatUde(nytUdeResultat)}
-        />
+        <section className="result-number">
+          <p>Resultat</p>
+          <NumberPick
+            onChangeH={(nytHjemResultat) => setResultatHjem(nytHjemResultat)}
+            onChangeU={(nytUdeResultat) => setResultatUde(nytUdeResultat)}
+          />
+        </section>
       </section>
     </section>
   );

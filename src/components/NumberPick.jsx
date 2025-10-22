@@ -21,25 +21,44 @@ export default function NumberPick({ onChangeH, onChangeU }) {
   useEffect(() => {
     if (onChangeU) onChangeU({ num2 });
   }, [num2]);
+
   return (
-    <div className="number-picker">
-      <select value={num1} onChange={(e) => setNum1(Number(e.target.value))}>
-        <option value="pick">Vælg</option>
-        {[...Array(11).keys()].map((n) => (
-          <option key={n} value={n}>
-            {n}
-          </option>
-        ))}
-      </select>
-      <select value={num2} onChange={(e) => setNum2(Number(e.target.value))}>
-        <option value="pick">Vælg</option>
-        {[...Array(11).keys()].map((n) => (
-          <option key={n} value={n}>
-            {n}
-          </option>
-        ))}
-      </select>
-      {showError && <p style={{ color: "red" }}>Summen skal være 10!</p>}
-    </div>
+    <>
+      {showError && (
+        <p style={{ color: "red", textAlign: "center" }}>
+          Summen skal være 10!
+        </p>
+      )}
+      <div className="number-picker">
+        <div className="number-hold">
+          <select
+            value={num1}
+            onChange={(e) => setNum1(Number(e.target.value))}
+          >
+            <option value="pick">Vælg</option>
+            {[...Array(11).keys()].map((n) => (
+              <option key={n} value={n}>
+                {n}
+              </option>
+            ))}
+          </select>
+          <p>Hjemmehold</p>
+        </div>
+        <div className="number-hold">
+          <select
+            value={num2}
+            onChange={(e) => setNum2(Number(e.target.value))}
+          >
+            <option value="pick">Vælg</option>
+            {[...Array(11).keys()].map((n) => (
+              <option key={n} value={n}>
+                {n}
+              </option>
+            ))}
+          </select>
+          <p>Udehold</p>
+        </div>
+      </div>
+    </>
   );
 }
