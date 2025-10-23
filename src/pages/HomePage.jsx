@@ -10,14 +10,43 @@ import RatingListe from "../components/RatingListe";
 export default function HomePage() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-    const [kamp, setKamp] = useState([]);
-    const [userHid, setUserHid] = useState(null);
+  const [loadingKamp, setLoadingKamp] = useState(true);
+  const [kamp, setKamp] = useState([]);
+  const [userHid, setUserHid] = useState(null);
 
   //-----------------Fetch current user's Hid (hold)-----------------
   useEffect(() => {
-    const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
-    const hid = currentUser?.profile?.hid;
-    setUserHid(hid);
+    const fetchCurrentUser = () => {
+      const currentUser = JSON.parse(
+        localStorage.getItem("currentUser") || "{}"
+      );
+
+      if (!currentUser || !currentUser.profile) {
+        console.warn("No current user found in localStorage.");
+        // Handle missing user (e.g., redirect to login)
+        return;
+      }
+
+      const hid = currentUser.profile.hid;
+      setUserHid(hid);
+    };
+
+    fetchCurrentUser();
+
+    // Lytter på forandring i current user
+    const handleCurrentUserChanged = () => {
+      fetchCurrentUser();
+    };
+
+    window.addEventListener("currentUserChanged", handleCurrentUserChanged);
+
+    // Cleanup event listener ved unmount
+    return () => {
+      window.removeEventListener(
+        "currentUserChanged",
+        handleCurrentUserChanged
+      );
+    };
   }, []);
 
   //-----------------Fetch users-----------------
@@ -59,6 +88,7 @@ export default function HomePage() {
       }));
 
       setKamp(kampArray);
+      setLoadingKamp(false);
     }
 
     fetchKampe();
@@ -68,13 +98,26 @@ export default function HomePage() {
   const iDag = new Date();
   iDag.setHours(0, 0, 0, 0);
 
-  //filter kampe fra der har været der
-  const kommendeKampe = kamp.filter((k) => new Date(k.dato) >= iDag && userHid && ( (k.hjemmehold && k.hjemmehold.includes(userHid)) || (k.udehold && k.udehold.includes(userHid)) ) );
-  //sort kampe efter dato
-  kommendeKampe.sort((a, b) => new Date(a.dato) - new Date(b.dato));
+  let nextKamp = null;
 
-  const nextKamp = kommendeKampe[0]; // den næste kamp
-  if (!nextKamp) return <p>Ingen kommende kampe</p>;
+  console.log("Kamp array:", kamp);
+  console.log("User HID:", userHid);
+
+  if (kamp.length > 0 && userHid) {
+    const kommendeKampe = kamp.filter(
+      (k) =>
+        new Date(k.dato) >= iDag &&
+        ((k.hjemmehold && k.hjemmehold.includes(userHid)) ||
+          (k.udehold && k.udehold.includes(userHid)))
+    );
+
+    console.log("Filtered kommendeKampe:", kommendeKampe);
+
+    kommendeKampe.sort((a, b) => new Date(a.dato) - new Date(b.dato));
+    nextKamp = kommendeKampe[0];
+  }
+
+  console.log("Næste kamp:", nextKamp);
 
   return (
     <section>
@@ -82,7 +125,13 @@ export default function HomePage() {
       <section className="forside">
         <section className="forside-del">
           <h1>Din Næste Kamp</h1>
-          <KampCard key={nextKamp.id} kamp={nextKamp} />
+          {loadingKamp || userHid === null ? (
+            <p>Henter næste kamp...</p>
+          ) : nextKamp ? (
+            <KampCard key={nextKamp.id} kamp={nextKamp} />
+          ) : (
+            <p>Ingen kommende kampe</p>
+          )}
           <Link className="flex-pil" to="/kalender">
             <p>Kalender</p>
             <img src={arrow} alt="Pil til kamp med id" />
