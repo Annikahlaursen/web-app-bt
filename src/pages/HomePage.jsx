@@ -10,6 +10,15 @@ import RatingListe from "../components/RatingListe";
 export default function HomePage() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+    const [kamp, setKamp] = useState([]);
+    const [userHid, setUserHid] = useState(null);
+
+  //-----------------Fetch current user's Hid (hold)-----------------
+  useEffect(() => {
+    const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
+    const hid = currentUser?.profile?.hid;
+    setUserHid(hid);
+  }, []);
 
   //-----------------Fetch users-----------------
 
@@ -37,9 +46,6 @@ export default function HomePage() {
   }, []);
 
   //-----------------Fetch kampe-----------------
-
-  const [kamp, setKamp] = useState([]);
-
   useEffect(() => {
     async function fetchKampe() {
       const response = await fetch(
@@ -58,10 +64,12 @@ export default function HomePage() {
     fetchKampe();
   }, []);
 
+  //-----------------Find næste kamp-----------------
   const iDag = new Date();
   iDag.setHours(0, 0, 0, 0);
+
   //filter kampe fra der har været der
-  const kommendeKampe = kamp.filter((k) => new Date(k.dato) >= iDag);
+  const kommendeKampe = kamp.filter((k) => new Date(k.dato) >= iDag && userHid && ( (k.hjemmehold && k.hjemmehold.includes(userHid)) || (k.udehold && k.udehold.includes(userHid)) ) );
   //sort kampe efter dato
   kommendeKampe.sort((a, b) => new Date(a.dato) - new Date(b.dato));
 
