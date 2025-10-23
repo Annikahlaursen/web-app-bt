@@ -43,7 +43,7 @@ export default function Update() {
 
     // Use first selected item (if multi-select) as the primary klub/hold
     const firstKlub =
-      selectedKlubber && selectedKlubber.length > 0 ? selectedKlubber[0] : null;
+      selectedKlub && selectedKlub.length > 0 ? selectedKlub[0] : null;
     const firstHold =
       selectedHold && selectedHold.length > 0 ? selectedHold[0] : null;
 
@@ -53,7 +53,7 @@ export default function Update() {
       kidNavn: firstKlub ? firstKlub.label : "",
       hid: firstHold ? firstHold.value : null,
       hidNavn: firstHold ? firstHold.label : "",
-      image: image || currentUserData.image || null,
+      image: imageUrl || currentUserData.image || null,
     };
 
     const patchResponse = await fetch(url, {
@@ -156,10 +156,10 @@ export default function Update() {
           if (response.ok) {
             const data = await response.json();
             if (data && data.image) {
-              setImage(data.image);
+              setImageUrl(data.image);
               // restore selected klub/hold if present
               if (data.kid)
-                setSelectedKlubber([
+                setSelectedKlub([
                   { value: data.kid, label: data.kidNavn || "" },
                 ]);
               if (data.hid)
@@ -421,8 +421,8 @@ export default function Update() {
                   isClearable
                   // isMulti
                   isSearchable
-                  value={selectedKlubber}
-                  onChange={(v) => setSelectedKlubber(v || [])}
+                  value={selectedKlub}
+                  onChange={(v) => setSelectedKlub(v || [])}
                 />
                 <Select
                   options={holdOptions}
@@ -434,7 +434,7 @@ export default function Update() {
                   // isMulti
                   isSearchable
                   value={selectedHold}
-                  onChange={(v) => setSelectedHold(v || [])}
+                  onChange={(v) => setSelectedHold(v || null)}
                 />
               </div>
               <div className="profile-btns-actions">
