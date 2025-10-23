@@ -94,58 +94,7 @@ export default function Update() {
     navigate("/");
   }
 
-  useEffect(() => {
-    // Load profile either from Firebase (if logged in) or from localStorage fallback
-    async function loadProfile() {
-      setErrorMessage("");
-
-      if (uid && firebaseDbUrlBase) {
-        try {
-          const url = `${firebaseDbUrlBase}/users/${uid}.json`;
-          const response = await fetch(url);
-          if (response.ok) {
-            const data = await response.json();
-            if (data && data.image) {
-              setImageUrl(data.image);
-              // restore selected klub/hold if present
-              if (data.kid)
-                setSelectedKlub([
-                  { value: data.kid, label: data.kidNavn || "" },
-                ]);
-              if (data.hid)
-                setSelectedHold([
-                  { value: data.hid, label: data.hidNavn || "" },
-                ]);
-              setImageUrl(data.image);
-              return;
-            }
-          }
-        } catch (err) {
-          console.error("Could not load profile from server:", err);
-          setErrorMessage("Could not load profile from server");
-        }
-      }
-
-      // fallback to localStorage
-      try {
-        const currentUserRaw = localStorage.getItem("currentUser");
-        if (currentUserRaw) {
-          const currentUser = JSON.parse(currentUserRaw);
-          const p = currentUser.profile || {};
-          if (p.image) setImageUrl(p.image);
-        }
-      } catch (err) {
-        console.error("Could not load local profile data:", err);
-        setErrorMessage("Could not load local profile data");
-      }
-    }
-
-    loadProfile();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [uid]);
-
-  /**
+   /**
    * handleImageChange is called every time the user chooses an image in the file system.
    * The event is fired by the input file field in the form
    */
