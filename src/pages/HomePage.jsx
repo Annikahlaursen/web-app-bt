@@ -76,8 +76,6 @@ export default function HomePage() {
   const nextKamp = kommendeKampe[0]; // den næste kamp
   if (!nextKamp) return <p>Ingen kommende kampe</p>;
 
-  console.log("næste kamp:", nextKamp.id);
-
   return (
     <section>
       <img src={photo} alt="" />
