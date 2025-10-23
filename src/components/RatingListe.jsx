@@ -8,7 +8,7 @@ export default function RatingListe({ users = [] }) {
   if (users.length === 0) {
     return <p>Ingen spillere matcher din søgning</p>;
   }
-  
+
   return (
     <div className={`rating-liste ${isRatingPage ? "on-rating-page" : ""}`}>
       <div className="rating-boks-grid rating-categories">

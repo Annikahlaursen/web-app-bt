@@ -35,15 +35,16 @@ export default function Update() {
 
   async function handleSave(event) {
     event.preventDefault();
-    const url = `${firebaseDbUrlBase}/users/${uid}.json`;
 
+    //Fetch data fra Firebase
+    const url = `${firebaseDbUrlBase}/users/${uid}.json`;
     const response = await fetch(url);
 
     const currentUserData = await response.json();
 
-    // Use first selected item (if multi-select) as the primary klub/hold
+    // Brug først valgte hold/klub hvis flere er valgt
     const firstKlub =
-      selectedKlubber && selectedKlubber.length > 0 ? selectedKlubber[0] : null;
+      selectedKlub && selectedKlub.length > 0 ? selectedKlub[0] : null;
     const firstHold =
       selectedHold && selectedHold.length > 0 ? selectedHold[0] : null;
 
@@ -69,7 +70,7 @@ export default function Update() {
       kidImage: kidImage,
       hid: firstHold ? firstHold.value : null,
       hidNavn: firstHold ? firstHold.label : "",
-      image: image || currentUserData.image || null,
+      image: imageUrl || currentUserData.image || null,
     };
 
     const patchResponse = await fetch(url, {
@@ -152,68 +153,39 @@ export default function Update() {
       setErrorMessage("Kunne ikke opdatere brugerdata. Prøv igen.");
     }
 
-    console.log("Saving:", {
-      uid,
-      selectedKlub,
-      selectedHold,
-      imageUrl,
-      imagePreview,
-    });
+    if (!patchResponse.ok) throw new Error("Failed to update user data.");
+
+    // sikrer at vi ikke gemmer en blob URL i databasen ---> skal arbejdes på
+    const finalImageUrl =
+      imageUrl && !imageUrl.startsWith("blob:")
+        ? imageUrl
+        : currentUserData.image || null;
+
+    console.log("Final image URL to be saved:", finalImageUrl);
+
+    console.log("Updated user data to be patched:", updatedUserData);
+
+    // Opdater currentUser object i localStorage
+    const currentUser = {
+      ...JSON.parse(localStorage.getItem("currentUser") || "{}"),
+      profile: {
+        ...(JSON.parse(localStorage.getItem("currentUser") || "{}").profile ||
+          {}),
+        kid: updatedUserData.kid,
+        kidNavn: updatedUserData.kidNavn,
+        hid: updatedUserData.hid,
+        hidNavn: updatedUserData.hidNavn,
+        image: updatedUserData.image,
+      },
+    };
+
+    setCurrentUserStorage(currentUser); // opdater localStorage med currentUserEvents.js
+
+    navigate("/");
   }
 
-  useEffect(() => {
-    // Load profile either from Firebase (if logged in) or from localStorage fallback
-    async function loadProfile() {
-      setErrorMessage("");
-
-      if (uid && firebaseDbUrlBase) {
-        try {
-          const url = `${firebaseDbUrlBase}/users/${uid}.json`;
-          const response = await fetch(url);
-          if (response.ok) {
-            const data = await response.json();
-            if (data && data.image) {
-              setImage(data.image);
-              // restore selected klub/hold if present
-              if (data.kid)
-                setSelectedKlubber([
-                  { value: data.kid, label: data.kidNavn || "" },
-                ]);
-              if (data.hid)
-                setSelectedHold([
-                  { value: data.hid, label: data.hidNavn || "" },
-                ]);
-              setImageUrl(data.image);
-              return;
-            }
-          }
-        } catch (err) {
-          console.error("Could not load profile from server:", err);
-          setErrorMessage("Could not load profile from server");
-        }
-      }
-
-      // fallback to localStorage
-      try {
-        const currentUserRaw = localStorage.getItem("currentUser");
-        if (currentUserRaw) {
-          const currentUser = JSON.parse(currentUserRaw);
-          const p = currentUser.profile || {};
-          if (p.image) setImageUrl(p.image);
-        }
-      } catch (err) {
-        console.error("Could not load local profile data:", err);
-        setErrorMessage("Could not load local profile data");
-      }
-    }
-
-    loadProfile();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [uid]);
-
   /**
-   * handleImageChange is called every time the user chooses an image in the file system.
+   * handleImageChange kaldes når brugeren vælger en fil til upload
    * The event is fired by the input file field in the form
    */
   async function handleImageChange(event) {
@@ -263,44 +235,44 @@ export default function Update() {
         },
         async () => {
           // try {
-            console.log(
-              "Upload completed successfully. Retrieving download URL..."
-            );
-            const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref);
-            console.log("Download URL retrieved:", downloadUrl);
+          console.log(
+            "Upload completed successfully. Retrieving download URL..."
+          );
+          const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref);
+          console.log("Download URL retrieved:", downloadUrl);
 
-            setImageUrl(downloadUrl); // Set the public URL
-            setUploadProgress(100);
+          setImageUrl(downloadUrl); // Set the public URL
+          setUploadProgress(100);
 
-            // // Persist to DB when authenticated
-            // if (uid && firebaseDbUrlBase) {
-            //   const url = `${firebaseDbUrlBase}/users/${uid}.json`;
-            //   console.log("Persisting image URL to Firebase:", url);
-            //   await fetch(url, {
-            //     method: "PATCH",
-            //     headers: { "Content-Type": "application/json" },
-            //     body: JSON.stringify({ image: downloadUrl }),
-            //   });
-            //   console.log("Image URL persisted to Firebase.");
-            // }
+          // // Persist to DB when authenticated
+          // if (uid && firebaseDbUrlBase) {
+          //   const url = `${firebaseDbUrlBase}/users/${uid}.json`;
+          //   console.log("Persisting image URL to Firebase:", url);
+          //   await fetch(url, {
+          //     method: "PATCH",
+          //     headers: { "Content-Type": "application/json" },
+          //     body: JSON.stringify({ image: downloadUrl }),
+          //   });
+          //   console.log("Image URL persisted to Firebase.");
+          // }
 
-            // Update localStorage
-            // const raw = localStorage.getItem("currentUser");
-            // if (raw) {
-            //   const cur = JSON.parse(raw);
-            //   cur.profile = cur.profile || {};
-            //   cur.profile.image = downloadUrl;
-            //   setCurrentUserStorage(cur);
-            //   console.log("Image URL updated in localStorage:", downloadUrl);
-            // } else {
-            //   setCurrentUserStorage({
-            //     uid: uid || null,
-            //     email: auth?.currentUser?.email || null,
-            //     profile: { image: downloadUrl },
-            //   });
-            // }
+          // Update localStorage
+          // const raw = localStorage.getItem("currentUser");
+          // if (raw) {
+          //   const cur = JSON.parse(raw);
+          //   cur.profile = cur.profile || {};
+          //   cur.profile.image = downloadUrl;
+          //   setCurrentUserStorage(cur);
+          //   console.log("Image URL updated in localStorage:", downloadUrl);
+          // } else {
+          //   setCurrentUserStorage({
+          //     uid: uid || null,
+          //     email: auth?.currentUser?.email || null,
+          //     profile: { image: downloadUrl },
+          //   });
+          // }
 
-            URL.revokeObjectURL(preview);
+          URL.revokeObjectURL(preview);
           // } catch (error) {
           //   console.error("Error in upload success handler:", error);
           //   setErrorMessage(
@@ -315,49 +287,44 @@ export default function Update() {
     }
   }
 
+  //---------------------------- henter klubber og hold til select dropdowns options-----------------------------
   const [klubber, setKlubber] = useState([]);
   const [hold, setHold] = useState([]);
 
   useEffect(() => {
-    async function fetchData() {
-      const klubResponse = await fetch(
-        `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/klubber.json`
+    async function fetchData(endpoint) {
+      const response = await fetch(
+        `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/${endpoint}.json`
       );
-      const klubData = await klubResponse.json();
-      const klubArray = Object.keys(klubData).map((key) => ({
-        id: key,
-        ...klubData[key],
-      }));
-      // setKlubber(klubArray); --- IGNORE ---
+      const data = await response.json();
 
+      return Object.keys(data).map((key) => ({
+        id: key,
+        ...data[key],
+      }));
+    }
+    async function fetchDropdownData() {
+      const klubArray = await fetchData("klubber");
       setKlubber(klubArray);
 
-      const holdResponse = await fetch(
-        `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/hold.json`
-      );
-      const holdData = await holdResponse.json();
-      const holdArray = Object.keys(holdData).map((key) => ({
-        id: key,
-        ...holdData[key],
-      }));
-
+      const holdArray = await fetchData("hold");
       setHold(holdArray);
     }
 
-    fetchData();
+    fetchDropdownData();
   }, []);
 
-  const klubOptions = klubber.map((klubber) => ({
-    value: klubber.id,
-    label: klubber.navn,
+  //definer options til select komponenterne
+
+  const klubOptions = klubber.map((klub) => ({
+    value: klub.id,
+    label: klub.navn,
   }));
 
   const holdOptions = hold.map((hold) => ({
     value: hold.id,
     label: hold.navn,
   }));
-
-  // uploadImage helper removed — using uploadBytesResumable in handleImageChange for progress
 
   return (
     <Fragment>
@@ -432,23 +399,23 @@ export default function Update() {
                 <Select
                   options={klubOptions}
                   placeholder="Vælg klub"
-                  onChange={(option) =>
-                    setSelectedKlub(option ? option.value : null)
-                  }
+                  // onChange={(option) =>
+                  //   setSelectedKlub(option ? option.value : null)
+                  // }
                   isClearable
-                  // isMulti
+                  isMulti
                   isSearchable
-                  value={selectedKlubber}
-                  onChange={(v) => setSelectedKlubber(v || [])}
+                  value={selectedKlub}
+                  onChange={(v) => setSelectedKlub(v || [])}
                 />
                 <Select
                   options={holdOptions}
                   placeholder="Vælg hold"
-                  onChange={(option) =>
-                    setSelectedHold(option ? option.value : null)
-                  }
+                  // onChange={(option) =>
+                  //   setSelectedHold(option ? option.value : null)
+                  // }
                   isClearable
-                  // isMulti
+                  isMulti
                   isSearchable
                   value={selectedHold}
                   onChange={(v) => setSelectedHold(v || [])}

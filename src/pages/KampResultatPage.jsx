@@ -5,8 +5,10 @@ import { useNavigate, useParams } from "react-router";
 import { Link } from "react-router";
 import arrowBlack from "/public/arrow-left-black.svg";
 import KampCard from "../components/KampCard";
+import { getHoldById } from "../helper";
 
 export default function KampResultatPage() {
+  const [hold, setHold] = useState({});
   const [kamp, setKamp] = useState({});
   const [valgteSpillereHjem, setValgteSpillereHjem] = useState([]);
   const [valgteSpillereUde, setValgteSpillereUde] = useState([]);
@@ -31,7 +33,15 @@ export default function KampResultatPage() {
     getKamp();
   }, [params.id, url]);
 
-  // helper to extract user ids (react-select returns {value,label}, other variants may be id or user object)
+  useEffect(() => {
+    getHoldById(useParams.hid).then((fetchedHold) => setHold(fetchedHold));
+  }, [params.hid]);
+
+  //get data from hold and klub based on kamp data
+  const hjemmeholdNavn = hold?.[kamp?.hjemmehold]?.navn ?? "Hjemme";
+  const udeholdNavn = hold?.[kamp?.udehold]?.navn ?? "Ude";
+
+  // helpes to extract user ids (react-select returns {value,label}, other variants may be id or user object)
   function extractIds(arr) {
     if (!Array.isArray(arr)) return [];
     return arr.map((s) => s?.value ?? s?.id ?? s).filter(Boolean);
@@ -102,13 +112,13 @@ export default function KampResultatPage() {
       </Link>
       <KampCard kamp={kamp} oplysninger="kunOplysninger" />
       <section className="updateResult">
-        <p>Vælg spillere (hjemmehold)</p>
+        <p>Vælg spillere ({hjemmeholdNavn})</p>
         <SearchSpiller
           key={kamp.id}
           kamp={kamp}
           onSpillerChange={(spillere) => setValgteSpillereHjem(spillere)}
         />
-        <p>Vælg spillere {kamp.udehold}</p>
+        <p>Vælg spillere ({udeholdNavn})</p>
         <SearchSpiller
           key={kamp.id}
           kamp={kamp}
@@ -117,6 +127,8 @@ export default function KampResultatPage() {
         <section className="result-number">
           <p>Resultat</p>
           <NumberPick
+            key={kamp.id}
+            kamp={kamp}
             onChangeH={(nytHjemResultat) => setResultatHjem(nytHjemResultat)}
             onChangeU={(nytUdeResultat) => setResultatUde(nytUdeResultat)}
           />

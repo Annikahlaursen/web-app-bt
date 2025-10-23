@@ -6,10 +6,12 @@ import calendar from "/public/calendar-outline.svg";
 import location from "/public/location-dot.svg";
 import tableTennis from "/public/table-tennis-icon.svg";
 import { useState, useEffect } from "react";
+import { getHoldById } from "../helper";
 
 export default function KampPage() {
   const navigate = useNavigate();
   const [kamp, setKamp] = useState({});
+  const [hold, setHold] = useState({});
   const [valgteSpillereHjem, setValgteSpillereHjem] = useState([]);
   const [valgteSpillereUde, setValgteSpillereUde] = useState([]);
 
@@ -67,6 +69,10 @@ export default function KampPage() {
     getKamp();
   }, [params.id, url]);
 
+  useEffect(() => {
+    getHoldById(useParams.hid).then((fetchedHold) => setHold(fetchedHold));
+  }, [params.hid]);
+
   function clicked(event) {
     event.preventDefault();
     console.log("Button clicked");
@@ -98,6 +104,10 @@ export default function KampPage() {
   console.log(kamp.harResultat);
   console.log(valgteSpillereHjem);
   console.log(valgteSpillereUde);
+
+  //get data from hold and klub based on kamp data
+  const hjemmeholdNavn = hold?.[kamp?.hjemmehold]?.navn ?? "Hjemme";
+  const udeholdNavn = hold?.[kamp?.udehold]?.navn ?? "Ude";
 
   return (
     <>
@@ -132,9 +142,17 @@ export default function KampPage() {
           <p>{kamp?.lokation}</p>
         </div>
         <br />
-        <p>Kamp resultat: {kamp?.resultat ?? "Afventer"}</p>
-        <p>Spillere (Hjemmehold): {kamp?.spillereHjemme ?? "Afventer"}</p>
-        <p>Spillere (Udehold): {kamp?.spillereUde ?? "Afventer"}</p>
+        <p>
+          <strong>Kamp resultat:</strong> {kamp?.resultat ?? "Afventer"}
+        </p>
+        <p>
+          <strong>Spillere ({hjemmeholdNavn}):</strong>
+        </p>
+        <p>{kamp?.spillereHjemme ?? "Afventer"}</p>
+        <p>
+          <strong>Spillere ({udeholdNavn}):</strong>
+        </p>
+        <p>{kamp?.spillereUde ?? "Afventer"}</p>
       </section>
     </>
   );
