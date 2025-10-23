@@ -155,7 +155,7 @@ import KampCard from "../components/KampCard";
 
   /*-------------------------------JSX---------------------------------- */
   return (
-    <section className="page">
+    <section className="kalender-page">
       <KalenderFilter setFilter={setActiveFilter} />
       {(() => {
         let nextEventFound = false; // Track if the next event has been found across all months
