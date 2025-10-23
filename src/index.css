@@ -526,13 +526,23 @@ form {
   gap: 0.8rem;
 }
 
+.menu-item p {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
 .menu-rund {
-  width: 5em;
-  height: 5em;
+  width: 9vh;
+  height: 9vh;
   border-radius: 50%;
   border: 2px solid var(--white);
-  padding: 10px;
   background-color: transparent;
+  color: var(--white);
+}
+
+.menu-text-flow {
+  margin-top: 10px;
 }
 
 .overlay-linkcolorchange {

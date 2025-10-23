@@ -162,22 +162,25 @@ export default function Overlay({ isOpen, onClose }) {
                   <ul className="menu">
                     <li className="menu-item">
                       <li>
-                        <button className="menu-rund">
-                          <p>{displayKlub || "Min klub"}</p>
-                        </button>
-                        <p>Min klub</p>
+                        <img
+                          className="menu-rund"
+                          src={displayKlub}
+                          alt={displayKlub || "Klub"}
+                          style={{ objectFit: "cover" }}
+                        />
+                        <p style={{ marginTop: "4px" }}>Min klub</p>
                       </li>
                       <li>
                         <button className="menu-rund">
                           <p>{displayHold || "Mit hold"}</p>
                         </button>
-                        <p>Mit hold</p>
+                        <p className="menu-text-flow">Mit hold</p>
                       </li>
                       <li>
                         <button className="menu-rund">
                           <img src={Star} alt="" />
                         </button>
-                        <p>Favoritter</p>
+                        <p className="menu-text-flow">Favoritter</p>
                       </li>
                     </li>
                   </ul>

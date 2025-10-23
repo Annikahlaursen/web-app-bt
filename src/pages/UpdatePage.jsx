@@ -46,10 +46,26 @@ export default function Update() {
     const firstHold =
       selectedHold && selectedHold.length > 0 ? selectedHold[0] : null;
 
+    // find the klub object to extract its image (try a few common fields)
+    let kidImage = "";
+    if (firstKlub) {
+      const klubObj = klubber.find((k) => k.id === firstKlub.value);
+      if (klubObj) {
+        kidImage =
+          klubObj.image ||
+          klubObj.billede ||
+          klubObj.logo ||
+          klubObj.img ||
+          klubObj.url ||
+          "";
+      }
+    }
+
     const updatedUserData = {
       ...currentUserData,
       kid: firstKlub ? firstKlub.value : null,
       kidNavn: firstKlub ? firstKlub.label : "",
+      kidImage: kidImage,
       hid: firstHold ? firstHold.value : null,
       hidNavn: firstHold ? firstHold.label : "",
       image: image || currentUserData.image || null,
@@ -72,6 +88,7 @@ export default function Update() {
           cur.profile = cur.profile || {};
           cur.profile.kid = updatedUserData.kid;
           cur.profile.kidNavn = updatedUserData.kidNavn;
+          cur.profile.kidImage = updatedUserData.kidImage || "";
           cur.profile.hid = updatedUserData.hid;
           cur.profile.hidNavn = updatedUserData.hidNavn;
           localStorage.setItem("currentUser", JSON.stringify(cur));
