@@ -328,7 +328,7 @@ export default function Update() {
                   isMulti
                   isSearchable
                   value={selectedHold}
-                  onChange={(v) => setSelectedHold(v || null)}
+                  onChange={(v) => setSelectedHold(v || [])}
                 />
               </div>
               <div className="profile-btns-actions">
