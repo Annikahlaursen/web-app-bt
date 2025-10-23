@@ -45,18 +45,19 @@ export default function Update() {
       console.log("Current imageUrl state:", imageUrl);
 
       // Ensure the image URL is valid (not a blob URL)
-      const finalImageUrl = imageUrl?.startsWith("blob:")
-        ? currentUserData.image || null
-        : imageUrl || currentUserData.image || null;
+      const finalImageUrl =
+        imageUrl && !imageUrl.startsWith("blob:")
+          ? imageUrl
+          : currentUserData.image || null;
 
-         console.log("Final image URL to be saved:", finalImageUrl);
+      console.log("Final image URL to be saved:", finalImageUrl);
 
       // Prepare the updated user data
       const updatedUserData = {
         ...currentUserData,
         kid: selectedKlub || null,
         hid: selectedHold || null,
-        image:finalImageUrl,
+        image: finalImageUrl,
       };
 
       console.log("Updated user data to be patched:", updatedUserData);
@@ -177,65 +178,67 @@ export default function Update() {
       );
       const uploadTask = uploadBytesResumable(fileRef, file);
 
-   uploadTask.on(
-     "state_changed",
-     (snapshot) => {
-       const pct = Math.round(
-         (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-       );
-       setUploadProgress(pct);
-     },
-     (err) => {
-       console.error("Upload failed:", err);
-       setErrorMessage("Upload failed, prøv igen");
-       URL.revokeObjectURL(preview);
-     },
-     async () => {
-       try {
-         console.log(
-           "Upload completed successfully. Retrieving download URL..."
-         );
-         const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref);
-         console.log("Download URL retrieved:", downloadUrl);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const pct = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+          setUploadProgress(pct);
+        },
+        (err) => {
+          console.error("Upload failed:", err);
+          setErrorMessage("Upload failed, prøv igen");
+          URL.revokeObjectURL(preview);
+        },
+        async () => {
+          // try {
+            console.log(
+              "Upload completed successfully. Retrieving download URL..."
+            );
+            const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref);
+            console.log("Download URL retrieved:", downloadUrl);
 
-         setImageUrl(downloadUrl); // Set the public URL
-         setUploadProgress(100);
+            setImageUrl(downloadUrl); // Set the public URL
+            setUploadProgress(100);
 
-         // Persist to DB when authenticated
-         if (uid && firebaseDbUrlBase) {
-           const url = `${firebaseDbUrlBase}/users/${uid}.json`;
-           console.log("Persisting image URL to Firebase:", url);
-           await fetch(url, {
-             method: "PATCH",
-             headers: { "Content-Type": "application/json" },
-             body: JSON.stringify({ image: downloadUrl }),
-           });
-           console.log("Image URL persisted to Firebase.");
-         }
+            // // Persist to DB when authenticated
+            // if (uid && firebaseDbUrlBase) {
+            //   const url = `${firebaseDbUrlBase}/users/${uid}.json`;
+            //   console.log("Persisting image URL to Firebase:", url);
+            //   await fetch(url, {
+            //     method: "PATCH",
+            //     headers: { "Content-Type": "application/json" },
+            //     body: JSON.stringify({ image: downloadUrl }),
+            //   });
+            //   console.log("Image URL persisted to Firebase.");
+            // }
 
-         // Update localStorage
-         const raw = localStorage.getItem("currentUser");
-         if (raw) {
-           const cur = JSON.parse(raw);
-           cur.profile = cur.profile || {};
-           cur.profile.image = downloadUrl;
-           setCurrentUserStorage(cur);
-           console.log("Image URL updated in localStorage:", downloadUrl);
-         } else {
-           setCurrentUserStorage({
-             uid: uid || null,
-             email: auth?.currentUser?.email || null,
-             profile: { image: downloadUrl },
-           });
-         }
+            // Update localStorage
+            // const raw = localStorage.getItem("currentUser");
+            // if (raw) {
+            //   const cur = JSON.parse(raw);
+            //   cur.profile = cur.profile || {};
+            //   cur.profile.image = downloadUrl;
+            //   setCurrentUserStorage(cur);
+            //   console.log("Image URL updated in localStorage:", downloadUrl);
+            // } else {
+            //   setCurrentUserStorage({
+            //     uid: uid || null,
+            //     email: auth?.currentUser?.email || null,
+            //     profile: { image: downloadUrl },
+            //   });
+            // }
 
-         URL.revokeObjectURL(preview);
-       } catch (error) {
-         console.error("Error in upload success handler:", error);
-         setErrorMessage("An error occurred after upload. Please try again.");
-       }
-     }
-   );
+            URL.revokeObjectURL(preview);
+          // } catch (error) {
+          //   console.error("Error in upload success handler:", error);
+          //   setErrorMessage(
+          //     "An error occurred after upload. Please try again."
+          //   );
+          // }
+        }
+      );
     } catch (err) {
       console.error("Unexpected upload error:", err);
       setErrorMessage("Upload image failed");
