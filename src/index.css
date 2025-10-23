@@ -984,6 +984,10 @@ form {
 }
 
 /*-------------Kalender Filter Styling------------*/
+.kalender-page{
+  padding: 0 2rem 7rem;
+}
+
 .kalender-filter {
   display: flex;
   position: sticky;

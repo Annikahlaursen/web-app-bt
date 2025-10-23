@@ -3,7 +3,8 @@ import KalenderFilter from "../components/KalenderFilter";
 import StevneCard from "../components/StevneCard";
 import KampCard from "../components/KampCard";
 
-export default function KalenderPage() {
+
+ export default function KalenderPage() {
   const [events, setEvents] = useState([]);
   const nextEventRef = useRef(null);
   const monthHeadersRef = useRef([]);
@@ -11,38 +12,66 @@ export default function KalenderPage() {
 
   //----------------------------Henter Data----------------------------//
   useEffect(() => {
+    async function fetchAndFilterEvents(endpoint, type, userHid) {
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/${endpoint}.json`
+        );
+        const data = await response.json();
+
+        // Transform data into an array and filter based on type
+        return Object.keys(data)
+          .map((id) => ({
+            id,
+            ...data[id],
+            type,
+          }))
+          .filter((event) => {
+            if (type === "stevne") {
+              return event.ertilmeldt === true; // Filter stevner where ertilmeldt is true
+            }
+            if (type === "kamp") {
+              return (event.udehold && event.udehold.includes(userHid)) || (event.hjemmehold && event.hjemmehold.includes(userHid)); // Filter kampe where hold contains userHid
+            }
+            return false;
+          });
+      } catch (error) {
+        console.error(`Failed to fetch or filter ${type} data:`, error);
+        return [];
+      }
+    }
+
     async function fetchEvents() {
-      // Fetch stevne data
-      const stevneResponse = await fetch(
-        `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/staevner.json`
-      );
-      const stevneData = await stevneResponse.json();
-      const stevneArray = Object.keys(stevneData).map((id) => ({
-        id,
-        ...stevneData[id],
-        type: "stevne", //Tilføj type for at skelne mellem stevne og kamp
-      }));
+      try {
+        // Get the current user's hid from localStorage
+        const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
+        const userHid = currentUser?.profile?.hid;
 
-      // Fetch kamp data
-      const kampResponse = await fetch(
-        `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/kampe.json`
-      );
-      const kampData = await kampResponse.json();
-      const kampArray = Object.keys(kampData).map((id) => ({
-        id,
-        ...kampData[id],
-        type: "kamp",
-      }));
+        if (!userHid) {
+          console.error("User HID not found. Cannot filter events.");
+          setEvents([]);
+          return;
+        }
 
-      const combinedEvents = [...stevneArray, ...kampArray].sort(
-        (a, b) => new Date(a.dato) - new Date(b.dato)
-      );
+        // Fetch and filter stevner and kampe
+        const stevneEvents = await fetchAndFilterEvents("staevner", "stevne", userHid);
+        const kampEvents = await fetchAndFilterEvents("kampe", "kamp", userHid);
 
-      setEvents(combinedEvents);
+        // Combine and sort events
+        const combinedEvents = [...stevneEvents, ...kampEvents].sort(
+          (a, b) => new Date(a.dato) - new Date(b.dato)
+        );
+
+        setEvents(combinedEvents);
+      } catch (error) {
+        console.error("Failed to fetch events:", error);
+        setEvents([]);
+      }
     }
 
     fetchEvents();
   }, []);
+
 
   //----------------------------Scroll til næste Event----------------------------//
 
@@ -126,7 +155,7 @@ export default function KalenderPage() {
 
   /*-------------------------------JSX---------------------------------- */
   return (
-    <section className="page">
+    <section className="kalender-page">
       <KalenderFilter setFilter={setActiveFilter} />
       {(() => {
         let nextEventFound = false; // Track if the next event has been found across all months
