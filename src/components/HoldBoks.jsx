@@ -1,25 +1,27 @@
 import { useEffect, useState } from "react";
+import { getHoldById, getKlubById } from "../helper";
+import { useParams } from "react-router";
 
-export default function HoldBoks({ hold }) {
+export default function HoldBoks() {
   const [isFilled, setIsFilled] = useState(false);
-  //const [hold, setHold] = useState({});
+  const [hold, setHold] = useState({});
   const [klub, setKlub] = useState({});
   const [isFavorite, setIsFavorite] = useState(false);
+  const params = useParams();
   //const url = `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/hold.json`;
-  const klubUrl = `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/klubber.json`;
+  //const klubUrl = `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/klubber.json`;
 
   useEffect(() => {
-    async function fetchData() {
-      const klubResponse = await fetch(klubUrl);
-      const klubData = await klubResponse.json();
-      setKlub(klubData);
-    }
+    getHoldById(params.hid).then((fetchedHold) => setHold(fetchedHold));
+  }, [params.hid]);
 
-    fetchData();
-  }, [klubUrl]);
+  console.log("hold data:", params.hid);
 
-  console.log("hold data:", hold?.navn);
-  console.log("klub data:", klub.navn);
+  useEffect(() => {
+    getKlubById(useParams.kid).then((fetchedKlub) => setKlub(fetchedKlub));
+  }, [params.kid]);
+
+  console.log("klub data:", params.kid);
 
   function handleStarClick() {
     setIsFilled((prev) => !prev);
