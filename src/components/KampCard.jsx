@@ -4,47 +4,21 @@ import bell from "/public/bell.svg";
 import share from "/public/share.svg";
 import { useNavigate, useParams } from "react-router";
 import { useEffect, useState, forwardRef } from "react";
-import { getHoldById } from "../helper";
+import { getHoldById, getKlubById } from "../helper";
 
-const KampCard = forwardRef(({ oplysninger }, ref) => {
-  const [kamp, setKamp] = useState({});
+const KampCard = forwardRef(({ kamp, oplysninger }, ref) => {
   const [hold, setHold] = useState({});
   const [klub, setKlub] = useState({});
   const params = useParams();
-
-  //const params = useParams();
   const navigate = useNavigate();
-
-  /*const kampUrl = `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/kampe/${
-    params.id
-  }.json`;*/
-  //const holdUrl = `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/hold.json`;
-  const klubUrl = `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/klubber.json`;
 
   useEffect(() => {
     getHoldById(useParams.id).then((fetchedHold) => setHold(fetchedHold));
   }, [params.id]);
 
   useEffect(() => {
-    getHoldById(useParams.kid).then((fetchedkamp) => setKamp(fetchedkamp));
+    getKlubById(useParams.kid).then((fetchedKlub) => setKlub(fetchedKlub));
   }, [params.kid]);
-
-  useEffect(() => {
-    async function getKamp() {
-      /*getHoldById(useParams.id).then((fetchedHold) => setHold(fetchedHold));
-      const holdResponse = await fetch(holdUrl);
-      const holdData = await holdResponse.json();
-      setHold(holdData);*/
-
-      const klubResponse = await fetch(klubUrl);
-      const klubData = await klubResponse.json();
-      if (klubData) {
-        setKlub(klubData);
-      }
-    }
-
-    getKamp();
-  }, [klubUrl]);
 
   function handleClick() {
     navigate(`/kamp/${kamp.id}`);
@@ -55,8 +29,8 @@ const KampCard = forwardRef(({ oplysninger }, ref) => {
   }
 
   //get data from hold and klub based on kamp data
-  //const hjemmeholdNavn = hold?.[kamp?.hjemmehold]?.navn ?? "Hjemme";
-  //const udeholdNavn = hold?.[kamp?.udehold]?.navn ?? "Ude";
+  const hjemmeholdNavn = hold?.[kamp?.hjemmehold]?.navn ?? "Hjemme";
+  const udeholdNavn = hold?.[kamp?.udehold]?.navn ?? "Ude";
   const hjemmeklubLogo =
     klub?.[kamp?.hjemmeklub]?.image ?? "https://placehold.co/50x50.webp";
   const udeklubLogo =

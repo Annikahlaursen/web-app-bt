@@ -1,16 +1,17 @@
-export default async function getHoldById(id, kid) {
+export async function getHoldById(id) {
   const url = `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/hold.json`;
   const response = await fetch(url);
   const hold = await response.json();
   hold.id = id;
 
-  const kampurl = `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/kampe.json`;
-  const kampResponse = await fetch(kampurl);
-  const kamp = await kampResponse.json();
-  kamp.id = kid;
+  return hold;
+}
 
-  const hjemmeholdNavn = hold?.[kamp?.hjemmehold]?.navn ?? "Hjemme";
-  const udeholdNavn = hold?.[kamp?.udehold]?.navn ?? "Ude";
+export async function getKlubById(kid) {
+  const kluburl = `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/klubber.json`;
+  const klubresponse = await fetch(kluburl);
+  const klub = await klubresponse.json();
+  klub.id = kid;
 
-  return hold, hjemmeholdNavn, udeholdNavn, kamp;
+  return klub;
 }
