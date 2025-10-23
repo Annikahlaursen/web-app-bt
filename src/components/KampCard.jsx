@@ -13,8 +13,8 @@ const KampCard = forwardRef(({ kamp, oplysninger }, ref) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    getHoldById(useParams.id).then((fetchedHold) => setHold(fetchedHold));
-  }, [params.id]);
+    getHoldById(useParams.hid).then((fetchedHold) => setHold(fetchedHold));
+  }, [params.hid]);
 
   useEffect(() => {
     getKlubById(useParams.kid).then((fetchedKlub) => setKlub(fetchedKlub));

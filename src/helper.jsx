@@ -1,8 +1,8 @@
-export async function getHoldById(id) {
+export async function getHoldById(hid) {
   const url = `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/hold.json`;
   const response = await fetch(url);
   const hold = await response.json();
-  hold.id = id;
+  hold.id = hid;
 
   return hold;
 }
