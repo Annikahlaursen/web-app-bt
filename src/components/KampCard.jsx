@@ -21,24 +21,6 @@ const KampCard = forwardRef(({ kamp, oplysninger }, ref) => {
 
   useEffect(() => {
     async function getKamp() {
-      /*const kampResponse = await fetch(kampUrl);
-      const data = await kampResponse.json();
-      console.log("Params id:", params.id, "data:", data);
-
-      console.log(data);
-      if (data) {
-        data.id = params.id;
-      } else {
-        console.warn(`Ingen kamp fundet med id: ${params.id}`);
-      }
-
-      setKamp(data);
-      //if (data) {
-      // Get the first kamp from the object
-      //const firstKamp = Object.values(data)[0];
-      //setKamp(firstKamp);
-      //}
-*/
       const holdResponse = await fetch(holdUrl);
       const holdData = await holdResponse.json();
       setHold(holdData);
@@ -51,7 +33,7 @@ const KampCard = forwardRef(({ kamp, oplysninger }, ref) => {
     }
 
     getKamp();
-  }, [/*params.id, kampUrl, */ holdUrl, klubUrl]);
+  }, [holdUrl, klubUrl]);
 
   function handleClick() {
     navigate(`/kamp/${kamp.id}`);
@@ -124,8 +106,9 @@ const KampCard = forwardRef(({ kamp, oplysninger }, ref) => {
           </div>
         </div>
       </div>
-  );
-}});
+    );
+  }
+});
 
 export default KampCard;
 

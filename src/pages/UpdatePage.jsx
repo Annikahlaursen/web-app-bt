@@ -18,10 +18,11 @@ import Select from "react-select";
 export default function Update() {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
-  const [image, setImage] = useState("");
+  const [imagePreview, setImagePreview] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
   const [uploadProgress, setUploadProgress] = useState(0);
-  const [selectedKlubber, setSelectedKlubber] = useState([]);
-  const [selectedHold, setSelectedHold] = useState([]);
+  const [selectedKlub, setSelectedKlub] = useState(null);
+  const [selectedHold, setSelectedHold] = useState(null);
 
   const fileInputRef = useRef(null);
 
@@ -61,8 +62,54 @@ export default function Update() {
       body: JSON.stringify(updatedUserData),
     });
     if (!patchResponse.ok) throw new Error("Failed to update user data.");
+    try {
+      const response = await fetch(url);
+      const currentUserData = await response.json();
 
-    if (patchResponse.ok) {
+      console.log("Current user data from Firebase:", currentUserData);
+      console.log("Current imageUrl state:", imageUrl);
+
+      // Ensure the image URL is valid (not a blob URL)
+      const finalImageUrl =
+        imageUrl && !imageUrl.startsWith("blob:")
+          ? imageUrl
+          : currentUserData.image || null;
+
+      console.log("Final image URL to be saved:", finalImageUrl);
+
+      // Prepare the updated user data
+      const updatedUserData = {
+        ...currentUserData,
+        kid: selectedKlub || null,
+        hid: selectedHold || null,
+        image: finalImageUrl,
+      };
+
+      console.log("Updated user data to be patched:", updatedUserData);
+      // Push the updated data to Firebase
+      const patchResponse = await fetch(url, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedUserData),
+      });
+
+      if (!patchResponse.ok) throw new Error("Failed to update user data.");
+
+      // Update the currentUser object in localStorage
+      const currentUser = {
+        ...JSON.parse(localStorage.getItem("currentUser") || "{}"),
+        profile: {
+          ...(JSON.parse(localStorage.getItem("currentUser") || "{}").profile ||
+            {}),
+          kid: updatedUserData.kid,
+          hid: updatedUserData.hid,
+          image: updatedUserData.image,
+        },
+      };
+
+      console.log("Updated currentUser object for localStorage:", currentUser);
+      setCurrentUserStorage(currentUser); // Update localStorage and broadcast changes
+
       console.log("klub og hold er tilføjet");
       // update localStorage so Overlay and other components update immediately
       try {
@@ -83,9 +130,18 @@ export default function Update() {
         console.warn("Could not update local currentUser after save:", err);
       }
       navigate("/");
-    } else {
-      console.error("Fejl ved opdatering af brugerdata");
+    } catch (error) {
+      console.error("Fejl ved opdatering af brugerdata:", error);
+      setErrorMessage("Kunne ikke opdatere brugerdata. Prøv igen.");
     }
+
+    console.log("Saving:", {
+      uid,
+      selectedKlub,
+      selectedHold,
+      imageUrl,
+      imagePreview,
+    });
   }
 
   useEffect(() => {
@@ -110,6 +166,7 @@ export default function Update() {
                 setSelectedHold([
                   { value: data.hid, label: data.hidNavn || "" },
                 ]);
+              setImageUrl(data.image);
               return;
             }
           }
@@ -125,7 +182,7 @@ export default function Update() {
         if (currentUserRaw) {
           const currentUser = JSON.parse(currentUserRaw);
           const p = currentUser.profile || {};
-          if (p.image) setImage(p.image);
+          if (p.image) setImageUrl(p.image);
         }
       } catch (err) {
         console.error("Could not load local profile data:", err);
@@ -162,7 +219,7 @@ export default function Update() {
 
     // show immediate local preview
     const preview = URL.createObjectURL(file);
-    setImage(preview);
+    setImagePreview(preview);
     setErrorMessage("");
 
     try {
@@ -188,44 +245,51 @@ export default function Update() {
           URL.revokeObjectURL(preview);
         },
         async () => {
-          const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref);
-          setImage(downloadUrl);
-          setUploadProgress(100);
+          // try {
+            console.log(
+              "Upload completed successfully. Retrieving download URL..."
+            );
+            const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref);
+            console.log("Download URL retrieved:", downloadUrl);
 
-          // Persist to DB when authenticated
-          if (uid && firebaseDbUrlBase) {
-            try {
-              const url = `${firebaseDbUrlBase}/users/${uid}.json`;
-              await fetch(url, {
-                method: "PATCH",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ image: downloadUrl }),
-              });
-            } catch (err) {
-              console.warn("Could not persist image to DB:", err);
-            }
-          }
+            setImageUrl(downloadUrl); // Set the public URL
+            setUploadProgress(100);
 
-          // Update localStorage so Overlay/ProfileInfo react immediately
-          try {
-            const raw = localStorage.getItem("currentUser");
-            if (raw) {
-              const cur = JSON.parse(raw);
-              cur.profile = cur.profile || {};
-              cur.profile.image = downloadUrl;
-              setCurrentUserStorage(cur);
-            } else {
-              setCurrentUserStorage({
-                uid: uid || null,
-                email: auth?.currentUser?.email || null,
-                profile: { image: downloadUrl },
-              });
-            }
-          } catch (err) {
-            console.warn("Could not update currentUser in localStorage:", err);
-          }
+            // // Persist to DB when authenticated
+            // if (uid && firebaseDbUrlBase) {
+            //   const url = `${firebaseDbUrlBase}/users/${uid}.json`;
+            //   console.log("Persisting image URL to Firebase:", url);
+            //   await fetch(url, {
+            //     method: "PATCH",
+            //     headers: { "Content-Type": "application/json" },
+            //     body: JSON.stringify({ image: downloadUrl }),
+            //   });
+            //   console.log("Image URL persisted to Firebase.");
+            // }
 
-          URL.revokeObjectURL(preview);
+            // Update localStorage
+            // const raw = localStorage.getItem("currentUser");
+            // if (raw) {
+            //   const cur = JSON.parse(raw);
+            //   cur.profile = cur.profile || {};
+            //   cur.profile.image = downloadUrl;
+            //   setCurrentUserStorage(cur);
+            //   console.log("Image URL updated in localStorage:", downloadUrl);
+            // } else {
+            //   setCurrentUserStorage({
+            //     uid: uid || null,
+            //     email: auth?.currentUser?.email || null,
+            //     profile: { image: downloadUrl },
+            //   });
+            // }
+
+            URL.revokeObjectURL(preview);
+          // } catch (error) {
+          //   console.error("Error in upload success handler:", error);
+          //   setErrorMessage(
+          //     "An error occurred after upload. Please try again."
+          //   );
+          // }
         }
       );
     } catch (err) {
@@ -301,7 +365,7 @@ export default function Update() {
                 <img
                   id="image"
                   className={"profile-image-preview"}
-                  src={image || Placeholder}
+                  src={imagePreview || imageUrl || Placeholder}
                   alt="Choose"
                   onError={(e) => {
                     // if the image fails to load, use the placeholder image
@@ -351,8 +415,11 @@ export default function Update() {
                 <Select
                   options={klubOptions}
                   placeholder="Vælg klub"
+                  onChange={(option) =>
+                    setSelectedKlub(option ? option.value : null)
+                  }
                   isClearable
-                  isMulti
+                  // isMulti
                   isSearchable
                   value={selectedKlubber}
                   onChange={(v) => setSelectedKlubber(v || [])}
@@ -360,8 +427,11 @@ export default function Update() {
                 <Select
                   options={holdOptions}
                   placeholder="Vælg hold"
+                  onChange={(option) =>
+                    setSelectedHold(option ? option.value : null)
+                  }
                   isClearable
-                  isMulti
+                  // isMulti
                   isSearchable
                   value={selectedHold}
                   onChange={(v) => setSelectedHold(v || [])}
@@ -372,8 +442,11 @@ export default function Update() {
                   className="profile-btns profile-btns-actions-seperat profile-btn-actions-lightred"
                   id="save-btn"
                   onClick={handleSave}
+                  disabled={uploadProgress > 0 && uploadProgress < 100}
                 >
-                  Gem
+                  {uploadProgress > 0 && uploadProgress < 100
+                    ? "Uploader..."
+                    : "Gem"}
                 </button>
               </div>
             </div>
