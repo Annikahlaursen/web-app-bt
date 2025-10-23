@@ -17,7 +17,6 @@ import Error from "./pages/ErrorPage";
 import RatingPage from "./pages/RatingPage";
 import KalenderPage from "./pages/KalenderPage";
 import StevneSearchPage from "./pages/StevneSearchPage";
-import KampCard from "./components/KampCard";
 import UpdateCard from "./pages/UpdatePage";
 import { matchPath } from "react-router";
 import KampIdSearchPage from "./pages/KampIdSearchPage";
@@ -74,7 +73,6 @@ export default function App() {
             <Route path="/stevne/:id" element={<StevnePage />} />
             <Route path="/stevne/:id/tilmeld" element={<Error />} />
             <Route path="/kalender" element={<KalenderPage />} />
-            <Route path="/:id" element={<KampCard />} />
             <Route path="/stevnesearch" element={<StevneSearchPage />} />
             <Route path="/searchKampID" element={<KampIdSearchPage />} />
             <Route path="/holdsearch" element={<HoldSearchPage />} />
