@@ -12,6 +12,9 @@ export default function Overlay({ isOpen, onClose }) {
   const [showSignOutCard, setShowSignOutCard] = useState(false);
   const [displayName, setDisplayName] = useState("");
   const [displayImage, setDisplayImage] = useState(Placeholder);
+  const [displayRating, setDisplayRating] = useState(null);
+  const [displayKlub, setDisplayKlub] = useState("");
+  const [displayHold, setDisplayHold] = useState("");
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(!open);
 
@@ -35,6 +38,9 @@ export default function Overlay({ isOpen, onClose }) {
                 }${efternavn}`.trim() || ""
               );
               setDisplayImage(data.image || Placeholder);
+              setDisplayRating(data.rating ?? null);
+              setDisplayKlub(data.kidImage || "");
+              setDisplayHold(data.hidNavn || "");
               return;
             }
           }
@@ -52,6 +58,9 @@ export default function Overlay({ isOpen, onClose }) {
               ""
           );
           setDisplayImage(p.image || Placeholder);
+          setDisplayRating(p.rating ?? null);
+          setDisplayKlub(p.kidImage || "");
+          setDisplayHold(p.hidNavn || "");
           return;
         }
       } catch (err) {
@@ -127,7 +136,12 @@ export default function Overlay({ isOpen, onClose }) {
               </div>
               <div className="profileinfo">
                 <h4>{displayName || "Din profil"}</h4>
-                <p>Rating</p>
+                <h4>
+                  Rating:{" "}
+                  {displayRating !== null && displayRating !== undefined
+                    ? displayRating
+                    : "-"}
+                </h4>
                 <span style={{ textDecoration: "underline" }}>Se profil →</span>
               </div>
             </NavLink>
@@ -149,15 +163,15 @@ export default function Overlay({ isOpen, onClose }) {
                     <li className="menu-item">
                       <li>
                         <button className="menu-rund">
-                          <img src={Star} alt="" />
+                          <p>{displayKlub || "Min klub"}</p>
                         </button>
-                        <p>Favoritter</p>
+                        <p>Min klub</p>
                       </li>
                       <li>
                         <button className="menu-rund">
-                          <img src={Star} alt="" />
+                          <p>{displayHold || "Mit hold"}</p>
                         </button>
-                        <p>Favoritter</p>
+                        <p>Mit hold</p>
                       </li>
                       <li>
                         <button className="menu-rund">
