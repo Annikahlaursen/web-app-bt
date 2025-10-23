@@ -42,7 +42,7 @@ export default function Update() {
 
     const currentUserData = await response.json();
 
-    // Use first selected item (if multi-select) as the primary klub/hold
+    // Brug først valgte hold/klub hvis flere er valgt
     const firstKlub =
       selectedKlub && selectedKlub.length > 0 ? selectedKlub[0] : null;
     const firstHold =
@@ -65,7 +65,7 @@ export default function Update() {
 
     if (!patchResponse.ok) throw new Error("Failed to update user data.");
 
-    // Ensure the image URL is valid (not a blob URL)
+   // sikrer at vi ikke gemmer en blob URL i databasen ---> skal arbejdes på
     const finalImageUrl =
       imageUrl && !imageUrl.startsWith("blob:")
         ? imageUrl
@@ -75,7 +75,7 @@ export default function Update() {
 
     console.log("Updated user data to be patched:", updatedUserData);
 
-    // Update the currentUser object in localStorage
+    // Opdater currentUser object i localStorage
     const currentUser = {
       ...JSON.parse(localStorage.getItem("currentUser") || "{}"),
       profile: {
@@ -89,19 +89,9 @@ export default function Update() {
       },
     };
 
-    console.log("Updated currentUser object for localStorage:", currentUser);
-    setCurrentUserStorage(currentUser); // Update localStorage and broadcast changes
+    setCurrentUserStorage(currentUser); // opdater localStorage med currentUserEvents.js
 
-    console.log("klub og hold er tilføjet");
     navigate("/");
-
-    console.log("Saving:", {
-      uid,
-      selectedKlub,
-      selectedHold,
-      imageUrl,
-      imagePreview,
-    });
   }
 
   useEffect(() => {
