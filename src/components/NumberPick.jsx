@@ -1,14 +1,12 @@
-//Hele denne side er skrevet med CoPilot,
-// men baseret på at jeg skrevet en <select></select>
-// ind og derefet promptede med
-// "numbers = 10, then its all good, but if its does
-//  not equal 10, then it comes with an error messege"
-
 import { useState, useEffect } from "react";
+import { useParams } from "react-router";
+import { getHoldById } from "../helper";
 
-export default function NumberPick({ onChangeH, onChangeU }) {
+export default function NumberPick({ kamp, onChangeH, onChangeU }) {
   const [num1, setNum1] = useState("pick");
   const [num2, setNum2] = useState("pick");
+  const [hold, setHold] = useState({});
+  const params = useParams();
 
   const sum = (num1 ? Number(num1) : 0) + (num2 ? Number(num2) : 0);
 
@@ -21,6 +19,14 @@ export default function NumberPick({ onChangeH, onChangeU }) {
   useEffect(() => {
     if (onChangeU) onChangeU({ num2 });
   }, [num2]);
+
+  useEffect(() => {
+    getHoldById(useParams.hid).then((fetchedHold) => setHold(fetchedHold));
+  }, [params.hid]);
+
+  //get data from hold and klub based on kamp data
+  const hjemmeholdNavn = hold?.[kamp?.hjemmehold]?.navn ?? "Hjemme";
+  const udeholdNavn = hold?.[kamp?.udehold]?.navn ?? "Ude";
 
   return (
     <>
@@ -42,7 +48,7 @@ export default function NumberPick({ onChangeH, onChangeU }) {
               </option>
             ))}
           </select>
-          <p>Hjemmehold</p>
+          <p>{hjemmeholdNavn}</p>
         </div>
         <div className="number-hold">
           <select
@@ -56,7 +62,7 @@ export default function NumberPick({ onChangeH, onChangeU }) {
               </option>
             ))}
           </select>
-          <p>Udehold</p>
+          <p>{udeholdNavn}</p>
         </div>
       </div>
     </>
