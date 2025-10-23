@@ -1392,6 +1392,10 @@ form {
   padding: 1rem;
   font-size: large;
 }
+
+.number-hold {
+  text-align: center;
+}
 /*---------- kamp resultat page Styling ----------*/
 .resultat-page .kamp-card {
   width: 85%;
