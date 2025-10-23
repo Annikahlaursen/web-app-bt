@@ -35,13 +35,14 @@ export default function Update() {
 
   async function handleSave(event) {
     event.preventDefault();
-    const url = `${firebaseDbUrlBase}/users/${uid}.json`;
 
+    //Fetch data fra Firebase
+    const url = `${firebaseDbUrlBase}/users/${uid}.json`;
     const response = await fetch(url);
 
     const currentUserData = await response.json();
 
-    // Use first selected item (if multi-select) as the primary klub/hold
+    // Brug først valgte hold/klub hvis flere er valgt
     const firstKlub =
       selectedKlub && selectedKlub.length > 0 ? selectedKlub[0] : null;
     const firstHold =
@@ -151,10 +152,40 @@ export default function Update() {
       console.error("Fejl ved opdatering af brugerdata:", error);
       setErrorMessage("Kunne ikke opdatere brugerdata. Prøv igen.");
     }
+
+    if (!patchResponse.ok) throw new Error("Failed to update user data.");
+
+    // sikrer at vi ikke gemmer en blob URL i databasen ---> skal arbejdes på
+    const finalImageUrl =
+      imageUrl && !imageUrl.startsWith("blob:")
+        ? imageUrl
+        : currentUserData.image || null;
+
+    console.log("Final image URL to be saved:", finalImageUrl);
+
+    console.log("Updated user data to be patched:", updatedUserData);
+
+    // Opdater currentUser object i localStorage
+    const currentUser = {
+      ...JSON.parse(localStorage.getItem("currentUser") || "{}"),
+      profile: {
+        ...(JSON.parse(localStorage.getItem("currentUser") || "{}").profile ||
+          {}),
+        kid: updatedUserData.kid,
+        kidNavn: updatedUserData.kidNavn,
+        hid: updatedUserData.hid,
+        hidNavn: updatedUserData.hidNavn,
+        image: updatedUserData.image,
+      },
+    };
+
+    setCurrentUserStorage(currentUser); // opdater localStorage med currentUserEvents.js
+
+    navigate("/");
   }
 
   /**
-   * handleImageChange is called every time the user chooses an image in the file system.
+   * handleImageChange kaldes når brugeren vælger en fil til upload
    * The event is fired by the input file field in the form
    */
   async function handleImageChange(event) {
@@ -256,49 +287,44 @@ export default function Update() {
     }
   }
 
+  //---------------------------- henter klubber og hold til select dropdowns options-----------------------------
   const [klubber, setKlubber] = useState([]);
   const [hold, setHold] = useState([]);
 
   useEffect(() => {
-    async function fetchData() {
-      const klubResponse = await fetch(
-        `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/klubber.json`
+    async function fetchData(endpoint) {
+      const response = await fetch(
+        `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/${endpoint}.json`
       );
-      const klubData = await klubResponse.json();
-      const klubArray = Object.keys(klubData).map((key) => ({
-        id: key,
-        ...klubData[key],
-      }));
-      // setKlubber(klubArray); --- IGNORE ---
+      const data = await response.json();
 
+      return Object.keys(data).map((key) => ({
+        id: key,
+        ...data[key],
+      }));
+    }
+    async function fetchDropdownData() {
+      const klubArray = await fetchData("klubber");
       setKlubber(klubArray);
 
-      const holdResponse = await fetch(
-        `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/hold.json`
-      );
-      const holdData = await holdResponse.json();
-      const holdArray = Object.keys(holdData).map((key) => ({
-        id: key,
-        ...holdData[key],
-      }));
-
+      const holdArray = await fetchData("hold");
       setHold(holdArray);
     }
 
-    fetchData();
+    fetchDropdownData();
   }, []);
 
-  const klubOptions = klubber.map((klubber) => ({
-    value: klubber.id,
-    label: klubber.navn,
+  //definer options til select komponenterne
+
+  const klubOptions = klubber.map((klub) => ({
+    value: klub.id,
+    label: klub.navn,
   }));
 
   const holdOptions = hold.map((hold) => ({
     value: hold.id,
     label: hold.navn,
   }));
-
-  // uploadImage helper removed — using uploadBytesResumable in handleImageChange for progress
 
   return (
     <Fragment>
@@ -340,7 +366,7 @@ export default function Update() {
                 )}
               </div>
               {errorMessage && (
-                <div className="error-message" style={{ color: "#c00" }}>
+                <div className="error-message" style={{ color: "#000" }}>
                   {errorMessage}
                 </div>
               )}
@@ -377,7 +403,7 @@ export default function Update() {
                   //   setSelectedKlub(option ? option.value : null)
                   // }
                   isClearable
-                  // isMulti
+                  isMulti
                   isSearchable
                   value={selectedKlub}
                   onChange={(v) => setSelectedKlub(v || [])}
@@ -389,7 +415,7 @@ export default function Update() {
                   //   setSelectedHold(option ? option.value : null)
                   // }
                   isClearable
-                  // isMulti
+                  isMulti
                   isSearchable
                   value={selectedHold}
                   onChange={(v) => setSelectedHold(v || [])}
