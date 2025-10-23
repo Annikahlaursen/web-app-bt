@@ -65,7 +65,7 @@ export default function Update() {
 
     if (!patchResponse.ok) throw new Error("Failed to update user data.");
 
-   // sikrer at vi ikke gemmer en blob URL i databasen ---> skal arbejdes på
+    // sikrer at vi ikke gemmer en blob URL i databasen ---> skal arbejdes på
     const finalImageUrl =
       imageUrl && !imageUrl.startsWith("blob:")
         ? imageUrl
@@ -94,8 +94,8 @@ export default function Update() {
     navigate("/");
   }
 
-   /**
-   * handleImageChange is called every time the user chooses an image in the file system.
+  /**
+   * handleImageChange kaldes når brugeren vælger en fil til upload
    * The event is fired by the input file field in the form
    */
   async function handleImageChange(event) {
@@ -197,49 +197,44 @@ export default function Update() {
     }
   }
 
+  //---------------------------- henter klubber og hold til select dropdowns options-----------------------------
   const [klubber, setKlubber] = useState([]);
   const [hold, setHold] = useState([]);
 
   useEffect(() => {
-    async function fetchData() {
-      const klubResponse = await fetch(
-        `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/klubber.json`
+    async function fetchData(endpoint) {
+      const response = await fetch(
+        `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/${endpoint}.json`
       );
-      const klubData = await klubResponse.json();
-      const klubArray = Object.keys(klubData).map((key) => ({
-        id: key,
-        ...klubData[key],
-      }));
-      // setKlubber(klubArray); --- IGNORE ---
+      const data = await response.json();
 
+      return Object.keys(data).map((key) => ({
+        id: key,
+        ...data[key],
+      }));
+    }
+    async function fetchDropdownData() {
+      const klubArray = await fetchData("klubber");
       setKlubber(klubArray);
 
-      const holdResponse = await fetch(
-        `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/hold.json`
-      );
-      const holdData = await holdResponse.json();
-      const holdArray = Object.keys(holdData).map((key) => ({
-        id: key,
-        ...holdData[key],
-      }));
-
+      const holdArray = await fetchData("hold");
       setHold(holdArray);
     }
 
-    fetchData();
+    fetchDropdownData();
   }, []);
 
-  const klubOptions = klubber.map((klubber) => ({
-    value: klubber.id,
-    label: klubber.navn,
+  //definer options til select komponenterne
+
+  const klubOptions = klubber.map((klub) => ({
+    value: klub.id,
+    label: klub.navn,
   }));
 
   const holdOptions = hold.map((hold) => ({
     value: hold.id,
     label: hold.navn,
   }));
-
-  // uploadImage helper removed — using uploadBytesResumable in handleImageChange for progress
 
   return (
     <Fragment>
