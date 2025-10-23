@@ -366,7 +366,7 @@ export default function Update() {
                 )}
               </div>
               {errorMessage && (
-                <div className="error-message" style={{ color: "#c00" }}>
+                <div className="error-message" style={{ color: "#000" }}>
                   {errorMessage}
                 </div>
               )}
