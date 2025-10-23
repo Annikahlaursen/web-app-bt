@@ -166,7 +166,7 @@ export default function Overlay({ isOpen, onClose }) {
                           className="menu-rund"
                           src={displayKlub}
                           alt={displayKlub || "Klub"}
-                          style={{ objectFit: "cover" }}
+                          style={{ objectFit: "cover", border: "none" }}
                         />
                         <p style={{ marginTop: "4px" }}>Min klub</p>
                       </li>

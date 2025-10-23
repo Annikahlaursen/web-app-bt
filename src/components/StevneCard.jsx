@@ -8,15 +8,24 @@ import { forwardRef } from "react";
 // import { useState, useEffect } from "react";
 
 const StevneCard = forwardRef(({ stevne }, ref) => {
+  const [isFilled, setIsFilled] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  function handleBellClick() {
+    setIsFilled((prev) => !prev);
+    setIsFavorite(true);
+    console.log(isFavorite);
+  }
+
   return (
-    <div className="stevne-card" ref={ref} style={{scrollMargin:"10rem"}}>
+    <div className="stevne-card" ref={ref} style={{ scrollMargin: "10rem" }}>
       <Link to={`/stevne/${stevne.id}`}>
         <div className="kamp-container">
           <h3>{stevne?.titel ?? "Ingen titel"}</h3>
           <p>{stevne?.dato ?? "Ingen dato tilgængelig"}</p>
         </div>
         <div className="stevne-container">
-         <p>{stevne.beskrivelse}</p>
+          <p>{stevne.beskrivelse}</p>
           <div className="location">
             <img src={location} alt="Location pin icon" />
             <p>{stevne?.lokation ?? "Brabrand hallerne"}</p>
@@ -29,7 +38,12 @@ const StevneCard = forwardRef(({ stevne }, ref) => {
           <p>Del</p>
         </div>
         <div className="del-notifikationer">
-          <img src={bell} alt="Notifikations klokke ikon" />
+          <img
+            src={isFilled ? "/public/bell-solid.svg" : "/bell.svg"}
+            onClick={handleBellClick}
+            alt="notifikations klokke ikon"
+            className="star"
+          />
           <p>Notifikationer</p>
         </div>
       </div>

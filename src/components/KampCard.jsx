@@ -9,6 +9,8 @@ const KampCard = forwardRef(({ kamp, oplysninger }, ref) => {
   //const [kamp, setKamp] = useState({});
   const [hold, setHold] = useState({});
   const [klub, setKlub] = useState({});
+  const [isFilled, setIsFilled] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
 
   //const params = useParams();
   const navigate = useNavigate();
@@ -41,6 +43,12 @@ const KampCard = forwardRef(({ kamp, oplysninger }, ref) => {
 
   function handleResultatClick() {
     navigate(`/kamp/${kamp.id}/resultat`);
+  }
+
+  function handleBellClick() {
+    setIsFilled((prev) => !prev);
+    setIsFavorite(true);
+    console.log(isFavorite);
   }
 
   //get data from hold and klub based on kamp data
@@ -101,7 +109,12 @@ const KampCard = forwardRef(({ kamp, oplysninger }, ref) => {
             <p>Del</p>
           </div>
           <div className="del-notifikationer">
-            <img src={bell} alt="Notifikations klokke ikon" />
+            <img
+              src={isFilled ? "/public/bell-solid.svg" : "/bell.svg"}
+              onClick={handleBellClick}
+              alt="notifikations klokke ikon"
+              className="star"
+            />
             <p>Notifikationer</p>
           </div>
         </div>

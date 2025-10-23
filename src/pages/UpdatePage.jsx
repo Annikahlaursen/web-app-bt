@@ -43,7 +43,7 @@ export default function Update() {
 
     // Use first selected item (if multi-select) as the primary klub/hold
     const firstKlub =
-      selectedKlubber && selectedKlubber.length > 0 ? selectedKlubber[0] : null;
+      selectedKlub && selectedKlub.length > 0 ? selectedKlub[0] : null;
     const firstHold =
       selectedHold && selectedHold.length > 0 ? selectedHold[0] : null;
 
@@ -69,7 +69,7 @@ export default function Update() {
       kidImage: kidImage,
       hid: firstHold ? firstHold.value : null,
       hidNavn: firstHold ? firstHold.label : "",
-      image: image || currentUserData.image || null,
+      image: imageUrl || currentUserData.image || null,
     };
 
     const patchResponse = await fetch(url, {
@@ -151,66 +151,7 @@ export default function Update() {
       console.error("Fejl ved opdatering af brugerdata:", error);
       setErrorMessage("Kunne ikke opdatere brugerdata. Prøv igen.");
     }
-
-    console.log("Saving:", {
-      uid,
-      selectedKlub,
-      selectedHold,
-      imageUrl,
-      imagePreview,
-    });
   }
-
-  useEffect(() => {
-    // Load profile either from Firebase (if logged in) or from localStorage fallback
-    async function loadProfile() {
-      setErrorMessage("");
-
-      if (uid && firebaseDbUrlBase) {
-        try {
-          const url = `${firebaseDbUrlBase}/users/${uid}.json`;
-          const response = await fetch(url);
-          if (response.ok) {
-            const data = await response.json();
-            if (data && data.image) {
-              setImage(data.image);
-              // restore selected klub/hold if present
-              if (data.kid)
-                setSelectedKlubber([
-                  { value: data.kid, label: data.kidNavn || "" },
-                ]);
-              if (data.hid)
-                setSelectedHold([
-                  { value: data.hid, label: data.hidNavn || "" },
-                ]);
-              setImageUrl(data.image);
-              return;
-            }
-          }
-        } catch (err) {
-          console.error("Could not load profile from server:", err);
-          setErrorMessage("Could not load profile from server");
-        }
-      }
-
-      // fallback to localStorage
-      try {
-        const currentUserRaw = localStorage.getItem("currentUser");
-        if (currentUserRaw) {
-          const currentUser = JSON.parse(currentUserRaw);
-          const p = currentUser.profile || {};
-          if (p.image) setImageUrl(p.image);
-        }
-      } catch (err) {
-        console.error("Could not load local profile data:", err);
-        setErrorMessage("Could not load local profile data");
-      }
-    }
-
-    loadProfile();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [uid]);
 
   /**
    * handleImageChange is called every time the user chooses an image in the file system.
@@ -263,44 +204,44 @@ export default function Update() {
         },
         async () => {
           // try {
-            console.log(
-              "Upload completed successfully. Retrieving download URL..."
-            );
-            const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref);
-            console.log("Download URL retrieved:", downloadUrl);
+          console.log(
+            "Upload completed successfully. Retrieving download URL..."
+          );
+          const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref);
+          console.log("Download URL retrieved:", downloadUrl);
 
-            setImageUrl(downloadUrl); // Set the public URL
-            setUploadProgress(100);
+          setImageUrl(downloadUrl); // Set the public URL
+          setUploadProgress(100);
 
-            // // Persist to DB when authenticated
-            // if (uid && firebaseDbUrlBase) {
-            //   const url = `${firebaseDbUrlBase}/users/${uid}.json`;
-            //   console.log("Persisting image URL to Firebase:", url);
-            //   await fetch(url, {
-            //     method: "PATCH",
-            //     headers: { "Content-Type": "application/json" },
-            //     body: JSON.stringify({ image: downloadUrl }),
-            //   });
-            //   console.log("Image URL persisted to Firebase.");
-            // }
+          // // Persist to DB when authenticated
+          // if (uid && firebaseDbUrlBase) {
+          //   const url = `${firebaseDbUrlBase}/users/${uid}.json`;
+          //   console.log("Persisting image URL to Firebase:", url);
+          //   await fetch(url, {
+          //     method: "PATCH",
+          //     headers: { "Content-Type": "application/json" },
+          //     body: JSON.stringify({ image: downloadUrl }),
+          //   });
+          //   console.log("Image URL persisted to Firebase.");
+          // }
 
-            // Update localStorage
-            // const raw = localStorage.getItem("currentUser");
-            // if (raw) {
-            //   const cur = JSON.parse(raw);
-            //   cur.profile = cur.profile || {};
-            //   cur.profile.image = downloadUrl;
-            //   setCurrentUserStorage(cur);
-            //   console.log("Image URL updated in localStorage:", downloadUrl);
-            // } else {
-            //   setCurrentUserStorage({
-            //     uid: uid || null,
-            //     email: auth?.currentUser?.email || null,
-            //     profile: { image: downloadUrl },
-            //   });
-            // }
+          // Update localStorage
+          // const raw = localStorage.getItem("currentUser");
+          // if (raw) {
+          //   const cur = JSON.parse(raw);
+          //   cur.profile = cur.profile || {};
+          //   cur.profile.image = downloadUrl;
+          //   setCurrentUserStorage(cur);
+          //   console.log("Image URL updated in localStorage:", downloadUrl);
+          // } else {
+          //   setCurrentUserStorage({
+          //     uid: uid || null,
+          //     email: auth?.currentUser?.email || null,
+          //     profile: { image: downloadUrl },
+          //   });
+          // }
 
-            URL.revokeObjectURL(preview);
+          URL.revokeObjectURL(preview);
           // } catch (error) {
           //   console.error("Error in upload success handler:", error);
           //   setErrorMessage(
@@ -432,21 +373,21 @@ export default function Update() {
                 <Select
                   options={klubOptions}
                   placeholder="Vælg klub"
-                  onChange={(option) =>
-                    setSelectedKlub(option ? option.value : null)
-                  }
+                  // onChange={(option) =>
+                  //   setSelectedKlub(option ? option.value : null)
+                  // }
                   isClearable
                   // isMulti
                   isSearchable
-                  value={selectedKlubber}
-                  onChange={(v) => setSelectedKlubber(v || [])}
+                  value={selectedKlub}
+                  onChange={(v) => setSelectedKlub(v || [])}
                 />
                 <Select
                   options={holdOptions}
                   placeholder="Vælg hold"
-                  onChange={(option) =>
-                    setSelectedHold(option ? option.value : null)
-                  }
+                  // onChange={(option) =>
+                  //   setSelectedHold(option ? option.value : null)
+                  // }
                   isClearable
                   // isMulti
                   isSearchable
