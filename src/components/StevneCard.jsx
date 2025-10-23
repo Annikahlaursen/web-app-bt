@@ -5,7 +5,7 @@ import bell from "/public/bell.svg";
 import share from "/public/share.svg";
 import { Link } from "react-router";
 import { forwardRef } from "react";
-// import { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 const StevneCard = forwardRef(({ stevne }, ref) => {
   const [isFilled, setIsFilled] = useState(false);
