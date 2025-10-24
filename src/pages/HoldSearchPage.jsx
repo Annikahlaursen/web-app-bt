@@ -6,12 +6,16 @@ import { useNavigate } from "react-router";
 import arrowBlack from "/arrow-left-black.svg";
 
 export default function HoldSearchPage() {
-  const [klub, setKlub] = useState([]);
+  const [klubber, setKlubber] = useState([]);
   const navigate = useNavigate();
   const [kamp, setKamp] = useState([]);
+  const [hold, setHold] = useState([]);
   const kampUrl = `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/kampe.json`;
   const klubUrl = `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/klubber.json`;
+  const holdUrl = `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/hold.json`;
+
   const [selectedOption, setSelectedOption] = useState([]);
+  //const [selectedOptionHold, setSelectedOptionHold] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
@@ -34,19 +38,38 @@ export default function HoldSearchPage() {
           }))
         : [];
 
+      // fetch hold
+      const holdresponse = await fetch(holdUrl);
+      const holdData = await holdresponse.json();
+
+      const holdArray = holdData
+        ? Object.keys(holdData).map((holdId) => ({
+            id: holdId,
+            ...holdData[holdId],
+          }))
+        : [];
+
+      setHold(holdArray);
       setKamp(kampArray);
-      setKlub(klubArray);
+      setKlubber(klubArray);
     }
 
     fetchData();
-  }, [kampUrl, klubUrl]);
+  }, [kampUrl, klubUrl, holdUrl]);
 
-  const klubOptions = klub.map((klub) => ({
+  const klubOptions = klubber.map((klub) => ({
     value: klub.id,
     label: klub.navn || "ukendt klub",
   }));
 
   klubOptions.sort((a, b) => a.label.localeCompare(b.label));
+
+  const HoldOptions = hold.map((hold) => ({
+    value: hold.id,
+    label: hold.navn || "ukendt klub",
+  }));
+
+  HoldOptions.sort((a, b) => a.label.localeCompare(b.label));
 
   const handleSelectChange = (option) => {
     setSelectedOption(option);
@@ -59,6 +82,13 @@ export default function HoldSearchPage() {
           klub.udeklub === selectedOption.value
       )
     : kamp;
+
+  const displayedHold = selectedOption
+    ? hold.filter((h) => {
+        const klubForHold = klubber.find((k) => k.hold.includes(h.id));
+        return klubForHold?.id === selectedOption.value;
+      })
+    : hold;
 
   return (
     <div className="page-topmargin">
@@ -74,15 +104,16 @@ export default function HoldSearchPage() {
           options={klubOptions}
           value={selectedOption}
           onChange={handleSelectChange}
-          placeholder="Søg efter hold eller kampe"
+          placeholder="Søg efter klubber"
           isClearable
           isSearchable
         ></Select>
       </div>
       <div className="holdkampe-background page">
-        {klub.map((hold) => (
-          <HoldBoks key={hold.id} hold={hold} />
-        ))}
+        {displayedHold.map((hold) => {
+          const klubForHold = klubber.find((k) => k.hold.includes(hold.id));
+          return <HoldBoks key={hold.id} hold={hold} klub={klubForHold} />;
+        })}
 
         {displayedKampe.map((klub) => (
           <KampCard
