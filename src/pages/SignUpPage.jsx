@@ -7,6 +7,7 @@ import Logo from "/btp-logo.png";
 
 export default function SignUpPage() {
   const [errorMessage, setErrorMessage] = useState("");
+
   const navigate = useNavigate();
 
   async function handleSignUp(event) {
@@ -117,68 +118,68 @@ export default function SignUpPage() {
           <img id="login-logo" src={Logo} alt="Bordtennisportalen.dk logo" />
         </div>
         <div className="profile-info-parent">
-            <div className="profile-card">
-              <div>
-                <form
-                  action="ProfileInfo"
-                  className="profile-form"
-                  onSubmit={handleSignUp}
-                >
-                  <input
-                    id="fornavn"
-                    type="text"
-                    name="name"
-                    className="profile-form-content"
-                    placeholder="Fornavn"
-                    required
-                  />
-                  <input
-                    id="efternavn"
-                    type="text"
-                    name="efternavn"
-                    className="profile-form-content"
-                    placeholder="Efternavn"
-                    required
-                  />
-                  <input
-                    id="mail"
-                    type="email"
-                    name="mail"
-                    className="profile-form-content"
-                    aria-label="mail"
-                    placeholder="Email"
-                    required
-                    autoComplete="off"
-                  />
-                  <input
-                    id="phone"
-                    type="text"
-                    name="phone"
-                    className="profile-form-content"
-                    placeholder="Telefonnummer"
-                    required
-                  />
-                  <input
-                    id="password"
-                    type="password"
-                    name="password"
-                    className="profile-form-content"
-                    aria-label="password"
-                    placeholder="Adgangskode"
-                    autoComplete="current-password"
-                    required
-                  />
-                  <div className="error-message">
-                    <p>{errorMessage}</p>
-                  </div>
-                  <div className="profile-btns-actions">
-                    <button className="profile-btns profile-btns-actions-seperat profile-btn-actions-lightred">
-                      Opret konto
-                    </button>
-                  </div>
-                </form>
-              </div>
+          <div className="profile-card">
+            <div>
+              <form
+                action="ProfileInfo"
+                className="profile-form"
+                onSubmit={handleSignUp}
+              >
+                <input
+                  id="fornavn"
+                  type="text"
+                  name="name"
+                  className="profile-form-content"
+                  placeholder="Fornavn"
+                  required
+                />
+                <input
+                  id="efternavn"
+                  type="text"
+                  name="efternavn"
+                  className="profile-form-content"
+                  placeholder="Efternavn"
+                  required
+                />
+                <input
+                  id="mail"
+                  type="email"
+                  name="mail"
+                  className="profile-form-content"
+                  aria-label="mail"
+                  placeholder="Email"
+                  required
+                  autoComplete="off"
+                />
+                <input
+                  id="phone"
+                  type="text"
+                  name="phone"
+                  className="profile-form-content"
+                  placeholder="Telefonnummer"
+                  required
+                />
+                <input
+                  id="password"
+                  type="password"
+                  name="password"
+                  className="profile-form-content"
+                  aria-label="password"
+                  placeholder="Adgangskode"
+                  autoComplete="current-password"
+                  required
+                />
+                <div className="error-message">
+                  <p>{errorMessage}</p>
+                </div>
+                <div className="profile-btns-actions">
+                  <button className="profile-btns profile-btns-actions-seperat profile-btn-actions-lightred">
+                    Opret konto
+                  </button>
+                </div>
+              </form>
             </div>
+          </div>
           <br />
           <p className="text-center">
             Har du allerede en konto? <Link to="/sign-in">Log på</Link>
