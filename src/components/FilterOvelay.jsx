@@ -146,7 +146,7 @@ export default function FilterOverlay({
         />
       </div>
       <div className="filter-knapper">
-        <button className="btn" onClick={handleSave}>
+        <button onClick={handleSave}>
           Gem
         </button>
         <button
