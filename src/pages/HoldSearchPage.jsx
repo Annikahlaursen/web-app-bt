@@ -13,8 +13,7 @@ export default function HoldSearchPage() {
   const kampUrl = `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/kampe.json`;
   const klubUrl = `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/klubber.json`;
   const holdUrl = `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/hold.json`;
-
-  const [selectedOption, setSelectedOption] = useState([]);
+  const [selectedOption, setSelectedOption] = useState(null);
   //const [selectedOptionHold, setSelectedOptionHold] = useState([]);
 
   useEffect(() => {
