@@ -130,12 +130,12 @@ a:hover {
 
 /* ---------- Nav profile styling ---------- */
 .navprofile {
-  padding: 1rem 2rem 2rem;
+  padding: 1rem 1rem 2rem;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
-  gap: 0.8rem;
+  gap: 1rem;
   text-align: left;
   text-decoration: none;
   color: inherit;
@@ -447,8 +447,8 @@ a:hover {
   height:100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
-  padding: 3em 0 3em;
+  justify-content: flex-start;
+  padding: 2em 0 3em;
   animation: slideInFromRight 0.3s ease-out;
 }
 
@@ -457,6 +457,8 @@ a:hover {
 }
 
 .overlay-controls {
+  position:absolute;
+  bottom: 1.5em;
   display: flex;
   width: 100%;
   height:auto;
@@ -468,6 +470,7 @@ a:hover {
 }
 
 .overlay-controls button{
+  width: 4em;
   max-height: 100%;
 }
 
@@ -540,6 +543,7 @@ a:hover {
 /* ---------- SignOut Card Styling ---------- */
 .signout {
   display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 0.6rem;
   background: none;
