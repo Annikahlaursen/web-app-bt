@@ -153,9 +153,9 @@ export default function Overlay({ isOpen, onClose }) {
                 >
                   Favorit
                   {open ? (
-                    <div style={{ fontSize: "20px" }}>&#9656;</div>
-                  ) : (
                     <div style={{ fontSize: "20px" }}>&#9662;</div>
+                  ) : (
+                    <div style={{ fontSize: "20px" }}>&#9656;</div>
                   )}
                 </button>
                 {open ? (
