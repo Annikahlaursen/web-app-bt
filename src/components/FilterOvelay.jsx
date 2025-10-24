@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Select from "react-select";
 
 export default function FilterOverlay({
@@ -7,6 +7,7 @@ export default function FilterOverlay({
   closeOverlay,
   klubOptions,
 }) {
+  const overlayRef = useRef(null);
   const ageIntervals = [
     { value: "8-15", label: "8-15 år", ageMin: 8, ageMax: 15 },
     { value: "16-21", label: "16-21 år", ageMin: 16, ageMax: 21 },
@@ -20,6 +21,19 @@ export default function FilterOverlay({
   useEffect(() => {
     setTempFilters(filterCriteria);
   }, [filterCriteria]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (overlayRef.current && !overlayRef.current.contains(event.target)) {
+        closeOverlay();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   // Håndter ændring af aldersinterval
   const handleAgeIntervalChange = (selectedAgeGroups) => {
@@ -99,7 +113,7 @@ export default function FilterOverlay({
   };
 
   return (
-    <div className="filter-overlay">
+    <div className="filter-overlay" ref={overlayRef}>
       <h3>Rating filtrer</h3>
       <div>
         <Select
@@ -146,9 +160,7 @@ export default function FilterOverlay({
         />
       </div>
       <div className="filter-knapper">
-        <button onClick={handleSave}>
-          Gem
-        </button>
+        <button onClick={handleSave}>Gem</button>
         <button
           className="profile-btns-actions-seperat"
           onClick={handleClearFilters}
