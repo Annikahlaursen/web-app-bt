@@ -106,6 +106,9 @@ export default function KampResultatPage() {
     }
   }
 
+  function navigateBack() {
+    navigate(-1);
+  }
   return (
     <section className="resultat-page">
       <button className="btn" onClick={handleSave}>
@@ -116,6 +119,7 @@ export default function KampResultatPage() {
           className="arrow"
           src={arrowBlack}
           alt="Arrow back to previus page"
+          onClick={navigateBack}
         />
       </Link>
       <KampCard kamp={kamp} oplysninger="kunOplysninger" />
