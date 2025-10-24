@@ -100,6 +100,7 @@ export default function RatingPage() {
 
     // Event listener for "currentUserChanged"
     const handleCurrentUserChanged = (e) => {
+      console.log("User profile updated:", e.detail);
       fetchUsersAndClubs(); // Re-fetch users to update age and other properties
     };
 
