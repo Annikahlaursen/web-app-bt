@@ -68,6 +68,12 @@ input:focus {
   box-shadow: 0 0 0 2px var(--darkgrey);
 }
 
+/*--------------Header img------------*/
+.header-img {
+  width: 100%;
+  height: auto;
+}
+
 /* ---------- Link Styling ---------- */
 a {
   color: var(--green);
@@ -78,39 +84,6 @@ a {
 a:hover {
   color: var(--dark-green);
 }
-
-/* ---------- Form Specific Styling ---------- 
-form input {
-  width: 100%;
-}
-
-form .btns {
-  grid-column: 2;
-}
-
-form img {
-  max-width: 100%;
-  border-radius: 8px;
-}
-
-form {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 1em;
-  align-items: center;
-  padding: 1.5em;
-  background-color: var(--white);
-  transition: 0.5s;
-  animation: fadeIn 0.5s;
-  border-radius: 8px;
-}
-
-#sign-in-form,
-#sign-up-form {
-  width: 35rem;
-}
-
-*/
 
 /* ---------- Navigation Styling ---------- */
 .navbtns {
