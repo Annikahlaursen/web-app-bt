@@ -27,15 +27,21 @@ export default function RatingPage() {
   const [searchedUsers, setSearchedUsers] = useState([]);
   const [showFilter, setShowOverlay] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [klubber, setKlubber] = useState([]);
 
   const { filteredData, filterCriteria, updateFilterCriteria } = useFilters(
     users,
     (user, criteria) => {
       // aldersfilter
       const matchesAge =
-        (!criteria.ageMin || user.age >= criteria.ageMin) &&
-        (!criteria.ageMax || user.age <= criteria.ageMax);
-
+        !criteria.ageIntervals ||
+        criteria.ageIntervals.length === 0 ||
+        criteria.ageIntervals.some(
+          (interval) =>
+            (!interval.ageMin || user.age >= interval.ageMin) &&
+            (!interval.ageMax || user.age <= interval.ageMax)
+        );
+        
       // navnefilter
       const matchesName =
         !criteria.name ||
@@ -43,12 +49,11 @@ export default function RatingPage() {
           .toLowerCase()
           .includes(criteria.name.toLowerCase());
 
-      //clubfilter
+      //Klubfilter
       const matchesClub =
-        !criteria.club ||
-        (user.clubName &&
-          user.clubName.toLowerCase().includes(criteria.club.toLowerCase()));
-
+        !criteria.clubs ||
+        criteria.clubs.length === 0 ||
+        (user.kid && criteria.clubs.includes(user.kid));
       return matchesAge && matchesName && matchesClub;
     }
   );
@@ -87,8 +92,14 @@ export default function RatingPage() {
         user.clubName = clubsData[user.kid]?.navn || "Ukendt Klub";
       });
 
+      const klubArray = Object.keys(clubsData).map((key) => ({
+        value: key,
+        label: clubsData[key].navn,
+      }));
+
       setUsers(usersArray);
       setSearchedUsers(usersArray);
+      setKlubber(klubArray);
       setLoading(false);
     }
 
@@ -162,6 +173,7 @@ export default function RatingPage() {
                 filterCriteria={filterCriteria}
                 updateFilterCriteria={updateFilterCriteria}
                 closeOverlay={closeOverlay}
+                klubOptions={klubber}
               />
             )}
           </div>
