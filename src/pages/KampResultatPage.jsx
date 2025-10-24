@@ -90,6 +90,14 @@ export default function KampResultatPage() {
 
     if (response.ok) {
       console.log("Tillykke, kamp er blevet opdateret");
+
+      // event der notificerer Ratingpage om opdatering af ratings
+      const event = new CustomEvent("ratingsUpdated", {
+        detail: { updatedKamp },
+      });
+      window.dispatchEvent(event);
+
+      // naviger tilbage til kamp siden med opdaterede spillere
       navigate(`/kamp/${params.id}`, {
         state: { spillere: valgteSpillereHjem },
       });

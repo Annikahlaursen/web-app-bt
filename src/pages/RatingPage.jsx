@@ -27,15 +27,21 @@ export default function RatingPage() {
   const [searchedUsers, setSearchedUsers] = useState([]);
   const [showFilter, setShowOverlay] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [klubber, setKlubber] = useState([]);
 
   const { filteredData, filterCriteria, updateFilterCriteria } = useFilters(
     users,
     (user, criteria) => {
       // aldersfilter
       const matchesAge =
-        (!criteria.ageMin || user.age >= criteria.ageMin) &&
-        (!criteria.ageMax || user.age <= criteria.ageMax);
-
+        !criteria.ageIntervals ||
+        criteria.ageIntervals.length === 0 ||
+        criteria.ageIntervals.some(
+          (interval) =>
+            (!interval.ageMin || user.age >= interval.ageMin) &&
+            (!interval.ageMax || user.age <= interval.ageMax)
+        );
+        
       // navnefilter
       const matchesName =
         !criteria.name ||
@@ -43,12 +49,11 @@ export default function RatingPage() {
           .toLowerCase()
           .includes(criteria.name.toLowerCase());
 
-      //clubfilter
+      //Klubfilter
       const matchesClub =
-        !criteria.club ||
-        (user.clubName &&
-          user.clubName.toLowerCase().includes(criteria.club.toLowerCase()));
-
+        !criteria.clubs ||
+        criteria.clubs.length === 0 ||
+        (user.kid && criteria.clubs.includes(user.kid));
       return matchesAge && matchesName && matchesClub;
     }
   );
@@ -75,6 +80,7 @@ export default function RatingPage() {
       const usersArray = Object.keys(usersData).map((key) => ({
         id: key,
         ...usersData[key],
+        rating: Number(usersData[key].rating) || 0, //sikrer at rating er et tal
       }));
 
       usersArray.sort((a, b) => b.rating - a.rating);
@@ -86,19 +92,58 @@ export default function RatingPage() {
         user.clubName = clubsData[user.kid]?.navn || "Ukendt Klub";
       });
 
+      const klubArray = Object.keys(clubsData).map((key) => ({
+        value: key,
+        label: clubsData[key].navn,
+      }));
+
       setUsers(usersArray);
       setSearchedUsers(usersArray);
+      setKlubber(klubArray);
       setLoading(false);
     }
 
+    // Event listener for "ratingsUpdated"
+    const handleRatingsUpdated = () => {
+      console.log("Ratings updated event detected. Re-fetching users...");
+      fetchUsersAndClubs();
+    };
+
+    // Event listener for "currentUserChanged"
+    const handleCurrentUserChanged = (e) => {
+      console.log("User profile updated:", e.detail);
+      fetchUsersAndClubs(); // Re-fetch users to update age and other properties
+    };
+
+    // Add event listener for "ratingsUpdated"
+    window.addEventListener("ratingsUpdated", handleRatingsUpdated);
+    window.addEventListener("currentUserChanged", handleCurrentUserChanged);
+
     // Tjek om brugere er blevet sendt via navigation state
     if (location.state && location.state.users) {
-      setUsers(location.state.users);
-      setSearchedUsers(location.state.users);
+      const usersArray = location.state.users;
+
+      // Sort and assign rankings
+      usersArray.sort((a, b) => b.rating - a.rating);
+      usersArray.forEach((user, index) => {
+        user.placering = index + 1;
+      });
+
+      setUsers(usersArray);
+      setSearchedUsers(usersArray);
       setLoading(false);
     } else {
       fetchUsersAndClubs();
     }
+
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener("ratingsUpdated", handleRatingsUpdated);
+      window.removeEventListener(
+        "currentUserChanged",
+        handleCurrentUserChanged
+      );
+    };
   }, [location.state]);
 
   return (
@@ -128,6 +173,7 @@ export default function RatingPage() {
                 filterCriteria={filterCriteria}
                 updateFilterCriteria={updateFilterCriteria}
                 closeOverlay={closeOverlay}
+                klubOptions={klubber}
               />
             )}
           </div>

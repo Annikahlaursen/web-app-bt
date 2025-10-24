@@ -20,7 +20,7 @@ export default function ProfileInfo() {
   const [fornavn, setFornavn] = useState("");
   const [efternavn, setEfternavn] = useState("");
   const [gender, setGender] = useState("");
-  const [birthday, setBirthday] = useState("");
+  const [fødselsdato, setFødselsdato] = useState("");
   const [adress, setAdress] = useState("");
   const [city, setCity] = useState("");
   const [zip, setZip] = useState("");
@@ -52,7 +52,7 @@ export default function ProfileInfo() {
               setFornavn(data.fornavn || data.name || "");
               setEfternavn(data.efternavn || data.lastname || "");
               setGender(data.gender || "");
-              setBirthday(data.birthday || "");
+              setFødselsdato(data.fødselsdato || "");
               setAdress(data.adress || "");
               setCity(data.city || "");
               setZip(data.zip || "");
@@ -78,7 +78,7 @@ export default function ProfileInfo() {
           setFornavn(p.fornavn || "");
           setEfternavn(p.efternavn || "");
           setGender(p.gender || "");
-          setBirthday(p.birthday || "");
+          setFødselsdato(p.fødselsdato || "");
           setAdress(p.adress || "");
           setCity(p.city || "");
           setZip(p.zip || "");
@@ -106,7 +106,7 @@ export default function ProfileInfo() {
       fornavn,
       efternavn,
       gender,
-      birthday,
+      fødselsdato,
       adress,
       city,
       zip,
@@ -143,7 +143,7 @@ export default function ProfileInfo() {
           fornavn,
           efternavn,
           gender,
-          birthday,
+          fødselsdato,
           adress,
           city,
           zip,
@@ -561,8 +561,8 @@ export default function ProfileInfo() {
                 className="profile-form-content"
                 id="birthday"
                 name="birthday"
-                value={birthday}
-                onChange={(e) => setBirthday(e.target.value)}
+                value={fødselsdato}
+                onChange={(e) => setFødselsdato(e.target.value)}
               />
 
               <input

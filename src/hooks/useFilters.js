@@ -5,10 +5,12 @@ export default function useFilters(data, filterFunction) {
   const [filteredData, setFilteredData] = useState(data);
 
   const applyFilters = () => {
-    const filtered = data.filter((item) =>
-      filterFunction(item, filterCriteria)
-    );
-    setFilteredData(filtered);
+     const filtered = data.filter(
+       (item) =>
+         Object.keys(filterCriteria).length === 0 ||
+         filterFunction(item, filterCriteria)
+     );
+     setFilteredData(filtered);
   };
 
   // Opdaterer filterkriterierne
