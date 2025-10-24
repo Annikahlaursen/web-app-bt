@@ -842,8 +842,11 @@ form {
 }
 
 .holdkampe-background {
-  margin-top: 2rem;
-  padding: 2rem;
+  padding: 1rem 2rem;
+}
+
+.gap-to-card {
+  margin-bottom: 2rem;
 }
 
 .search-pages {
@@ -857,7 +860,7 @@ form {
 .klublogo-container {
   width: 40px;
   height: 40px;
-  border: solid 2px var(--darkred);
+  /*border: solid 2px var(--darkred);*/
   border-radius: var(--border-radius);
   overflow: hidden;
 }

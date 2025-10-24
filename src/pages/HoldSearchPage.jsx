@@ -6,38 +6,89 @@ import { useNavigate } from "react-router";
 import arrowBlack from "/arrow-left-black.svg";
 
 export default function HoldSearchPage() {
-  const [hold, setHold] = useState([]);
+  const [klubber, setKlubber] = useState([]);
   const navigate = useNavigate();
+  const [kamp, setKamp] = useState([]);
+  const [hold, setHold] = useState([]);
+  const kampUrl = `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/kampe.json`;
+  const klubUrl = `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/klubber.json`;
+  const holdUrl = `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/hold.json`;
+
+  const [selectedOption, setSelectedOption] = useState([]);
+  //const [selectedOptionHold, setSelectedOptionHold] = useState([]);
 
   useEffect(() => {
-    async function fetchHold() {
-      const response = await fetch(
-        `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/hold.json`
-      ); // fetch data from the url
-      const data = await response.json(); // get the data from the response and parse it
+    async function fetchData() {
+      // fetch klub
+      const response = await fetch(klubUrl);
+      const data = await response.json();
 
-      const holdArray = Object.keys(data).map((holdId) => ({
-        id: holdId,
-        ...data[holdId],
-      })); // map the data to an array of objects
+      const klubArray = data
+        ? Object.keys(data).map((klubId) => ({ id: klubId, ...data[klubId] }))
+        : [];
 
-      setHold(holdArray); // set the posts state with the postsArray
+      // fetch kampe
+      const kampresponse = await fetch(kampUrl);
+      const kampData = await kampresponse.json();
+
+      const kampArray = kampData
+        ? Object.keys(kampData).map((kampId) => ({
+            id: kampId,
+            ...kampData[kampId],
+          }))
+        : [];
+
+      // fetch hold
+      const holdresponse = await fetch(holdUrl);
+      const holdData = await holdresponse.json();
+
+      const holdArray = holdData
+        ? Object.keys(holdData).map((holdId) => ({
+            id: holdId,
+            ...holdData[holdId],
+          }))
+        : [];
+
+      setHold(holdArray);
+      setKamp(kampArray);
+      setKlubber(klubArray);
     }
 
-    fetchHold();
-  }, []);
+    fetchData();
+  }, [kampUrl, klubUrl, holdUrl]);
 
-  const holdOptions = hold.map((hold) => ({
-    value: hold.id,
-    label: hold.navn,
+  const klubOptions = klubber.map((klub) => ({
+    value: klub.id,
+    label: klub.navn || "ukendt klub",
   }));
 
-  const handleSelectChange = (selectedOption) => {
-    console.log("Selected hold:", selectedOption);
-    // You can add further logic here to handle the selected hold
+  klubOptions.sort((a, b) => a.label.localeCompare(b.label));
+
+  const HoldOptions = hold.map((hold) => ({
+    value: hold.id,
+    label: hold.navn || "ukendt klub",
+  }));
+
+  HoldOptions.sort((a, b) => a.label.localeCompare(b.label));
+
+  const handleSelectChange = (option) => {
+    setSelectedOption(option);
   };
 
-  holdOptions.sort((a, b) => a.label.localeCompare(b.label));
+  const displayedKampe = selectedOption
+    ? kamp.filter(
+        (klub) =>
+          klub.hjemmeklub === selectedOption.value ||
+          klub.udeklub === selectedOption.value
+      )
+    : kamp;
+
+  const displayedHold = selectedOption
+    ? hold.filter((h) => {
+        const klubForHold = klubber.find((k) => k.hold.includes(h.id));
+        return klubForHold?.id === selectedOption.value;
+      })
+    : hold;
 
   return (
     <div className="page-topmargin">
@@ -50,22 +101,27 @@ export default function HoldSearchPage() {
         />
         <h1>Søg på hold her</h1>
         <Select
-          options={holdOptions}
-          //value={selectedOption}
+          options={klubOptions}
+          value={selectedOption}
           onChange={handleSelectChange}
-          placeholder="Søg efter hold eller kampe"
+          placeholder="Søg efter klubber"
           isClearable
           isSearchable
         ></Select>
       </div>
       <div className="holdkampe-background page">
-        <HoldBoks key={hold.id} hold={hold} />
-
-        {holdOptions.map((hold) => (
+        <div className="gap-to-card">
+          {displayedHold.map((hold) => {
+            const klubForHold = klubber.find((k) => k.hold.includes(hold.id));
+            return <HoldBoks key={hold.id} hold={hold} klub={klubForHold} />;
+          })}
+        </div>
+        {displayedKampe.map((klub) => (
           <KampCard
-            kampe={hold}
-            key={hold.id}
-            onCLick={() => navigate(`/hold/${hold.id}`)}
+            key={klub.id}
+            kamp={klub}
+            onCLick={() => navigate(`/kamp/${klub.id}`)}
+            oplysninger="kunOplysninger"
           />
         ))}
       </div>
