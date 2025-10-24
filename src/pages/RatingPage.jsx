@@ -75,6 +75,7 @@ export default function RatingPage() {
       const usersArray = Object.keys(usersData).map((key) => ({
         id: key,
         ...usersData[key],
+        rating: Number(usersData[key].rating) || 0, //sikrer at rating er et tal
       }));
 
       usersArray.sort((a, b) => b.rating - a.rating);
@@ -91,14 +92,36 @@ export default function RatingPage() {
       setLoading(false);
     }
 
+    // Event listener for "ratingsUpdated"
+    const handleRatingsUpdated = () => {
+      console.log("Ratings updated event detected. Re-fetching users...");
+      fetchUsersAndClubs();
+    };
+
+    // Add event listener for "ratingsUpdated"
+    window.addEventListener("ratingsUpdated", handleRatingsUpdated);
+
     // Tjek om brugere er blevet sendt via navigation state
     if (location.state && location.state.users) {
-      setUsers(location.state.users);
-      setSearchedUsers(location.state.users);
+      const usersArray = location.state.users;
+
+      // Sort and assign rankings
+      usersArray.sort((a, b) => b.rating - a.rating);
+      usersArray.forEach((user, index) => {
+        user.placering = index + 1;
+      });
+
+      setUsers(usersArray);
+      setSearchedUsers(usersArray);
       setLoading(false);
     } else {
       fetchUsersAndClubs();
     }
+
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener("ratingsUpdated", handleRatingsUpdated);
+    };
   }, [location.state]);
 
   return (
