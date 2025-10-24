@@ -3,6 +3,7 @@ import { useLocation } from "react-router";
 import useFilters from "../hooks/useFilters";
 import RatingListe from "../components/RatingListe";
 import FilterOverlay from "../components/FilterOvelay";
+import filterIcon from "/public/sliders-solid-full.svg";
 
 // Funktion til at beregne alder ud fra fødselsdato
 function calculateAge(fødselsdato) {
@@ -41,7 +42,7 @@ export default function RatingPage() {
             (!interval.ageMin || user.age >= interval.ageMin) &&
             (!interval.ageMax || user.age <= interval.ageMax)
         );
-        
+
       // navnefilter
       const matchesName =
         !criteria.name ||
@@ -162,7 +163,7 @@ export default function RatingPage() {
               style={{ flex: 1, padding: "10px" }}
             />
             <img
-              src="sliders-solid-full.svg"
+              src={filterIcon}
               alt="Filter"
               onClick={toggleOverlay}
               style={{ cursor: "pointer" }}
