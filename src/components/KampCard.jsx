@@ -68,12 +68,12 @@ const KampCard = forwardRef(({ kamp, oplysninger }, ref) => {
     );
   } else {
     return (
-      <div className="kamp-card" onClick={handleClick} ref={ref}>
-        <div className="kamp-container">
+      <div className="kamp-card" ref={ref}>
+        <div className="kamp-container" onClick={handleClick}>
           <p>{kamp?.id}</p>
           <p>{kamp?.dato}</p>
         </div>
-        <div className="kamp-container">
+        <div className="kamp-container" onClick={handleClick}>
           <div className="kamp-hold">
             <img src={hjemmeklubLogo} alt={klub?.navn} />
             <p>{hjemmeholdNavn}</p>
