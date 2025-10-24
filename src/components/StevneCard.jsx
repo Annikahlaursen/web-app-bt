@@ -2,6 +2,8 @@
 
 import location from "/public/location-dot-white.svg";
 import share from "/public/share.svg";
+import bell from "/public/bell.svg";
+import bellSolid from "/public/bell-solid.svg";
 import { Link } from "react-router";
 import { forwardRef } from "react";
 import { useState, useEffect } from "react";
@@ -38,7 +40,7 @@ const StevneCard = forwardRef(({ stevne }, ref) => {
         </div>
         <div className="del-notifikationer">
           <img
-            src={isFilled ? "/public/bell-solid.svg" : "/bell.svg"}
+            src={isFilled ? bellSolid : bell}
             onClick={handleBellClick}
             alt="notifikations klokke ikon"
             className="star"

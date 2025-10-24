@@ -1,6 +1,8 @@
 /* eslint-disable */
 
 import share from "/public/share.svg";
+import bell from "/public/bell.svg";
+import bellSolid from "/public/bell-solid.svg";
 import { useNavigate, useParams } from "react-router";
 import { useEffect, useState, forwardRef } from "react";
 import { getHoldById, getKlubById } from "../helper";
@@ -94,7 +96,7 @@ const KampCard = forwardRef(({ kamp, oplysninger }, ref) => {
           </div>
           <div className="del-notifikationer">
             <img
-              src={isFilled ? "/public/bell-solid.svg" : "/bell.svg"}
+              src={isFilled ? bellSolid : bell}
               onClick={handleBellClick}
               alt="notifikations klokke ikon"
               className="star"
