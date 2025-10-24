@@ -99,7 +99,6 @@ export default function HoldSearchPage() {
           alt="Arrow back to previous page"
           onClick={() => navigate(-1)}
         />
-        <h1>Søg på hold her</h1>
         <Select
           options={klubOptions}
           value={selectedOption}
@@ -121,7 +120,6 @@ export default function HoldSearchPage() {
             key={klub.id}
             kamp={klub}
             onCLick={() => navigate(`/kamp/${klub.id}`)}
-            oplysninger="kunOplysninger"
           />
         ))}
       </div>
