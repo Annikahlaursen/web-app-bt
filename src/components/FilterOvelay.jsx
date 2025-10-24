@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Select from "react-select";
 
 export default function FilterOverlay({
@@ -17,27 +17,38 @@ export default function FilterOverlay({
   // Local state til temporary filters (bruges til at gemme ændringer før de gemmes endeligt)
   const [tempFilters, setTempFilters] = useState(filterCriteria);
 
+  useEffect(() => {
+    setTempFilters(filterCriteria);
+  }, [filterCriteria]);
+
   // Håndter ændring af aldersinterval
- const handleAgeIntervalChange = (selectedAgeGroups) => {
-   const selectedIntervals = selectedAgeGroups || [];
+  const handleAgeIntervalChange = (selectedAgeGroups) => {
+    console.log("selectedAgeGroups", selectedAgeGroups);
 
-   // Update the filter criteria with the selected intervals
-   updateFilterCriteria(
-     "ageIntervals",
-     selectedIntervals.map((interval) => ({
-       ageMin: interval.ageMin,
-       ageMax: interval.ageMax,
-     }))
-   );
+    const selectedIntervals = (selectedAgeGroups || []).map((group) => {
+      // Find the full object in ageIntervals
+      const matchingInterval = ageIntervals.find(
+        (interval) => interval.value === group.value
+      );
+      return matchingInterval || group; // Fallback to group if no match
+    });
 
-   setTempFilters((prev) => ({
-     ...prev,
-     ageIntervals: selectedIntervals.map((interval) => ({
-       ageMin: interval.ageMin,
-       ageMax: interval.ageMax,
-     })),
-   }));
- };
+    console.log("Mapped selectedIntervals:", selectedIntervals);
+
+    // Update the filter criteria with the selected intervals
+    updateFilterCriteria(
+      "ageIntervals",
+      selectedIntervals.map((interval) => ({
+        ageMin: interval.ageMin,
+        ageMax: interval.ageMax,
+      }))
+    );
+
+    setTempFilters((prev) => ({
+      ...prev,
+      ageIntervals: selectedIntervals,
+    }));
+  };
 
   // Håndter ændring af navn
   const handleNameChange = (name) => {
@@ -96,12 +107,20 @@ export default function FilterOverlay({
           placeholder="Vælg aldersgrupper"
           isMulti
           isClearable
-          value={tempFilters.ageGroups?.map((group) => ({
-            value: group,
-            label:
-              ageIntervals.find((interval) => interval.value === group)
-                ?.label || group,
-          }))}
+          value={tempFilters.ageIntervals?.map((interval) => {
+            // Find the matching interval in ageIntervals to get the label
+            const matchingInterval = ageIntervals.find(
+              (ageInterval) =>
+                ageInterval.ageMin === interval.ageMin &&
+                ageInterval.ageMax === interval.ageMax
+            );
+            return {
+              value: `${interval.ageMin}-${interval.ageMax}`,
+              label:
+                matchingInterval?.label ||
+                `${interval.ageMin}-${interval.ageMax}`,
+            };
+          })}
           onChange={handleAgeIntervalChange}
         />
       </div>
