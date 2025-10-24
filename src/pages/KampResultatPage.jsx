@@ -114,13 +114,13 @@ export default function KampResultatPage() {
       <section className="updateResult">
         <p>Vælg spillere ({hjemmeholdNavn})</p>
         <SearchSpiller
-          key={kamp.id}
+          key={`${kamp.id}-hjemme`}
           kamp={kamp}
           onSpillerChange={(spillere) => setValgteSpillereHjem(spillere)}
         />
         <p>Vælg spillere ({udeholdNavn})</p>
         <SearchSpiller
-          key={kamp.id}
+          key={`${kamp.id}-ude`}
           kamp={kamp}
           onSpillerChange={(spillere) => setValgteSpillereUde(spillere)}
         />
