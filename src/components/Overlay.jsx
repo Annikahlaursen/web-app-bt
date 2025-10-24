@@ -161,27 +161,33 @@ export default function Overlay({ isOpen, onClose }) {
                 {open ? (
                   <ul className="menu">
                     <li className="menu-item">
-                      <li>
-                        <img
-                          className="menu-rund"
-                          src={displayKlub}
-                          alt={displayKlub || "Klub"}
-                          style={{ objectFit: "cover", border: "none" }}
-                        />
-                        <p style={{ marginTop: "4px" }}>Min klub</p>
-                      </li>
-                      <li>
-                        <button className="menu-rund">
-                          <p>{displayHold || "Mit hold"}</p>
-                        </button>
-                        <p className="menu-text-flow">Mit hold</p>
-                      </li>
-                      <li>
-                        <button className="menu-rund">
-                          <img src={Star} alt="" />
-                        </button>
-                        <p className="menu-text-flow">Favoritter</p>
-                      </li>
+                      <NavLink to="/error">
+                        <li>
+                          <img
+                            className="menu-rund"
+                            src={displayKlub}
+                            alt={displayKlub || "Klub"}
+                            style={{ objectFit: "cover", border: "none" }}
+                          />
+                          <p style={{ marginTop: "4px" }}>Min klub</p>
+                        </li>
+                      </NavLink>
+                      <NavLink to="/error">
+                        <li>
+                          <button className="menu-rund">
+                            <p>{displayHold || "Mit hold"}</p>
+                          </button>
+                          <p className="menu-text-flow">Mit hold</p>
+                        </li>
+                      </NavLink>
+                      <NavLink to="/error">
+                        <li>
+                          <button className="menu-rund">
+                            <img src={Star} alt="" />
+                          </button>
+                          <p className="menu-text-flow">Favoritter</p>
+                        </li>
+                      </NavLink>
                     </li>
                   </ul>
                 ) : null}

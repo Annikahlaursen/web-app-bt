@@ -128,7 +128,7 @@ export default function Profile() {
       </div>
 
       {/* Conditional rendering af komponenter */}
-      <div className="profile-content">
+      <div className="profile-content page-grey-background">
         {activeView === "info" ? <ProfileInfo /> : <ProfileParent />}
       </div>
     </div>
