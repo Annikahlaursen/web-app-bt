@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Select from "react-select";
 
 export default function FilterOverlay({
   filterCriteria,
   updateFilterCriteria,
   closeOverlay,
+  klubOptions,
 }) {
   const ageIntervals = [
     { value: "8-15", label: "8-15 år", ageMin: 8, ageMax: 15 },
@@ -15,22 +17,36 @@ export default function FilterOverlay({
   // Local state til temporary filters (bruges til at gemme ændringer før de gemmes endeligt)
   const [tempFilters, setTempFilters] = useState(filterCriteria);
 
-  // Håndter ændring af aldersinterval
-  const handleAgeIntervalChange = (selectedInterval) => {
-    const interval = ageIntervals.find((i) => i.value === selectedInterval) || {
-      ageMin: "",
-      ageMax: "",
-    };
+  useEffect(() => {
+    setTempFilters(filterCriteria);
+  }, [filterCriteria]);
 
-    updateFilterCriteria("ageInterval", selectedInterval);
-    updateFilterCriteria("ageMin", interval.ageMin);
-    updateFilterCriteria("ageMax", interval.ageMax);
+  // Håndter ændring af aldersinterval
+  const handleAgeIntervalChange = (selectedAgeGroups) => {
+    console.log("selectedAgeGroups", selectedAgeGroups);
+
+    const selectedIntervals = (selectedAgeGroups || []).map((group) => {
+      // Find the full object in ageIntervals
+      const matchingInterval = ageIntervals.find(
+        (interval) => interval.value === group.value
+      );
+      return matchingInterval || group; // Fallback to group if no match
+    });
+
+    console.log("Mapped selectedIntervals:", selectedIntervals);
+
+    // Update the filter criteria with the selected intervals
+    updateFilterCriteria(
+      "ageIntervals",
+      selectedIntervals.map((interval) => ({
+        ageMin: interval.ageMin,
+        ageMax: interval.ageMax,
+      }))
+    );
 
     setTempFilters((prev) => ({
       ...prev,
-      ageInterval: selectedInterval,
-      ageMin: interval.ageMin,
-      ageMax: interval.ageMax,
+      ageIntervals: selectedIntervals,
     }));
   };
 
@@ -44,23 +60,27 @@ export default function FilterOverlay({
     }));
   };
 
-  // Håndter ændring af klub
-  const handleClubChange = (club) => {
-    updateFilterCriteria("club", club);
+  // Håndter ændring af klubber
+  const handleClubChange = (selectedClubs) => {
+    const clubValues = selectedClubs
+      ? selectedClubs.map((club) => club.value)
+      : [];
+    updateFilterCriteria("clubs", clubValues);
+
     setTempFilters((prev) => ({
       ...prev,
-      club,
+      clubs: clubValues,
     }));
   };
 
   //Rydning af filtre
   const handleClearFilters = () => {
     const clearedFilters = {
-      ageInterval: "",
+      ageIntervals: [],
       ageMin: "",
       ageMax: "",
       name: "",
-      club: "",
+      clubs: [],
     };
 
     setTempFilters(clearedFilters);
@@ -82,17 +102,27 @@ export default function FilterOverlay({
     <div className="filter-overlay">
       <h3>Rating filtrer</h3>
       <div>
-        <select
-          value={tempFilters.ageInterval}
-          onChange={(e) => handleAgeIntervalChange(e.target.value)}
-        >
-          <option value="">Alle Aldersgrupper</option>
-          {ageIntervals.map((interval) => (
-            <option key={interval.value} value={interval.value}>
-              {interval.label}
-            </option>
-          ))}
-        </select>
+        <Select
+          options={ageIntervals}
+          placeholder="Vælg aldersgrupper"
+          isMulti
+          isClearable
+          value={tempFilters.ageIntervals?.map((interval) => {
+            // Find the matching interval in ageIntervals to get the label
+            const matchingInterval = ageIntervals.find(
+              (ageInterval) =>
+                ageInterval.ageMin === interval.ageMin &&
+                ageInterval.ageMax === interval.ageMax
+            );
+            return {
+              value: `${interval.ageMin}-${interval.ageMax}`,
+              label:
+                matchingInterval?.label ||
+                `${interval.ageMin}-${interval.ageMax}`,
+            };
+          })}
+          onChange={handleAgeIntervalChange}
+        />
       </div>
       <div>
         <input
@@ -103,15 +133,20 @@ export default function FilterOverlay({
         />
       </div>
       <div>
-        <input
-          type="text"
-          placeholder="Indtast klubnavn"
-          value={filterCriteria.club || ""}
-          onChange={(e) => handleClubChange(e.target.value)}
+        <Select
+          options={klubOptions}
+          placeholder="Vælg klubber"
+          isMulti
+          isClearable
+          value={tempFilters.clubs?.map((club) => ({
+            value: club,
+            label: klubOptions.find((k) => k.value === club)?.label || club,
+          }))}
+          onChange={handleClubChange}
         />
       </div>
       <div className="filter-knapper">
-        <button className="btn" onClick={handleSave}>
+        <button onClick={handleSave}>
           Gem
         </button>
         <button

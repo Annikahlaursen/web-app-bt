@@ -970,6 +970,12 @@ form {
   gap: 1rem;
 }
 
+.filter-knapper button:first-child {
+  color: var(--white);
+  background-color: var(--lightred);
+  border: none;
+}
+
 .filter-knapper button:last-child {
   background-color: var(--white);
   color: var(--black);
