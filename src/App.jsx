@@ -18,7 +18,7 @@ import Error from "./pages/ErrorPage";
 import RatingPage from "./pages/RatingPage";
 import KalenderPage from "./pages/KalenderPage";
 import StevneSearchPage from "./pages/StevneSearchPage";
-import UpdateCard from "./pages/UpdatePage";
+import UpdateCard from "./pages/UpdatePageRemastered";
 import { matchPath } from "react-router";
 import KampIdSearchPage from "./pages/KampIdSearchPage";
 import HoldSearchPage from "./pages/HoldSearchPage";
