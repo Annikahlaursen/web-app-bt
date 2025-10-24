@@ -80,7 +80,7 @@ export default function FilterOverlay({
       ageMin: "",
       ageMax: "",
       name: "",
-      club: [],
+      clubs: [],
     };
 
     setTempFilters(clearedFilters);
