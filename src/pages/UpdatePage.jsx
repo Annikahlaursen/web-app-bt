@@ -1,5 +1,3 @@
-// fedt jeg kan koppe hen til updatepage nu ved at have flyttet den op i private routes. nu har jeg dog det problem at der ikke sker noget når jeg klikker på gem
-
 import { Fragment, useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import Pen from "/pen-solid-full.svg";
