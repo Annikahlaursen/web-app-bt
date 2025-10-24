@@ -1,8 +1,13 @@
-import { Link } from "react-router";
+import { useNavigate } from "react-router";
 import tableTennis from "/public/table-tennis-icon-white.svg";
 import arrowWhite from "/public/arrow-left-white.svg";
 
 export default function Error() {
+  const navigate = useNavigate();
+  function navigateBack() {
+    navigate(-1);
+  }
+
   return (
     <div className="error">
       <img src={tableTennis} alt="Table tennis icon" />
@@ -13,11 +18,9 @@ export default function Error() {
         dette.
       </p>
       <br />
-      <div className="tilbage">
-        <Link to="..">
-          <img src={arrowWhite} alt="" />
-          <p>Gå tilbage til forrige side</p>
-        </Link>
+      <div className="tilbage" onClick={navigateBack}>
+        <img src={arrowWhite} alt="" />
+        <p>Gå tilbage til forrige side</p>
       </div>
     </div>
   );
