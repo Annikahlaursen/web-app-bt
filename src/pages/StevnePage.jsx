@@ -24,14 +24,14 @@ export default function StevnePage() {
     fetchStevne();
   }, [id]);
 
-    useEffect(() => {
-      window.scrollTo(0, 0);
-    }, []);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   function clicked(event) {
     event.preventDefault();
     console.log("Button clicked");
-    navigate("/stevne/tilmeld");
+    navigate("/error");
   }
 
   console.log(stevne);

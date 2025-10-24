@@ -1,23 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 //import { getHoldById, getKlubById } from "../helper";
 //import { useParams } from "react-router";
 
 export default function HoldBoks({ klub, hold }) {
   const [isFilled, setIsFilled] = useState(false);
-  //const [hold, setHold] = useState({});
-  // const [klub, setKlub] = useState({});
   const [isFavorite, setIsFavorite] = useState(false);
-  //const params = useParams();
-  //const url = `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/hold.json`;
-  //const klubUrl = `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/klubber.json`;
-
-  /* useEffect(() => {
-    getHoldById(params.hid).then((fetchedHold) => setHold(fetchedHold));
-  }, [params.hid]);
-
-  useEffect(() => {
-    getKlubById(useParams.kid).then((fetchedKlub) => setKlub(fetchedKlub));
-  }, [params.kid]); */
+  const navigate = useNavigate();
 
   function handleStarClick() {
     setIsFilled((prev) => !prev);
@@ -25,8 +14,12 @@ export default function HoldBoks({ klub, hold }) {
     console.log(isFavorite);
   }
 
+  function handleBoksClick() {
+    navigate("/error");
+  }
+
   return (
-    <div className="blaa-boks hold-boks-grid">
+    <div className="blaa-boks hold-boks-grid" onClick={handleBoksClick}>
       <div className="hold-boks-holdnavn">
         <div className="klublogo-container">
           <img

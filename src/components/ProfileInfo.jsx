@@ -468,6 +468,10 @@ export default function ProfileInfo() {
     setStoragePath("");
   }
 
+  function handleClickToError() {
+    navigate("/error");
+  }
+
   return (
     <Fragment>
       <div className="profile-info-parent">
@@ -634,13 +638,22 @@ export default function ProfileInfo() {
             >
               Log ud
             </button>
-            <button className="profile-btns profile-btns-actions-seperat profile-btn-actions-blackborder">
+            <button
+              onClick={handleClickToError}
+              className="profile-btns profile-btns-actions-seperat profile-btn-actions-blackborder"
+            >
               Opdater adgangskode
             </button>
-            <button className="profile-btns profile-btns-actions-seperat profile-btn-actions-blackborder">
+            <button
+              onClick={handleClickToError}
+              className="profile-btns profile-btns-actions-seperat profile-btn-actions-blackborder"
+            >
               Tilknyt login til Face ID
             </button>
-            <button className="profile-btns profile-btns-actions-seperat profile-btn-actions-blackborder">
+            <button
+              onClick={handleClickToError}
+              className="profile-btns profile-btns-actions-seperat profile-btn-actions-blackborder"
+            >
               Indstillinger
             </button>
             <br />
