@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import star from "/public/star.svg";
+import starSolid from "/public/star-solid.svg";
+
 //import { getHoldById, getKlubById } from "../helper";
 //import { useParams } from "react-router";
 
@@ -19,8 +22,8 @@ export default function HoldBoks({ klub, hold }) {
   }
 
   return (
-    <div className="blaa-boks hold-boks-grid" onClick={handleBoksClick}>
-      <div className="hold-boks-holdnavn">
+    <div className="blaa-boks hold-boks-grid">
+      <div className="hold-boks-holdnavn" onClick={handleBoksClick}>
         <div className="klublogo-container">
           <img
             className="klublogo"
@@ -31,7 +34,7 @@ export default function HoldBoks({ klub, hold }) {
         <p>{hold?.navn ?? "ukendt hold"}</p>
       </div>
       <img
-        src={isFilled ? "/star-solid.svg" : "/star.svg"}
+        src={isFilled ? starSolid : star}
         onClick={handleStarClick}
         alt="star"
         className="star"
