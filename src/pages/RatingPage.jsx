@@ -98,8 +98,14 @@ export default function RatingPage() {
       fetchUsersAndClubs();
     };
 
+    // Event listener for "currentUserChanged"
+    const handleCurrentUserChanged = (e) => {
+      fetchUsersAndClubs(); // Re-fetch users to update age and other properties
+    };
+
     // Add event listener for "ratingsUpdated"
     window.addEventListener("ratingsUpdated", handleRatingsUpdated);
+    window.addEventListener("currentUserChanged", handleCurrentUserChanged);
 
     // Tjek om brugere er blevet sendt via navigation state
     if (location.state && location.state.users) {
@@ -121,6 +127,10 @@ export default function RatingPage() {
     // Cleanup event listener on component unmount
     return () => {
       window.removeEventListener("ratingsUpdated", handleRatingsUpdated);
+      window.removeEventListener(
+        "currentUserChanged",
+        handleCurrentUserChanged
+      );
     };
   }, [location.state]);
 
