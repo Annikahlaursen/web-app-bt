@@ -30,6 +30,7 @@ export default function HoldBoks({ klub, hold }) {
       <div className="hold-boks-holdnavn">
         <div className="klublogo-container">
           <img
+            className="klublogo"
             src={klub?.image ?? "/placeholder.png"}
             alt={klub?.navn ?? "ukendt klub"}
           ></img>

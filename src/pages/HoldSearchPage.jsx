@@ -110,11 +110,12 @@ export default function HoldSearchPage() {
         ></Select>
       </div>
       <div className="holdkampe-background page">
-        {displayedHold.map((hold) => {
-          const klubForHold = klubber.find((k) => k.hold.includes(hold.id));
-          return <HoldBoks key={hold.id} hold={hold} klub={klubForHold} />;
-        })}
-
+        <div className="gap-to-card">
+          {displayedHold.map((hold) => {
+            const klubForHold = klubber.find((k) => k.hold.includes(hold.id));
+            return <HoldBoks key={hold.id} hold={hold} klub={klubForHold} />;
+          })}
+        </div>
         {displayedKampe.map((klub) => (
           <KampCard
             key={klub.id}
