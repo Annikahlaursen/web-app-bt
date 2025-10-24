@@ -149,7 +149,7 @@ export default function RatingPage() {
 
   return (
     <section>
-      <img src="/img/unsplash-photo.svg" alt="Rating side"></img>
+      <img src="/img/unsplash-photo.svg" alt="Rating side" className="header-img"></img>
       <section className="forside">
         <h1>Rating</h1>
         <div className="rating-filter">
