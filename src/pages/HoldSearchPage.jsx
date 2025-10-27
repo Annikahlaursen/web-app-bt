@@ -3,7 +3,7 @@ import Select from "react-select";
 import HoldBoks from "../components/HoldBoks";
 import KampCard from "../components/KampCard";
 import { useNavigate } from "react-router";
-import arrowBlack from "/arrow-left-black.svg";
+import ArrowBack from "../components/ArrowBack";
 
 export default function HoldSearchPage() {
   const [klubber, setKlubber] = useState([]);
@@ -92,12 +92,7 @@ export default function HoldSearchPage() {
   return (
     <div className="page-topmargin">
       <div className="search-pages">
-        <img
-          className="arrow"
-          src={arrowBlack}
-          alt="Arrow back to previous page"
-          onClick={() => navigate(-1)}
-        />
+        <ArrowBack color="black" />
         <Select
           options={klubOptions}
           value={selectedOption}
