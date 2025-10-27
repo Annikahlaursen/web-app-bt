@@ -11,7 +11,11 @@
   --darkgrey: #a19f9f;
   --grey: #e4e4e4;
   --light-grey: #f1f1f1;
+
   --border-radius: 30px;
+
+  --mozilla-font: "mozilla-text", sans-serif;
+  --lato-font: "lato", sans-serif;
   --display-font: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
@@ -40,19 +44,41 @@ html {
 
 /* ---------- Typography ---------- */
 h1 {
-  font-size: 3.2em;
+  font-family: var(--mozilla-font);
+  font-size: 36px;
+  line-height: 1.1;
+  font-weight: 500;
+  font-style: normal;
+}
+
+h2,
+h3,
+h4,
+h5 {
+  font-family: var(--mozilla-font);
+  font-weight: 500;
+  font-style: normal;
   line-height: 1.1;
 }
 
-h3,
-h5 {
-  line-height: 1.1;
-  margin: 0.5em 0 0;
+p,
+a {
+  font-family: var(--lato-font);
+  font-size: 16px;
+  font-weight: 400;
+  font-style: normal;
 }
 
 ul {
   padding: 0;
   margin: 0;
+}
+
+button,
+span {
+  font-family: var(--lato-font);
+  font-size: 16px;
+  cursor: pointer;
 }
 
 /*--------------Search Styling----------*/
@@ -169,7 +195,7 @@ a:hover {
   overflow: hidden;
 }
 
-.profile-image img{
+.profile-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -252,7 +278,7 @@ a:hover {
   color: var(--white);
   border-radius: var(--border-radius);
   gap: 1rem;
-  padding: 1rem 0;
+  padding: 0.8rem 0;
   border: none;
 }
 
@@ -310,11 +336,6 @@ a:hover {
 
 .profile-btns-seperate.active {
   border-bottom: solid var(--grey) 2px;
-}
-
-.profile-btns-seperate h5 {
-  margin: 0.5rem 0 0 0;
-  font-size: 0.9rem;
 }
 
 .profile-content {
@@ -444,7 +465,7 @@ a:hover {
   bottom: 0;
   z-index: 10;
   width: 80%;
-  height:100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -459,7 +480,7 @@ a:hover {
 .overlay-controls {
   display: flex;
   width: 100%;
-  height:auto;
+  height: auto;
   justify-content: space-around;
   margin-bottom: 0 !important;
   margin-top: 2rem;
@@ -467,7 +488,7 @@ a:hover {
   white-space: nowrap;
 }
 
-.overlay-controls button{
+.overlay-controls button {
   max-height: 100%;
 }
 
@@ -606,7 +627,6 @@ a:hover {
 .signout-card__header h3 {
   margin: 0;
   font-size: 1.2rem;
-  font-weight: 600;
 }
 
 .signout-card__close {
@@ -839,10 +859,6 @@ a:hover {
 
 .search-pages {
   margin: 0 2rem 0;
-}
-
-.search-pages h1 {
-  font-size: 33px;
 }
 
 .klublogo-container {
