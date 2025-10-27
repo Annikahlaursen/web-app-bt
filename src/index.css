@@ -75,7 +75,8 @@ ul {
 }
 
 button,
-span {
+span,
+input {
   font-family: var(--lato-font);
   font-size: 16px;
   cursor: pointer;
