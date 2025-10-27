@@ -8,10 +8,11 @@ import {
   getDownloadURL,
   deleteObject,
 } from "firebase/storage";
-import { signOut } from "firebase/auth";
 import pen from "/pen-solid-full.svg";
 import trash from "/trash-solid-full.svg";
 import Placeholder from "/image-solid-full.svg";
+import SignOutCard from "./SignOutCard";
+import { signOut } from "firebase/auth";
 
 export default function ProfileInfo() {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ export default function ProfileInfo() {
   const [fornavn, setFornavn] = useState("");
   const [efternavn, setEfternavn] = useState("");
   const [gender, setGender] = useState("");
-  const [fødselsdato, setFødselsdato] = useState("");
+  const [birthday, setBirthday] = useState("");
   const [adress, setAdress] = useState("");
   const [city, setCity] = useState("");
   const [zip, setZip] = useState("");
@@ -30,6 +31,7 @@ export default function ProfileInfo() {
   const [storagePath, setStoragePath] = useState(""); // storage path used for deletion
   const [errorMessage, setErrorMessage] = useState("");
   const [isSaving, setIsSaving] = useState(false);
+  const [showSignOutCard, setShowSignOutCard] = useState(false);
 
   const fileInputRef = useRef(null);
 
@@ -52,7 +54,7 @@ export default function ProfileInfo() {
               setFornavn(data.fornavn || data.name || "");
               setEfternavn(data.efternavn || data.lastname || "");
               setGender(data.gender || "");
-              setFødselsdato(data.fødselsdato || "");
+              setBirthday(data.birthday || "");
               setAdress(data.adress || "");
               setCity(data.city || "");
               setZip(data.zip || "");
@@ -78,7 +80,7 @@ export default function ProfileInfo() {
           setFornavn(p.fornavn || "");
           setEfternavn(p.efternavn || "");
           setGender(p.gender || "");
-          setFødselsdato(p.fødselsdato || "");
+          setBirthday(p.birthday || "");
           setAdress(p.adress || "");
           setCity(p.city || "");
           setZip(p.zip || "");
@@ -106,7 +108,7 @@ export default function ProfileInfo() {
       fornavn,
       efternavn,
       gender,
-      fødselsdato,
+      birthday,
       adress,
       city,
       zip,
@@ -143,7 +145,7 @@ export default function ProfileInfo() {
           fornavn,
           efternavn,
           gender,
-          fødselsdato,
+          birthday,
           adress,
           city,
           zip,
@@ -282,13 +284,23 @@ export default function ProfileInfo() {
     }
   }
 
-  async function handleSignOut() {
+  const handleShowSignOut = (e) => {
+    e.preventDefault();
+    setShowSignOutCard(true);
+  };
+
+  const handleCloseSignOut = () => {
+    setShowSignOutCard(false);
+  };
+
+  /* async function handleShowSignOut(e) {
     try {
       await signOut(auth); // sign out from firebase/auth
     } catch (err) {
       console.error("Sign out error:", err);
       setErrorMessage("Could not sign out. Try again.");
-      return;
+      e.preventDefault();
+      setShowSignOutCard(true);
     }
 
     // clear local session and redirect to login
@@ -298,7 +310,7 @@ export default function ProfileInfo() {
       console.error(err);
     }
     navigate("/");
-  }
+  } */
 
   // Delete profile from Realtime Database and sign the user out locally
   async function handleDeleteProfile() {
@@ -468,10 +480,6 @@ export default function ProfileInfo() {
     setStoragePath("");
   }
 
-  function handleClickToError() {
-    navigate("/error");
-  }
-
   return (
     <Fragment>
       <div className="profile-info-parent">
@@ -532,7 +540,6 @@ export default function ProfileInfo() {
                 value={fornavn}
                 onChange={(e) => setFornavn(e.target.value)}
               />
-
               <input
                 type="text"
                 className="profile-form-content"
@@ -542,7 +549,6 @@ export default function ProfileInfo() {
                 value={efternavn}
                 onChange={(e) => setEfternavn(e.target.value)}
               />
-
               <select
                 id="gender"
                 name="gender"
@@ -555,16 +561,14 @@ export default function ProfileInfo() {
                 <option value="Mand">Mand</option>
                 <option value="Andet">Andet</option>
               </select>
-
               <input
                 type="date"
                 className="profile-form-content"
                 id="birthday"
                 name="birthday"
-                value={fødselsdato}
-                onChange={(e) => setFødselsdato(e.target.value)}
+                value={birthday}
+                onChange={(e) => setBirthday(e.target.value)}
               />
-
               <input
                 type="text"
                 className="profile-form-content"
@@ -574,7 +578,6 @@ export default function ProfileInfo() {
                 onChange={(e) => setAdress(e.target.value)}
                 placeholder="Adresse"
               />
-
               <input
                 type="text"
                 className="profile-form-content"
@@ -584,7 +587,6 @@ export default function ProfileInfo() {
                 onChange={(e) => setCity(e.target.value)}
                 placeholder="By"
               />
-
               <input
                 type="text"
                 className="profile-form-content"
@@ -594,7 +596,6 @@ export default function ProfileInfo() {
                 onChange={(e) => setZip(e.target.value)}
                 placeholder="Postnummer"
               />
-
               <input
                 type="email"
                 className="profile-form-content"
@@ -604,7 +605,6 @@ export default function ProfileInfo() {
                 onChange={(e) => setMail(e.target.value)}
                 placeholder="Email"
               />
-
               <input
                 type="phone"
                 className="profile-form-content"
@@ -634,26 +634,17 @@ export default function ProfileInfo() {
           <div className="profile-btns-actions">
             <button
               className="profile-btns profile-btns-actions-seperat profile-btn-actions-blackborder"
-              onClick={handleSignOut}
+              onClick={handleShowSignOut}
             >
               Log ud
             </button>
-            <button
-              onClick={handleClickToError}
-              className="profile-btns profile-btns-actions-seperat profile-btn-actions-blackborder"
-            >
+            <button className="profile-btns profile-btns-actions-seperat profile-btn-actions-blackborder">
               Opdater adgangskode
             </button>
-            <button
-              onClick={handleClickToError}
-              className="profile-btns profile-btns-actions-seperat profile-btn-actions-blackborder"
-            >
+            <button className="profile-btns profile-btns-actions-seperat profile-btn-actions-blackborder">
               Tilknyt login til Face ID
             </button>
-            <button
-              onClick={handleClickToError}
-              className="profile-btns profile-btns-actions-seperat profile-btn-actions-blackborder"
-            >
+            <button className="profile-btns profile-btns-actions-seperat profile-btn-actions-blackborder">
               Indstillinger
             </button>
             <br />
@@ -666,6 +657,7 @@ export default function ProfileInfo() {
           </div>
         </div>
       </div>
+      <SignOutCard isOpen={showSignOutCard} onClose={handleCloseSignOut} />
     </Fragment>
   );
 }

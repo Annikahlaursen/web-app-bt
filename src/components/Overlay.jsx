@@ -127,11 +127,10 @@ export default function Overlay({ isOpen, onClose }) {
             }`}
           >
             <NavLink to="/profile" className="navprofile" onClick={handleClose}>
-              <div>
+              <div className="profile-image">
                 <img
                   src={displayImage || Placeholder}
-                  alt="Placeholder image"
-                  className="profile-image"
+                  alt="Profilbillede"
                 />
               </div>
               <div className="profileinfo">

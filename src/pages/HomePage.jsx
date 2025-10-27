@@ -121,7 +121,7 @@ export default function HomePage() {
 
   return (
     <section>
-      <img src={photo} alt="" />
+      <img src={photo} alt="" className="header-img"/>
       <section className="forside">
         <section className="forside-del">
           <h1>Din Næste Kamp</h1>
