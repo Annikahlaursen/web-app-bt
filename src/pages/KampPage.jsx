@@ -1,12 +1,12 @@
-import { Link, useNavigate, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import VSVisning from "../components/VSVisning";
-import arrowWhite from "/public/arrow-left-white.svg";
 import clock from "/public/clock.svg";
 import calendar from "/public/calendar-outline.svg";
 import location from "/public/location-dot.svg";
 import tableTennis from "/public/table-tennis-icon.svg";
 import { useState, useEffect } from "react";
-import { getHoldById } from "../helper";
+import { getHoldById, formatDateYear } from "../helper";
+import ArrowBack from "../components/ArrowBack";
 
 export default function KampPage() {
   const navigate = useNavigate();
@@ -16,6 +16,8 @@ export default function KampPage() {
   const [valgteSpillereUde, setValgteSpillereUde] = useState([]);
 
   const params = useParams();
+
+  const formattedDateYear = formatDateYear(kamp.dato);
 
   const url = `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/kampe/${
     params.id
@@ -112,13 +114,7 @@ export default function KampPage() {
   return (
     <>
       <div className="red-background">
-        <Link to="...">
-          <img
-            className="arrow"
-            src={arrowWhite}
-            alt="Arrow back to previus page"
-          />
-        </Link>
+        <ArrowBack color="white" />
         <VSVisning key={kamp.id} kamp={kamp} />
       </div>
       <section className="kamp-info-section">
@@ -131,7 +127,7 @@ export default function KampPage() {
         </div>
         <div className="kamp-info">
           <img src={calendar} alt="Calendar icon" />
-          <p>{kamp?.dato}</p>
+          <p>{formattedDateYear}</p>
         </div>
         <div className="kamp-info">
           <img src={clock} alt="Clock icon" />

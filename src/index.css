@@ -1341,10 +1341,9 @@ a:hover {
   color: var(--darkestRed);
 }
 
-.tilbage a {
+.tilbage {
   display: flex;
   justify-content: center;
-  gap: 0.5rem;
 }
 
 .tilbage img {
@@ -1358,6 +1357,10 @@ a:hover {
   background-color: var(--white);
   margin-top: -3rem;
   position: relative;
+}
+
+.forside .kamp-card {
+  margin-bottom: 0%;
 }
 
 .flex-pil {

@@ -2,10 +2,9 @@ import { useEffect, useState } from "react";
 import NumberPick from "../components/NumberPick";
 import SearchSpiller from "../components/SearchSpiller";
 import { useNavigate, useParams } from "react-router";
-import { Link } from "react-router";
-import arrowBlack from "/public/arrow-left-black.svg";
 import KampCard from "../components/KampCard";
 import { getHoldById } from "../helper";
+import ArrowBack from "../components/ArrowBack";
 
 export default function KampResultatPage() {
   const [hold, setHold] = useState({});
@@ -106,22 +105,12 @@ export default function KampResultatPage() {
     }
   }
 
-  function navigateBack() {
-    navigate(-1);
-  }
   return (
     <section className="resultat-page">
       <button className="btn" onClick={handleSave}>
         Gem resulatat
       </button>
-      <Link to="...">
-        <img
-          className="arrow"
-          src={arrowBlack}
-          alt="Arrow back to previus page"
-          onClick={navigateBack}
-        />
-      </Link>
+      <ArrowBack color="black" />
       <KampCard kamp={kamp} oplysninger="kunOplysninger" />
       <section className="updateResult">
         <p>Vælg spillere ({hjemmeholdNavn})</p>
