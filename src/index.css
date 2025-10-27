@@ -1286,8 +1286,13 @@ a:hover {
 }
 
 .kamp-info-section.stevne {
-  min-height: 110vh;
+  min-height: 130vh;
   height: auto;
+  padding-bottom: 8rem;
+}
+
+.tilmeldt-raekker{
+margin: 2rem 0 7rem;
 }
 
 /* ---------- Button Styling ---------- */
@@ -1300,7 +1305,7 @@ a:hover {
   font-size: 1rem;
   font-family: var(--display-font);
   position: sticky;
-  top: 80%;
+  top: 75%;
   margin: 0 auto;
   display: block;
   min-width: 25vh;

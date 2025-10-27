@@ -3,12 +3,13 @@ import { useState, useEffect } from "react";
 import arrowWhite from "/public/arrow-left-white.svg";
 import calendar from "/public/calendar-outline.svg";
 import location from "/public/location-dot.svg";
+import TilmedCard from "../components/TilmeldCard";
 
 export default function StevnePage() {
   const navigate = useNavigate();
   const { id } = useParams();
   const [stevne, setStevne] = useState({});
-  const [tilmeldteStevner, setTilmeldteStevner] = useState([]);
+  const [showTilmeldCard, setShowTilmeldCard] = useState(false);
 
   //---------------- Fetch current user---------------------
   useEffect(() => {
@@ -49,50 +50,15 @@ export default function StevnePage() {
 
   //------------------Tilmeld stevne------------------//
 
-  async function handleClick(event) {
+  async function handleShowTilmeld(event) {
     event.preventDefault();
-    console.log("Button clicked");
-
-    const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
-
-    if (!currentUser || !currentUser.profile) {
-      console.warn("No current user found in localStorage.");
-      return;
-    }
-
-    const userId = currentUser.id;
-
-    try {
-      const updatedTilmeldteStevner = [
-        ...(currentUser.profile.tilmeldteStevner || []),
-        stevne.id,
-      ];
-
-      // Opdater Firebase database
-      await fetch(
-        `${
-          import.meta.env.VITE_FIREBASE_DATABASE_URL
-        }/users/${userId}/profile.json`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ tilmeldteStevner: updatedTilmeldteStevner }),
-        }
-      );
-
-      // Update the localStorage to reflect the changes
-      currentUser.profile.tilmeldteStevner = updatedTilmeldteStevner;
-      localStorage.setItem("currentUser", JSON.stringify(currentUser));
-
-      console.log("Stevne tilmeldt successfully!");
-    } catch (error) {
-      console.error("Failed to tilmeld stevne:", error);
-    }
+    setShowTilmeldCard(true);
   }
 
-  console.log(stevne);
+   const handleCloseTilmeld = () => {
+     setShowTilmeldCard(false);
+   };
+
 
   return (
     <>
@@ -106,7 +72,7 @@ export default function StevnePage() {
         <h2>{stevne.titel}</h2>
       </div>
       <section className="kamp-info-section stevne">
-        <button className="btn" onClick={handleClick}>
+        <button className="btn" onClick={handleShowTilmeld}>
           {stevne.ertilmeldt ? "Du er tilmeldt" : "Tilmeld stævne "}
         </button>
         <div className="kamp-info">
@@ -135,8 +101,8 @@ export default function StevnePage() {
           ))}
         </ul>
         {stevne.ertilmeldt && (
-          <div>
-            <p>Du er tilmeldt rækkerne:</p>
+          <div className="tilmeldt-raekker">
+            <h2>Du er tilmeldt rækkerne:</h2>
             <ul>
               {stevne.tilmeldt.map((række, index) => (
                 <li key={index}>{række}</li>
@@ -145,6 +111,7 @@ export default function StevnePage() {
           </div>
         )}
       </section>
+      <TilmedCard  isOpen={showTilmeldCard} onClose={handleCloseTilmeld} stevne={stevne} />
     </>
   );
 }
