@@ -6,7 +6,7 @@ import calendar from "/public/calendar-outline.svg";
 import location from "/public/location-dot.svg";
 import tableTennis from "/public/table-tennis-icon.svg";
 import { useState, useEffect } from "react";
-import { getHoldById } from "../helper";
+import { getHoldById, formatDateYear } from "../helper";
 
 export default function KampPage() {
   const navigate = useNavigate();
@@ -16,6 +16,8 @@ export default function KampPage() {
   const [valgteSpillereUde, setValgteSpillereUde] = useState([]);
 
   const params = useParams();
+
+  const formattedDateYear = formatDateYear(kamp.dato);
 
   const url = `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/kampe/${
     params.id
@@ -131,7 +133,7 @@ export default function KampPage() {
         </div>
         <div className="kamp-info">
           <img src={calendar} alt="Calendar icon" />
-          <p>{kamp?.dato}</p>
+          <p>{formattedDateYear}</p>
         </div>
         <div className="kamp-info">
           <img src={clock} alt="Clock icon" />
