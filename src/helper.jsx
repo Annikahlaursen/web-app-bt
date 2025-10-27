@@ -20,3 +20,9 @@ export function formatDate(date) {
   const options = { month: "short", day: "numeric" };
   return new Date(date).toLocaleDateString("da-DK", options);
 }
+
+export function formatDateYear(dateYear) {
+  const optionsYear = { year: "numeric", month: "short", day: "numeric" };
+  return new Date(dateYear).toLocaleDateString("da-DK", optionsYear);
+}
+
