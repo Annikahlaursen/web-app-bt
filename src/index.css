@@ -219,9 +219,6 @@ a:hover {
 /* ---------- Profile Page Styling ---------- */
 .profile {
   background-color: var(--darkred);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 }
 
 .profile-placeholder {
@@ -268,8 +265,9 @@ a:hover {
   text-align: center;
   line-height: 0.5rem;
   padding: 2% 0 2% 0;
-  margin-top: -30px;
   position: relative;
+  margin: auto;
+  margin-top: -30px;
 }
 
 .profile-btns {
