@@ -260,7 +260,7 @@ a:hover {
 
 .profile-text {
   background-color: var(--grey);
-  justify-self: center;
+  justify-self: center !important;
   width: 85%;
   border-radius: var(--border-radius);
   text-align: center;
@@ -367,8 +367,9 @@ a:hover {
   color: var(--black) !important;
   display: flex;
   gap: 1rem;
-  padding: 1rem 1rem;
+  padding: 0.8rem 1rem;
   border-radius: var(--border-radius);
+  height: auto;
 }
 
 .text-center {
@@ -816,7 +817,7 @@ a:hover {
 
 .profile-image-preview {
   display: flex;
-  justify-content: center;
+  justify-self: flex-end;
   align-items: center;
   cursor: pointer;
   height: 6em;
