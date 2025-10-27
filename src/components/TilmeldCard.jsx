@@ -1,6 +1,6 @@
 import { Fragment, useState, useEffect } from "react";
 
-export default function SignOutCard({ isOpen, onClose, stevne }) {
+export default function SignOutCard({ isOpen, onClose, stevne, isTilmeldt }) {
   const [isClosing, setIsClosing] = useState(false);
 
   const handleClose = () => {
@@ -61,6 +61,10 @@ export default function SignOutCard({ isOpen, onClose, stevne }) {
     handleClose();
   };
 
+    const handleDeleteTilmeld = async () => {
+        
+    };
+
   useEffect(() => {
     if (!isOpen) {
       setIsClosing(false);
@@ -83,16 +87,19 @@ export default function SignOutCard({ isOpen, onClose, stevne }) {
             }`}
           >
             <div className="signout-card__header">
-              <h3>Tilmelding</h3>
+              <h3>{isTilmeldt ? "Vi ses snart!" : "Tilmelding"}</h3>
               <button
                 className="signout-card__close"
                 type="button"
                 onClick={handleClose}
-              >
-              </button>
+              ></button>
             </div>
             <div className="signout-card__content">
-              <p>Vil du tilmeldes {stevne.titel}?</p>
+              {isTilmeldt ? (
+                <p>Du er allerede tilmeldt {stevne.titel}.</p>
+              ) : (
+                <p>Vil du tilmeldes {stevne.titel}?</p>
+              )}
             </div>
             <div className="signout-card__actions">
               <button className="signout-card__cancel" onClick={handleClose}>
@@ -100,12 +107,21 @@ export default function SignOutCard({ isOpen, onClose, stevne }) {
               </button>
 
               {/* ------ Her skal intro siden implementeres ------ */}
-              <button
-                className="signout-card__confirm"
-                onClick={handleConfirmTilmeld}
-              >
-                Tilmeld
-              </button>
+              {isTilmeldt ? (
+                <button
+                  className="signout-card__confirm"
+                  onClick={handleDeleteTilmeld}
+                >
+                  Afmeld Stævne
+                </button>
+              ) : (
+                <button
+                  className="signout-card__confirm"
+                  onClick={handleConfirmTilmeld}
+                >
+                  Tilmeld
+                </button>
+              )}
             </div>
           </div>
         </div>

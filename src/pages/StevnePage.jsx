@@ -10,6 +10,7 @@ export default function StevnePage() {
   const { id } = useParams();
   const [stevne, setStevne] = useState({});
   const [showTilmeldCard, setShowTilmeldCard] = useState(false);
+  const [isTilmeldt, setIsTilmeldt] = useState(false);
 
   //---------------- Fetch current user---------------------
   useEffect(() => {
@@ -23,10 +24,14 @@ export default function StevnePage() {
         // Handle missing user (e.g., redirect to login)
         return;
       }
+
+      const isAlreadyTilmeldt =
+        currentUser.profile.tilmeldteStevner?.includes(id) || false;
+      setIsTilmeldt(isAlreadyTilmeldt);
     };
 
     fetchCurrentUser();
-  }, []);
+  }, [id]);
 
   // -----------------Fetch stevne data-----------------
   useEffect(() => {
@@ -55,10 +60,9 @@ export default function StevnePage() {
     setShowTilmeldCard(true);
   }
 
-   const handleCloseTilmeld = () => {
-     setShowTilmeldCard(false);
-   };
-
+  const handleCloseTilmeld = () => {
+    setShowTilmeldCard(false);
+  };
 
   return (
     <>
@@ -73,7 +77,7 @@ export default function StevnePage() {
       </div>
       <section className="kamp-info-section stevne">
         <button className="btn" onClick={handleShowTilmeld}>
-          {stevne.ertilmeldt ? "Du er tilmeldt" : "Tilmeld stævne "}
+          {isTilmeldt ? "Du er tilmeldt" : "Tilmeld stævne "}
         </button>
         <div className="kamp-info">
           <img src={calendar} alt="Calendar icon" />
@@ -111,7 +115,12 @@ export default function StevnePage() {
           </div>
         )}
       </section>
-      <TilmedCard  isOpen={showTilmeldCard} onClose={handleCloseTilmeld} stevne={stevne} />
+      <TilmedCard
+        isOpen={showTilmeldCard}
+        isTilmeldt={isTilmeldt}
+        onClose={handleCloseTilmeld}
+        stevne={stevne}
+      />
     </>
   );
 }
