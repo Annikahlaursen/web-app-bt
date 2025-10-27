@@ -1359,6 +1359,10 @@ a:hover {
   position: relative;
 }
 
+.forside .kamp-card {
+  margin-bottom: 0%;
+}
+
 .flex-pil {
   display: flex;
   justify-content: end;
