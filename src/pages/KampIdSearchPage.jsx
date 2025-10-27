@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 import KampCard from "../components/KampCard";
 import useFilters from "../hooks/useFilters";
-import { Link } from "react-router";
 import arrowBlack from "/public/arrow-left-black.svg";
+import tableTennis from "/public/table-tennis-icon.svg";
 
 export default function KampIdSearchPage() {
   const [kamp, setKamp] = useState([]);
+
   const url = `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/kampe.json`;
 
   useEffect(() => {
@@ -52,17 +54,22 @@ export default function KampIdSearchPage() {
       return matchesKampID;
     }
   );
+  const navigate = useNavigate();
+
+  function navigateBack() {
+    navigate(-1);
+  }
 
   return (
     <div className="page-topmargin">
       <div className="search-pages">
-        <Link to="...">
+        <a onClick={navigateBack} style={{ cursor: "pointer" }}>
           <img
             className="arrow"
             src={arrowBlack}
             alt="Arrow back to previus page"
           />
-        </Link>
+        </a>
         <input
           className="searchbar"
           type="text"
@@ -74,16 +81,29 @@ export default function KampIdSearchPage() {
         />
       </div>
       <section className="opdel holdkampe-background page">
-        {filteredData.length > 0 ? (
+        {filteredData && filteredData.length > 0 ? (
           filteredData.map((kamp) => (
             <KampCard key={kamp.id} kamp={kamp} oplysninger="kunOplysninger" />
           ))
         ) : (
-          <div>
-            <p>Der er ingen kampe i dag.</p>
+          <div className="no-kamp-today">
+            <img
+              style={{ height: "90px" }}
+              src={tableTennis}
+              alt="bordtennis bat icon"
+            />
+            <p id="kamp-error">Der er ingen kampe i dag.</p>
             <p>
               Bemærk: Kampdata kan kun opdateres på den dag, kampen spilles.
             </p>
+            <div className="tilbage-til-kalender" onClick={navigateBack}>
+              <img
+                style={{ height: "40px" }}
+                src={arrowBlack}
+                alt="pil tilbage knap"
+              />
+              <p>Gå til kalender</p>
+            </div>
           </div>
         )}
       </section>
