@@ -1539,3 +1539,18 @@ div .css-1p3m7a8-multiValue {
   opacity: 0;
   transition: opacity 300ms ease;
 }
+
+/* ---------- Error Kamp Message Styling ---------- */
+
+#kamp-error {
+  color: var(--darkred);
+}
+.no-kamp-today {
+  text-align: center;
+  margin-top: 1rem;
+}
+.tilbage-til-kalender {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
