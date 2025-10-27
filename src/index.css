@@ -463,6 +463,7 @@ a:hover {
   width: 100%;
   height:auto;
   justify-content: space-around;
+  align-items: center;
   margin-bottom: 0 !important;
   margin-top: 2rem;
   padding-right: 1.3rem;
@@ -545,13 +546,17 @@ a:hover {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.6rem;
+  /* gap: 0.6rem; */
   background: none;
   border: none;
   color: inherit;
   cursor: pointer;
   font-size: inherit;
   font-family: inherit;
+}
+
+.signout-image {
+  width: 70px;
 }
 
 .signout-overlay {
