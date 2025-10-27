@@ -4,6 +4,7 @@ import useFilters from "../hooks/useFilters";
 import RatingListe from "../components/RatingListe";
 import FilterOverlay from "../components/FilterOvelay";
 import filterIcon from "/public/sliders-solid-full.svg";
+import headerImage from "/public/img/unsplash-photo.svg";
 
 // Funktion til at beregne alder ud fra fødselsdato
 function calculateAge(fødselsdato) {
@@ -149,7 +150,7 @@ export default function RatingPage() {
 
   return (
     <section>
-      <img src="/img/unsplash-photo.svg" alt="Rating side" className="header-img"></img>
+      <img src={headerImage} alt="Rating side" className="header-img"></img>
       <section className="forside">
         <h1>Rating</h1>
         <div className="rating-filter">

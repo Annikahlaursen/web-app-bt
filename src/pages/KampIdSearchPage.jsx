@@ -79,7 +79,12 @@ export default function KampIdSearchPage() {
             <KampCard key={kamp.id} kamp={kamp} oplysninger="kunOplysninger" />
           ))
         ) : (
-          <p>Ingen kampe idag</p>
+          <div>
+            <p>Der er ingen kampe i dag.</p>
+            <p>
+              Bemærk: Kampdata kan kun opdateres på den dag, kampen spilles.
+            </p>
+          </div>
         )}
       </section>
     </div>
