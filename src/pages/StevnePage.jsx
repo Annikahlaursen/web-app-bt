@@ -8,7 +8,26 @@ export default function StevnePage() {
   const navigate = useNavigate();
   const { id } = useParams();
   const [stevne, setStevne] = useState({});
+  const [tilmeldteStevner, setTilmeldteStevner] = useState([]);
 
+  //---------------- Fetch current user---------------------
+  useEffect(() => {
+    const fetchCurrentUser = () => {
+      const currentUser = JSON.parse(
+        localStorage.getItem("currentUser") || "{}"
+      );
+
+      if (!currentUser || !currentUser.profile) {
+        console.warn("No current user found in localStorage.");
+        // Handle missing user (e.g., redirect to login)
+        return;
+      }
+    };
+
+    fetchCurrentUser();
+  }, []);
+
+  // -----------------Fetch stevne data-----------------
   useEffect(() => {
     async function fetchStevne() {
       const response = await fetch(
@@ -17,7 +36,7 @@ export default function StevnePage() {
 
       const data = await response.json();
 
-      setStevne(data);
+      setStevne({ ...data, id });
       console.log(data);
     }
 
@@ -28,10 +47,49 @@ export default function StevnePage() {
     window.scrollTo(0, 0);
   }, []);
 
-  function clicked(event) {
+  //------------------Tilmeld stevne------------------//
+
+  async function handleClick(event) {
     event.preventDefault();
     console.log("Button clicked");
-    navigate("/error");
+
+    const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
+
+    if (!currentUser || !currentUser.profile) {
+      console.warn("No current user found in localStorage.");
+      return;
+    }
+
+    const userId = currentUser.id;
+
+    try {
+      const updatedTilmeldteStevner = [
+        ...(currentUser.profile.tilmeldteStevner || []),
+        stevne.id,
+      ];
+
+      // Opdater Firebase database
+      await fetch(
+        `${
+          import.meta.env.VITE_FIREBASE_DATABASE_URL
+        }/users/${userId}/profile.json`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ tilmeldteStevner: updatedTilmeldteStevner }),
+        }
+      );
+
+      // Update the localStorage to reflect the changes
+      currentUser.profile.tilmeldteStevner = updatedTilmeldteStevner;
+      localStorage.setItem("currentUser", JSON.stringify(currentUser));
+
+      console.log("Stevne tilmeldt successfully!");
+    } catch (error) {
+      console.error("Failed to tilmeld stevne:", error);
+    }
   }
 
   console.log(stevne);
@@ -48,7 +106,7 @@ export default function StevnePage() {
         <h2>{stevne.titel}</h2>
       </div>
       <section className="kamp-info-section stevne">
-        <button className="btn" onClick={clicked}>
+        <button className="btn" onClick={handleClick}>
           {stevne.ertilmeldt ? "Du er tilmeldt" : "Tilmeld stævne "}
         </button>
         <div className="kamp-info">
