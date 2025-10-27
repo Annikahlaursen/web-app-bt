@@ -816,6 +816,7 @@ a:hover {
 
 .profile-image-preview {
   display: flex;
+  justify-content: center;
   align-items: center;
   cursor: pointer;
   height: 6em;
