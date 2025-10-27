@@ -15,3 +15,8 @@ export async function getKlubById(kid) {
 
   return klub;
 }
+
+export function formatDate(date) {
+  const options = { month: "short", day: "numeric" };
+  return new Date(date).toLocaleDateString("da-DK", options);
+}

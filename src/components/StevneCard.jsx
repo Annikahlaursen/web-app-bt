@@ -6,11 +6,16 @@ import bell from "/public/bell.svg";
 import bellSolid from "/public/bell-solid.svg";
 import { Link } from "react-router";
 import { forwardRef } from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { formatDate } from "../helper";
 
 const StevneCard = forwardRef(({ stevne }, ref) => {
   const [isFilled, setIsFilled] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
+
+  const formattedDate = formatDate(stevne.dato);
+
+  //console.log(Date(dateString));
 
   function handleBellClick() {
     setIsFilled((prev) => !prev);
@@ -23,7 +28,7 @@ const StevneCard = forwardRef(({ stevne }, ref) => {
       <Link to={`/stevne/${stevne.id}`}>
         <div className="kamp-container">
           <h3>{stevne?.titel ?? "Ingen titel"}</h3>
-          <p>{stevne?.dato ?? "Ingen dato tilgængelig"}</p>
+          <p>{formattedDate ?? "Ingen dato tilgængelig"}</p>
         </div>
         <div className="stevne-container">
           <p>{stevne.beskrivelse}</p>
