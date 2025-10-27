@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router";
 import arrowBlack from "/public/arrow-left-black.svg";
-import arrowWhite from "/public/arrow-left.svg";
+import arrowWhite from "/public/arrow-left-white.svg";
 
 export default function ArrowBack({ color }) {
   const navigate = useNavigate();

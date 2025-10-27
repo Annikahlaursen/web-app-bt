@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import KampCard from "../components/KampCard";
 import useFilters from "../hooks/useFilters";
-import { Link } from "react-router";
-import arrowBlack from "/public/arrow-left-black.svg";
+import ArrowBack from "../components/ArrowBack";
 
 export default function KampIdSearchPage() {
   const [kamp, setKamp] = useState([]);
@@ -56,13 +55,7 @@ export default function KampIdSearchPage() {
   return (
     <div className="page-topmargin">
       <div className="search-pages">
-        <Link to="...">
-          <img
-            className="arrow"
-            src={arrowBlack}
-            alt="Arrow back to previus page"
-          />
-        </Link>
+        <ArrowBack color="black" />
         <input
           className="searchbar"
           type="text"

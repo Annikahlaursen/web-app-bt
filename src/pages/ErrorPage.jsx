@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router";
 import tableTennis from "/public/table-tennis-icon-white.svg";
-import arrowWhite from "/public/arrow-left-white.svg";
+import ArrowBack from "../components/ArrowBack";
 
 export default function Error() {
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ export default function Error() {
       </p>
       <br />
       <div className="tilbage" onClick={navigateBack}>
-        <img src={arrowWhite} alt="" />
+        <ArrowBack color="white" />
         <p>Gå tilbage til forrige side</p>
       </div>
     </div>
