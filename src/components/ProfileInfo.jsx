@@ -1,5 +1,5 @@
 import { Fragment, useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, NavLink } from "react-router";
 import { auth } from "../firebase-config";
 import {
   getStorage,
@@ -644,9 +644,11 @@ export default function ProfileInfo() {
             <button className="profile-btns profile-btns-actions-seperat profile-btn-actions-blackborder">
               Tilknyt login til Face ID
             </button>
-            <button className="profile-btns profile-btns-actions-seperat profile-btn-actions-blackborder">
-              Indstillinger
-            </button>
+            <NavLink to={"/update/:id"}>
+              <button className="profile-btns profile-btns-actions-seperat profile-btn-actions-blackborder">
+                Indstillinger
+              </button>
+            </NavLink>
             <br />
             <button
               className="profile-btns profile-btns-actions-seperat profile-btn-actions-blackborder"
