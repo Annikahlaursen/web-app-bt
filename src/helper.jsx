@@ -26,3 +26,25 @@ export function formatDateYear(dateYear) {
   return new Date(dateYear).toLocaleDateString("da-DK", optionsYear);
 }
 
+export function normalizeUsers(usersData = {}, clubsData = {}) {
+  const usersArray = Object.keys(usersData || {}).map((key) => ({
+    id: key,
+    ...usersData[key],
+    rating: Number(usersData[key]?.rating) || 0,
+  }));
+
+  // deterministic sort: rating desc, så navn som tie-breaker
+  usersArray.sort((a, b) => {
+    if (b.rating !== a.rating) return b.rating - a.rating;
+    const nameA = `${a.fornavn ?? ""} ${a.efternavn ?? ""}`.trim();
+    const nameB = `${b.fornavn ?? ""} ${b.efternavn ?? ""}`.trim();
+    return nameA.localeCompare(nameB);
+  });
+
+  usersArray.forEach((user, index) => {
+    user.placering = index + 1;
+    user.clubName = clubsData?.[user.kid]?.navn ?? user.clubName;
+  });
+
+  return usersArray;
+}

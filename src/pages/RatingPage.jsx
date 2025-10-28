@@ -5,6 +5,7 @@ import RatingListe from "../components/RatingListe";
 import FilterOverlay from "../components/FilterOvelay";
 import filterIcon from "/public/sliders-solid-full.svg";
 import headerImage from "/public/img/unsplash-photo.svg";
+import { normalizeUsers } from "../helper";
 
 // Funktion til at beregne alder ud fra fødselsdato
 function calculateAge(fødselsdato) {
@@ -79,17 +80,10 @@ export default function RatingPage() {
       const usersData = await usersResponse.json();
       const clubsData = await clubsResponse.json();
 
-      const usersArray = Object.keys(usersData).map((key) => ({
-        id: key,
-        ...usersData[key],
-        rating: Number(usersData[key].rating) || 0, //sikrer at rating er et tal
-      }));
-
-      usersArray.sort((a, b) => b.rating - a.rating);
+      const usersArray = normalizeUsers(usersData, clubsData);
 
       //tilføjer properties placering, alder, klubnavn til hver bruger
-      usersArray.forEach((user, index) => {
-        user.placering = index + 1;
+      usersArray.forEach((user) => {
         user.age = calculateAge(user.fødselsdato);
         user.clubName = clubsData[user.kid]?.navn || "Ukendt Klub";
       });
@@ -186,6 +180,7 @@ export default function RatingPage() {
         ) : (
           <RatingListe
             users={filteredData.sort((a, b) => b.rating - a.rating)}
+            isRating="onRating"
           />
         )}
       </section>
