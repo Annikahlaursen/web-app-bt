@@ -128,10 +128,7 @@ export default function Overlay({ isOpen, onClose }) {
           >
             <NavLink to="/profile" className="navprofile" onClick={handleClose}>
               <div className="profile-image">
-                <img
-                  src={displayImage || Placeholder}
-                  alt="Profilbillede"
-                />
+                <img src={displayImage || Placeholder} alt="Profilbillede" />
               </div>
               <div className="profileinfo">
                 <h4>{displayName || "Din profil"}</h4>
@@ -158,7 +155,7 @@ export default function Overlay({ isOpen, onClose }) {
                   )}
                 </button>
                 {open ? (
-                  <ul className="menu">
+                  <ul>
                     <li className="menu-item">
                       <NavLink to="/error">
                         <img
@@ -230,20 +227,15 @@ export default function Overlay({ isOpen, onClose }) {
             </nav>
             <div className="overlay-controls">
               <button onClick={handleShowSignOut} className="signout">
-                <img
-                  src={SignOut}
-                  alt="Sign Out"
-                  className="signout-image"
-                  style={{ height: "70%" }}
-                />
+                <img src={SignOut} alt="Sign Out" style={{ height: "70%" }} />
                 Log ud
               </button>
               <button
-                className="navcircle menu-button overlay-close"
+                className="navcircle overlay-close"
                 type="button"
                 onClick={handleClose}
               >
-                <img src={Close} alt="Close" className="close-image" />
+                <img src={Close} alt="Close" />
               </button>
             </div>
           </div>

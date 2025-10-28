@@ -300,14 +300,14 @@ export default function ProfileInfo() {
       <div>
         <div className="login-page">
           <div className="login-page-logo">
-            <img id="login-logo" src={Logo} alt="Bordtennisportalen.dk logo" />
+            <img src={Logo} alt="Bordtennisportalen.dk logo" />
           </div>
-          <div className="profile-info-parent">
+          <div>
             <div className="profile-card update-card">
               <div className="profile-card-header">
                 <h3>Profilbillede</h3>
               </div>
-              <div className="profile-info-card-image profile-card-content">
+              <div className="profile-card-content">
                 <input
                   type="file"
                   className="hide"
@@ -317,7 +317,7 @@ export default function ProfileInfo() {
                 />
                 <img
                   id="image"
-                  className={"profile-image-preview"}
+                  className="profile-image-preview"
                   src={image || Placeholder}
                   alt="Choose"
                   onError={(e) => {
@@ -336,7 +336,7 @@ export default function ProfileInfo() {
               </div>
             </div>
             <div className="profile-card update-card">
-              <div className="profile-card-header">
+              <div>
                 <h3>Personlige oplysninger</h3>
               </div>
               <div className="profile-form">
@@ -367,7 +367,7 @@ export default function ProfileInfo() {
               </div>
               <div className="profile-btns-actions">
                 <button
-                  className="profile-btns profile-btns-actions-seperat profile-btn-actions-lightred"
+                  className="profile-btns-actions-seperat profile-btn-actions-lightred"
                   id="save-btn"
                   onClick={handleSave}
                 >
@@ -376,7 +376,7 @@ export default function ProfileInfo() {
               </div>
             </div>
             <button
-              className="profile-btns profile-btns-actions-seperat profile-btn-actions-nobackground"
+              className="profile-btns-actions-seperat profile-btn-actions-nobackground"
               onClick={handleSkip}
             >
               Spring over

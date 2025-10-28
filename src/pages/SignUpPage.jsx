@@ -117,7 +117,7 @@ export default function SignUpPage() {
         <div className="login-page-logo">
           <img id="login-logo" src={Logo} alt="Bordtennisportalen.dk logo" />
         </div>
-        <div className="profile-info-parent">
+        <div>
           <div className="profile-card">
             <div>
               <form
@@ -173,7 +173,7 @@ export default function SignUpPage() {
                   <p>{errorMessage}</p>
                 </div>
                 <div className="profile-btns-actions">
-                  <button className="profile-btns profile-btns-actions-seperat profile-btn-actions-lightred">
+                  <button className="profile-btns-actions-seperat profile-btn-actions-lightred">
                     Opret konto
                   </button>
                 </div>

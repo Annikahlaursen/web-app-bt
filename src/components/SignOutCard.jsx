@@ -48,36 +48,36 @@ export default function SignOutCard({ isOpen, onClose }) {
         <div className="signout-overlay">
           <div
             className={`signout-background ${
-              isClosing ? "signout-background--closing" : ""
+              isClosing ? "signout-background-closing" : ""
             }`}
             onClick={handleClose}
           />
           <div
             className={`signout-card ${
-              isClosing ? "signout-card--closing" : ""
+              isClosing ? "signout-card-closing" : ""
             }`}
           >
-            <div className="signout-card__header">
+            <div className="signout-card-header">
               <h3>Log ud</h3>
               <button
-                className="signout-card__close"
+                className="signout-card-close"
                 type="button"
                 onClick={handleClose}
               >
                 <img src={Close} alt="Close" className="close-image" />
               </button>
             </div>
-            <div className="signout-card__content">
+            <div className="signout-card-content">
               <p>Er du sikker på, at du vil logge ud?</p>
             </div>
-            <div className="signout-card__actions">
-              <button className="signout-card__cancel" onClick={handleClose}>
+            <div className="signout-card-actions">
+              <button className="signout-card-cancel" onClick={handleClose}>
                 Annuller
               </button>
 
               {/* ------ Her skal intro siden implementeres ------ */}
               <button
-                className="signout-card__confirm"
+                className="signout-card-confirm"
                 onClick={handleConfirmSignOut}
               >
                 Log ud

@@ -43,7 +43,7 @@ export default function StevneSearchPage() {
    );
 
   return (
-    <section className="page-topmargin">
+    <section>
       <div className="search-pages">
         <ArrowBack color="black" />
         <h1>Stævner</h1>
@@ -56,7 +56,7 @@ export default function StevneSearchPage() {
           style={{ flex: 1, padding: "10px" }}
         />
       </div>
-      <div className="holdkampe-background page">
+      <div className="holdkampe-background">
         {sortedData.map((stevne) => (
           <StevneCard
             stevne={stevne}
