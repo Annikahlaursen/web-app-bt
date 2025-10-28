@@ -123,7 +123,7 @@ export default function KampPage() {
         </button>
         <div className="kamp-info">
           <img src={tableTennis} alt="TableTennis icon" />
-          <p>{kamp?.id}</p>
+          <p>KampID {kamp?.id}</p>
         </div>
         <div className="kamp-info">
           <img src={calendar} alt="Calendar icon" />
