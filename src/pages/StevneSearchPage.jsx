@@ -41,7 +41,7 @@ export default function StevneSearchPage() {
   );
 
   return (
-    <section className="page-topmargin">
+    <section>
       <div className="search-pages">
         <img
           className="arrow"
