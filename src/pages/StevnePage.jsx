@@ -77,7 +77,7 @@ export default function StevnePage() {
       </div>
       <section className="kamp-info-section stevne">
         <button className="btn" onClick={handleShowTilmeld}>
-          {isTilmeldt ? "Du er tilmeldt" : "Tilmeld stævne "}
+          {isTilmeldt ? "Du er allerede tilmeldt stævnet" : "Tilmeld stævne "}
         </button>
         <div className="kamp-info">
           <img src={calendar} alt="Calendar icon" />
@@ -91,19 +91,25 @@ export default function StevnePage() {
           <p>{`Pris: ${stevne.pris} DKK`}</p>
         </div>
         <p>{stevne.beskrivelse}</p>
-        <h2>Rækker</h2>
-        <p>LØRDAG</p>
-        <ul>
-          {stevne.rækkerLørdag?.map((række, index) => (
-            <li key={index}>{række}</li>
-          ))}
-        </ul>
-        <p>SØNDAG</p>
-        <ul>
-          {stevne.rækkerSøndag?.map((række, index) => (
-            <li key={index}>{række}</li>
-          ))}
-        </ul>
+        <div className="raekker">
+          <h2>Rækker</h2>
+          <div>
+            <p>LØRDAG</p>
+            <ul>
+              {stevne.rækkerLørdag?.map((række, index) => (
+                <li key={index}>{række}</li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <p>SØNDAG</p>
+            <ul>
+              {stevne.rækkerSøndag?.map((række, index) => (
+                <li key={index}>{række}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
         {stevne.ertilmeldt && (
           <div className="tilmeldt-raekker">
             <h2>Du er tilmeldt rækkerne:</h2>
@@ -118,8 +124,9 @@ export default function StevnePage() {
       <TilmedCard
         isOpen={showTilmeldCard}
         isTilmeldt={isTilmeldt}
-        onClose={handleCloseTilmeld}
         stevne={stevne}
+        onClose={handleCloseTilmeld}
+        onTilmeldUpdate={(status) => setIsTilmeldt(status)}
       />
     </>
   );
