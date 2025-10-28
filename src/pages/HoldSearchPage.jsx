@@ -90,7 +90,7 @@ export default function HoldSearchPage() {
     : hold;
 
   return (
-    <div className="page-topmargin">
+    <div>
       <div className="search-pages">
         <img
           className="arrow"
@@ -107,7 +107,7 @@ export default function HoldSearchPage() {
           isSearchable
         ></Select>
       </div>
-      <div className="holdkampe-background page">
+      <div className="holdkampe-background">
         <div className="gap-to-card">
           {displayedHold.map((hold) => {
             const klubForHold = klubber.find((k) => k.hold.includes(hold.id));

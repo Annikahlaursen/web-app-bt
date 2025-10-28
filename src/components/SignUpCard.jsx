@@ -59,12 +59,11 @@ export default function CreateCard() {
     }
   }
 
-
   return (
     <Fragment>
-      <div className="profile-info-parent">
+      <div>
         <div className="profile-card">
-          <div className="profile-info-card-image profile-card-content">
+          <div className="profile-card-content">
             <input
               type="file"
               className="hide"

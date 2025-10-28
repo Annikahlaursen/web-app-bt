@@ -59,7 +59,7 @@ export default function StevneSearchPage() {
           style={{ flex: 1, padding: "10px" }}
         />
       </div>
-      <div className="holdkampe-background page">
+      <div className="holdkampe-background">
         {filteredData.map((stevne) => (
           <StevneCard
             stevne={stevne}

@@ -482,12 +482,12 @@ export default function ProfileInfo() {
 
   return (
     <Fragment>
-      <div className="profile-info-parent">
+      <div>
         <div className="profile-card">
-          <div className="profile-card-header">
+          <div>
             <h3>Profilbillede</h3>
           </div>
-          <div className="profile-info-card-image profile-card-content">
+          <div className="profile-card-content">
             <input
               type="file"
               className="hide"
@@ -498,7 +498,7 @@ export default function ProfileInfo() {
             <div style={{ position: "relative" }}>
               <img
                 id="image"
-                className={"profile-image-preview"}
+                className="profile-image-preview"
                 src={image || Placeholder}
                 alt="Choose"
                 onError={(e) => {
@@ -526,7 +526,7 @@ export default function ProfileInfo() {
         </div>
 
         <div className="profile-card">
-          <div className="profile-card-header">
+          <div>
             <h3>Personlige oplysninger</h3>
           </div>
           <div>
@@ -633,25 +633,25 @@ export default function ProfileInfo() {
 
           <div className="profile-btns-actions">
             <button
-              className="profile-btns profile-btns-actions-seperat profile-btn-actions-blackborder"
+              className="profile-btns-actions-seperat profile-btn-actions-blackborder"
               onClick={handleShowSignOut}
             >
               Log ud
             </button>
-            <button className="profile-btns profile-btns-actions-seperat profile-btn-actions-blackborder">
+            <button className="profile-btns-actions-seperat profile-btn-actions-blackborder">
               Opdater adgangskode
             </button>
-            <button className="profile-btns profile-btns-actions-seperat profile-btn-actions-blackborder">
+            <button className="profile-btns-actions-seperat profile-btn-actions-blackborder">
               Tilknyt login til Face ID
             </button>
             <NavLink to={"/update/:id"}>
-              <button className="profile-btns profile-btns-actions-seperat profile-btn-actions-blackborder">
+              <button className="profile-btns-actions-seperat profile-btn-actions-blackborder">
                 Indstillinger
               </button>
             </NavLink>
             <br />
             <button
-              className="profile-btns profile-btns-actions-seperat profile-btn-actions-blackborder"
+              className="profile-btns-actions-seperat profile-btn-actions-blackborder"
               onClick={handleDeleteProfile}
             >
               Slet profil

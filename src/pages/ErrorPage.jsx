@@ -19,7 +19,7 @@ export default function Error() {
       </p>
       <br />
       <div className="tilbage" onClick={navigateBack}>
-        <img src={arrowWhite} alt="" />
+        <img src={arrowWhite} alt="Pil icon" />
         <p>Gå tilbage til forrige side</p>
       </div>
     </div>

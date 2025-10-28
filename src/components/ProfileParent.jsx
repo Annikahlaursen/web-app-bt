@@ -3,9 +3,9 @@ import { Fragment } from "react";
 export default function ProfileParent() {
   return (
     <Fragment>
-      <div className="profile-info-parent">
+      <div>
         <div className="profile-card">
-          <div className="profile-card-header">
+          <div>
             <h3>Kontaktpersoner</h3>
           </div>
           <div className="profile-card-content">
@@ -15,13 +15,13 @@ export default function ProfileParent() {
             </p>
           </div>
           <div className="profile-card-actions">
-            <a className="invite-parent">Inviter</a>
-            <a className="plus-parent">Tilføj</a>
+            <a>Inviter</a>
+            <a>Tilføj</a>
           </div>
         </div>
 
         <div className="profile-card">
-          <div className="profile-card-header">
+          <div>
             <h3>Kontaktperson for</h3>
           </div>
           <div className="profile-card-content">
@@ -31,7 +31,7 @@ export default function ProfileParent() {
             </p>
           </div>
           <div className="profile-card-actions profile-card-oneaction">
-            <a className="plus-parent">Tilføj</a>
+            <a>Tilføj</a>
           </div>
         </div>
       </div>
