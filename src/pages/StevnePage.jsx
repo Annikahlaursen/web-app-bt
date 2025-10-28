@@ -77,7 +77,7 @@ export default function StevnePage() {
       </div>
       <section className="kamp-info-section stevne">
         <button className="btn" onClick={handleShowTilmeld}>
-          {isTilmeldt ? "Du er allerede tilmeldt stævnet" : "Tilmeld stævne "}
+          {isTilmeldt ? "Du er tilmeldt stævnet" : "Tilmeld stævne "}
         </button>
         <div className="kamp-info">
           <img src={calendar} alt="Calendar icon" />
