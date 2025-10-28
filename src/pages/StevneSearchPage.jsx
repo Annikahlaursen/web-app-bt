@@ -38,6 +38,10 @@ export default function StevneSearchPage() {
     }
   );
 
+   const sortedData = [...filteredData].sort(
+     (a, b) => new Date(a.dato) - new Date(b.dato)
+   );
+
   return (
     <section className="page-topmargin">
       <div className="search-pages">
@@ -53,7 +57,7 @@ export default function StevneSearchPage() {
         />
       </div>
       <div className="holdkampe-background page">
-        {filteredData.map((stevne) => (
+        {sortedData.map((stevne) => (
           <StevneCard
             stevne={stevne}
             key={stevne.id}
