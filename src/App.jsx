@@ -6,8 +6,6 @@ import { onAuthStateChanged } from "firebase/auth";
 import Nav from "./components/Nav";
 import Splash from "./components/Splash";
 import HomePage from "./pages/HomePage";
-import AboutPage from "./pages/AboutPage";
-import ContactPage from "./pages/ContactPage";
 import ProfilePage from "./pages/ProfilePage";
 import SignUpPage from "./pages/SignUpPage";
 import KampPage from "./pages/KampPage";
@@ -81,9 +79,7 @@ export default function App() {
           <>
             <Route path="/" element={<HomePage />} />
             <Route path="/update/:id" element={<UpdateCard />} />
-            <Route path="/about" element={<AboutPage />} />
             <Route path="/rating" element={<RatingPage />} />
-            <Route path="/contact" element={<ContactPage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="*" element={<Navigate to="/" />} />
             <Route path="*" element={<Navigate to="/error" />} />
