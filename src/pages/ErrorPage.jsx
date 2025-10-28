@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router";
 import tableTennis from "/public/table-tennis-icon-white.svg";
-import ArrowBack from "../components/ArrowBack";
+import arrowWhite from "../components/ArrowBack";
 
 export default function Error() {
   const navigate = useNavigate();
