@@ -12,7 +12,7 @@ import KampCard from "../components/KampCard";
 
   //----------------------------Henter Data----------------------------//
   useEffect(() => {
-    async function fetchAndFilterEvents(endpoint, type, userHid) {
+    async function fetchAndFilterEvents(endpoint, type, userHid, tilmeldteStevner) {
       try {
         const response = await fetch(
           `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/${endpoint}.json`
@@ -28,7 +28,7 @@ import KampCard from "../components/KampCard";
           }))
           .filter((event) => {
             if (type === "stevne") {
-              return event.ertilmeldt === true; // Filter stevner where ertilmeldt is true
+              return tilmeldteStevner.includes(event.id); // Filter stevner where ertilmeldt is true
             }
             if (type === "kamp") {
               return (event.udehold && event.udehold.includes(userHid)) || (event.hjemmehold && event.hjemmehold.includes(userHid)); // Filter kampe where hold contains userHid
@@ -46,6 +46,7 @@ import KampCard from "../components/KampCard";
         // Get the current user's hid from localStorage
         const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
         const userHid = currentUser?.profile?.hid;
+        const tilmeldteStevner = currentUser?.profile?.tilmeldteStevner || [];
 
         if (!userHid) {
           console.error("User HID not found. Cannot filter events.");
@@ -54,7 +55,7 @@ import KampCard from "../components/KampCard";
         }
 
         // Fetch and filter stevner and kampe
-        const stevneEvents = await fetchAndFilterEvents("staevner", "stevne", userHid);
+        const stevneEvents = await fetchAndFilterEvents("staevner", "stevne", userHid, tilmeldteStevner);
         const kampEvents = await fetchAndFilterEvents("kampe", "kamp", userHid);
 
         // Combine and sort events

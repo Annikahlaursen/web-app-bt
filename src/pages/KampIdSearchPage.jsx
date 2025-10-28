@@ -4,6 +4,7 @@ import KampCard from "../components/KampCard";
 import useFilters from "../hooks/useFilters";
 import arrowBlack from "/public/arrow-left-black.svg";
 import tableTennis from "/public/table-tennis-icon.svg";
+import ArrowBack from "../components/ArrowBack";
 
 export default function KampIdSearchPage() {
   const [kamp, setKamp] = useState([]);
@@ -63,13 +64,7 @@ export default function KampIdSearchPage() {
   return (
     <div>
       <div className="search-pages">
-        <a onClick={navigateBack} style={{ cursor: "pointer" }}>
-          <img
-            className="arrow"
-            src={arrowBlack}
-            alt="Arrow back to previus page"
-          />
-        </a>
+        <ArrowBack color="black" />
         <input
           className="searchbar"
           type="text"

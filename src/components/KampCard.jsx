@@ -52,7 +52,7 @@ const KampCard = forwardRef(({ kamp, oplysninger }, ref) => {
     return (
       <div className="kamp-card" onClick={handleResultatClick} ref={ref}>
         <div className="kamp-container">
-          <p>{kamp?.id}</p>
+          <p>KampID {kamp?.id ?? "utilgængelig lige nu"}</p>
           <p>{formattedDate ?? "ingen dato endnu"}</p>
         </div>
         <div className="kamp-container">
@@ -61,8 +61,8 @@ const KampCard = forwardRef(({ kamp, oplysninger }, ref) => {
             <p>{hjemmeholdNavn}</p>
           </div>
           <div className="kamp-vs">
-            <p>VS</p>
             <p>{kamp?.tid}</p>
+            <p>VS</p>
           </div>
           <div className="kamp-hold">
             <img src={udeklubLogo} alt="" />
@@ -75,7 +75,7 @@ const KampCard = forwardRef(({ kamp, oplysninger }, ref) => {
     return (
       <div className="kamp-card" ref={ref}>
         <div className="kamp-container" onClick={handleClick}>
-          <p>{kamp?.id}</p>
+          <p>KampID {kamp?.id ?? "utilgængelig lige nu"}</p>
           <p>{formattedDate ?? "ingen dato endnu"}</p>
         </div>
         <div className="kamp-container" onClick={handleClick}>
@@ -84,8 +84,8 @@ const KampCard = forwardRef(({ kamp, oplysninger }, ref) => {
             <p>{hjemmeholdNavn}</p>
           </div>
           <div className="kamp-vs">
-            <p>VS</p>
             <p>{kamp?.tid}</p>
+            <p>VS</p>
           </div>
           <div className="kamp-hold">
             <img src={udeklubLogo} alt="" />
