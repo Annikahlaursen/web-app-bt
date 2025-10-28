@@ -72,7 +72,7 @@ export default function SignOutCard({
       }
 
       setConfirmationMessage(
-        `Du er nu tilmeldt ${stevne.titel}! Vi glæder os til at se dig!`
+        `Du er nu tilmeldt ${stevne.titel}! Stævnet er føjet til din kalender!`
       );
     } catch (error) {
       console.error("Failed to tilmeld stevne:", error);
