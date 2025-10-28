@@ -4,6 +4,7 @@ import arrowWhite from "/public/arrow-left-white.svg";
 import calendar from "/public/calendar-outline.svg";
 import location from "/public/location-dot.svg";
 import TilmedCard from "../components/TilmeldCard";
+import { formatDateYear } from "../helper";
 
 export default function StevnePage() {
   const navigate = useNavigate();
@@ -34,6 +35,8 @@ export default function StevnePage() {
   }, [id]);
 
   // -----------------Fetch stevne data-----------------
+  const formattedDateYear = formatDateYear(stevne.dato);
+
   useEffect(() => {
     async function fetchStevne() {
       const response = await fetch(
@@ -81,7 +84,7 @@ export default function StevnePage() {
         </button>
         <div className="kamp-info">
           <img src={calendar} alt="Calendar icon" />
-          <p>{stevne.dato}</p>
+          <p>{formattedDateYear}</p>
         </div>
         <div className="kamp-info">
           <img src={location} alt="Location pin icon" />

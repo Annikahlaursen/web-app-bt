@@ -6,6 +6,7 @@ import bellSolid from "/public/bell-solid.svg";
 import { useNavigate, useParams } from "react-router";
 import { useEffect, useState, forwardRef } from "react";
 import { getHoldById, getKlubById } from "../helper";
+import { formatDate } from "../helper";
 
 const KampCard = forwardRef(({ kamp, oplysninger }, ref) => {
   const [hold, setHold] = useState({});
@@ -14,6 +15,8 @@ const KampCard = forwardRef(({ kamp, oplysninger }, ref) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const params = useParams();
   const navigate = useNavigate();
+
+  const formattedDate = formatDate(kamp.dato);
 
   useEffect(() => {
     getHoldById(useParams.hid).then((fetchedHold) => setHold(fetchedHold));
@@ -49,8 +52,8 @@ const KampCard = forwardRef(({ kamp, oplysninger }, ref) => {
     return (
       <div className="kamp-card" onClick={handleResultatClick} ref={ref}>
         <div className="kamp-container">
-          <p>{kamp?.id}</p>
-          <p>{kamp?.dato}</p>
+          <p>KampID {kamp?.id ?? "utilgængelig lige nu"}</p>
+          <p>{formattedDate ?? "ingen dato endnu"}</p>
         </div>
         <div className="kamp-container">
           <div className="kamp-hold">
@@ -58,8 +61,8 @@ const KampCard = forwardRef(({ kamp, oplysninger }, ref) => {
             <p>{hjemmeholdNavn}</p>
           </div>
           <div className="kamp-vs">
-            <p>VS</p>
             <p>{kamp?.tid}</p>
+            <p>VS</p>
           </div>
           <div className="kamp-hold">
             <img src={udeklubLogo} alt="" />
@@ -72,8 +75,8 @@ const KampCard = forwardRef(({ kamp, oplysninger }, ref) => {
     return (
       <div className="kamp-card" ref={ref}>
         <div className="kamp-container" onClick={handleClick}>
-          <p>{kamp?.id}</p>
-          <p>{kamp?.dato}</p>
+          <p>KampID {kamp?.id ?? "utilgængelig lige nu"}</p>
+          <p>{formattedDate ?? "ingen dato endnu"}</p>
         </div>
         <div className="kamp-container" onClick={handleClick}>
           <div className="kamp-hold">
@@ -81,8 +84,8 @@ const KampCard = forwardRef(({ kamp, oplysninger }, ref) => {
             <p>{hjemmeholdNavn}</p>
           </div>
           <div className="kamp-vs">
-            <p>VS</p>
             <p>{kamp?.tid}</p>
+            <p>VS</p>
           </div>
           <div className="kamp-hold">
             <img src={udeklubLogo} alt="" />

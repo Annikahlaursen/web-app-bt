@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-
-import arrowBlack from "/arrow-left-black.svg";
-
 import StevneCard from "../components/StevneCard";
 import useFilters from "../hooks/useFilters";
+import ArrowBack from "../components/ArrowBack";
 
 export default function StevneSearchPage() {
   //-----------------Fetch stævner-----------------
@@ -43,12 +41,7 @@ export default function StevneSearchPage() {
   return (
     <section className="page-topmargin">
       <div className="search-pages">
-        <img
-          className="arrow"
-          src={arrowBlack}
-          alt="Arrow back to previous page"
-          onClick={() => navigate(-1)}
-        />
+        <ArrowBack color="black" />
         <h1>Stævner</h1>
         <input
           type="text"
