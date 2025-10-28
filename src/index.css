@@ -674,7 +674,7 @@ a:hover {
   flex: 1;
   padding: 0.8rem 1rem;
   border: none;
-  border-radius: 8px;
+  border-radius: var(--border-radius);
   font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
@@ -1309,8 +1309,21 @@ a:hover {
 }
 
 .kamp-info-section.stevne {
-  min-height: 110vh;
+  min-height: 130vh;
   height: auto;
+  padding-bottom: 8rem;
+}
+
+.raekker{
+margin: 3rem 0 7rem;
+}
+
+.raekker > :nth-child(3){
+margin-top: 3rem;
+}
+
+.tilmeldt-raekker{
+margin: 2rem 0 7rem;
 }
 
 /* ---------- Button Styling ---------- */
@@ -1323,7 +1336,7 @@ a:hover {
   font-size: 1rem;
   font-family: var(--display-font);
   position: sticky;
-  top: 80%;
+  top: 75%;
   margin: 0 auto;
   display: block;
   min-width: 25vh;
