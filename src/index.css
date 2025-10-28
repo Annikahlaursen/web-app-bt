@@ -313,6 +313,12 @@ a:hover {
   border: var(--white) solid 2px;
 }
 
+.profile-btns-actions button {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 10px;
+}
+
 .profile-btns-actions p {
   text-align: center;
 }
@@ -374,6 +380,7 @@ a:hover {
 
 .text-center {
   text-align: center;
+  color: var(--white);
 }
 
 /* ---------- Login, Create and Update Page Styling ---------- */
@@ -393,7 +400,7 @@ a:hover {
   height: 15%;
 }
 
-#login-logo {
+.login-page-logo img {
   height: 90%;
 }
 
@@ -579,7 +586,7 @@ a:hover {
   font-family: inherit;
 }
 
-.signout-image {
+.signout img {
   width: 70px;
 }
 
@@ -607,7 +614,7 @@ a:hover {
   animation: fadeIn 0.3s ease-out;
 }
 
-.signout-background--closing {
+.signout-background-closing {
   animation: fadeOut 0.3s ease-in;
 }
 
@@ -623,11 +630,11 @@ a:hover {
   animation: slideUpFromBottom 0.3s ease-out;
 }
 
-.signout-card--closing {
+.signout-card-closing {
   animation: slideDownToBottom 0.3s ease-in;
 }
 
-.signout-card__header {
+.signout-card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -636,12 +643,12 @@ a:hover {
   padding-bottom: 1rem;
 }
 
-.signout-card__header h3 {
+.signout-card-header h3 {
   margin: 0;
   font-size: 1.2rem;
 }
 
-.signout-card__close {
+.signout-card-close {
   background: none;
   border: none;
   cursor: pointer;
@@ -650,47 +657,47 @@ a:hover {
   transition: background-color 0.3s ease;
 }
 
-.signout-card__close:hover {
+.signout-card-close:hover {
   background-color: var(--light-grey);
 }
 
-.signout-card__content {
+.signout-card-content {
   margin-bottom: 1.5rem;
 }
 
-.signout-card__content p {
+.signout-card-content p {
   margin: 0;
   font-size: 1rem;
   color: var(--text-color-dark);
 }
 
-.signout-card__actions {
+.signout-card-actions {
   display: flex;
   gap: 1rem;
 }
 
-.signout-card__cancel,
-.signout-card__confirm {
+.signout-card-cancel,
+.signout-card-confirm {
   flex: 1;
   padding: 0.8rem 1rem;
   border: none;
-  border-radius: 8px;
+  border-radius: var(--border-radius);
   font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
-.signout-card__cancel {
+.signout-card-cancel {
   background-color: var(--light-grey);
   color: var(--text-color-dark);
 }
 
-.signout-card__cancel:hover {
+.signout-card-cancel:hover {
   background-color: #e0e0e0;
 }
 
-.signout-card__confirm {
+.signout-card-confirm {
   background-color: var(--darkred);
   color: var(--white);
 }
@@ -1313,8 +1320,21 @@ a:hover {
 }
 
 .kamp-info-section.stevne {
-  min-height: 110vh;
+  min-height: 130vh;
   height: auto;
+  padding-bottom: 8rem;
+}
+
+.raekker{
+margin: 3rem 0 7rem;
+}
+
+.raekker > :nth-child(3){
+margin-top: 3rem;
+}
+
+.tilmeldt-raekker{
+margin: 2rem 0 7rem;
 }
 
 /* ---------- Button Styling ---------- */
@@ -1327,7 +1347,7 @@ a:hover {
   font-size: 1rem;
   font-family: var(--display-font);
   position: sticky;
-  top: 80%;
+  top: 75%;
   margin: 0 auto;
   display: block;
   min-width: 25vh;

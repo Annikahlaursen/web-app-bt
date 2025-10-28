@@ -62,7 +62,7 @@ export default function KampIdSearchPage() {
   }
 
   return (
-    <div className="page-topmargin">
+    <div>
       <div className="search-pages">
         <ArrowBack color="black" />
         <input
@@ -75,7 +75,7 @@ export default function KampIdSearchPage() {
           style={{ flex: 1, padding: "10px", width: "40vh" }}
         />
       </div>
-      <section className="opdel holdkampe-background page">
+      <section className="opdel holdkampe-background">
         {filteredData && filteredData.length > 0 ? (
           filteredData.map((kamp) => (
             <KampCard key={kamp.id} kamp={kamp} oplysninger="kunOplysninger" />

@@ -67,7 +67,7 @@ export default function SignInCard() {
   };
 
   return (
-    <section className="profile-info-parent">
+    <section>
       <div>
         <form className="profile-form" onSubmit={handleSignIn}>
           <input
@@ -104,16 +104,16 @@ export default function SignInCard() {
 
         <div className="profile-btns-actions">
           <button
-            className="profile-btns profile-btns-actions-seperat profile-btn-actions-red"
+            className="profile-btns-actions-seperat profile-btn-actions-red"
             onClick={handleGoToSignUp}
           >
             Opret ny konto
           </button>
           <p style={{ color: "#fff" }}>Eller</p>
-          <button className="profile-btns profile-btns-actions-seperat profile-btns-actions-style">
+          <button className="profile-btns-actions-seperat profile-btns-actions-style">
             Log ind med Facebook
           </button>
-          <button className="profile-btns profile-btns-actions-seperat profile-btns-actions-style">
+          <button className="profile-btns-actions-seperat profile-btns-actions-style">
             Log ind med Google
           </button>
         </div>

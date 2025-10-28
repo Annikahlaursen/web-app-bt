@@ -113,9 +113,13 @@ export default function HomePage() {
 
   return (
     <section>
-      <img src={photo} alt="" className="header-img" />
+      <img
+        src={photo}
+        alt="Heroimage af bordtennis spiller"
+        className="header-img"
+      />
       <section className="forside">
-        <section className="forside-del">
+        <section>
           <h1>Din Næste Kamp</h1>
           {loadingKamp || userHid === null ? (
             <p>Henter næste kamp...</p>
@@ -148,7 +152,7 @@ export default function HomePage() {
             <img src={arrow} alt="Pil til rating-side" />
           </Link>
         </section>
-        <section className="forside-del">
+        <section>
           <h1>Nyheder</h1>
           <NyhedsCard />
           <NyhedsCard />
