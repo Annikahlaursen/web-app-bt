@@ -897,6 +897,10 @@ a:hover {
 }
 
 /*------------Rating boks styling------------*/
+.red-border {
+  border: var(--lightred) solid 2px;
+}
+
 .rating-boks-grid {
   display: grid;
   grid-template-columns: 1fr 4fr 1fr 1fr;

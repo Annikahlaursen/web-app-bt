@@ -6,6 +6,7 @@ import NyhedsCard from "../components/NyhedsCard";
 import photo from "/public/img/unsplash-photo.svg";
 import arrow from "/public/arrow-right-black.svg";
 import RatingListe from "../components/RatingListe";
+import { normalizeUsers } from "../helper";
 
 export default function HomePage() {
   const [users, setUsers] = useState([]);
@@ -57,16 +58,7 @@ export default function HomePage() {
       const response = await fetch(url);
       const data = await response.json();
 
-      const usersArray = Object.keys(data).map((key) => ({
-        id: key,
-        ...data[key],
-      }));
-
-      usersArray.sort((a, b) => b.rating - a.rating);
-
-      usersArray.forEach((user, index) => {
-        user.placering = index + 1;
-      });
+      const usersArray = normalizeUsers(data);
 
       setUsers(usersArray);
       setLoading(false);
@@ -121,7 +113,7 @@ export default function HomePage() {
 
   return (
     <section>
-      <img src={photo} alt="" className="header-img"/>
+      <img src={photo} alt="" className="header-img" />
       <section className="forside">
         <section className="forside-del">
           <h1>Din Næste Kamp</h1>
@@ -142,7 +134,7 @@ export default function HomePage() {
           {loading ? (
             <p>Henter ratingliste...</p>
           ) : (
-            <RatingListe users={users.slice(0, 5)} />
+            <RatingListe users={users} />
           )}
 
           <Link
