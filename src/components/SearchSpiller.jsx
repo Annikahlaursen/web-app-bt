@@ -24,12 +24,6 @@ export default function SearchSpiller({ holdId, klubId, onSpillerChange }) {
     fetchUsers();
   }, []);
 
-  //Disse 2 linjer vil måske kunne bruges til at filtere og først vie dem der er på hjemmeholdet
-  /* Only users with hid: -HnAd4o6AtIlkW2SCf6R
-  const teamHid = kamp.hjemmehold;
-  const teamUsers = users.filter((user) => user.hid === teamHid);
-  */
-
   // Filter users by holdId if provided
   const filteredByKlub = users.filter((u) =>
     klubId ? u.kid === klubId : true
@@ -58,8 +52,6 @@ export default function SearchSpiller({ holdId, klubId, onSpillerChange }) {
     label: `${user.fornavn} ${user.efternavn ?? ""}`.trim(),
   }));
 
-  console.log(userOptions, klubId);
-
   useEffect(() => {
     setSelectedPlayers([]);
     if (onSpillerChange) onSpillerChange([]);
@@ -67,7 +59,7 @@ export default function SearchSpiller({ holdId, klubId, onSpillerChange }) {
 
   function handleSelectChange(selectedOptions) {
     setSelectedPlayers(selectedOptions);
-    if (onSpillerChange) onSpillerChange(selectedOptions); // 🔥 send data op
+    if (onSpillerChange) onSpillerChange(selectedOptions); // send data op
   }
 
   return (
