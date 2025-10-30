@@ -138,24 +138,24 @@ export default function SignOutCard({
         <div className="signout-overlay">
           <div
             className={`signout-background ${
-              isClosing ? "signout-background--closing" : ""
+              isClosing ? "signout-background-closing" : ""
             }`}
             onClick={handleClose}
           />
           <div
             className={`signout-card ${
-              isClosing ? "signout-card--closing" : ""
+              isClosing ? "signout-card-closing" : ""
             }`}
           >
-            <div className="signout-card__header">
+            <div className="signout-card-header">
               <h3>{confirmationMessage ? "Bekræftelse" : "Tilmelding"}</h3>
               <button
-                className="signout-card__close"
+                className="signout-card-close"
                 type="button"
                 onClick={handleClose}
               ></button>
             </div>
-            <div className="signout-card__content">
+            <div className="signout-card-content">
               {confirmationMessage ? (
                 <p>{confirmationMessage}</p>
               ) : isTilmeldt ? (
@@ -164,29 +164,29 @@ export default function SignOutCard({
                 <p>Vil du tilmeldes {stevne.titel}?</p>
               )}
             </div>
-            <div className="signout-card__actions">
+            <div className="signout-card-actions">
               {confirmationMessage ? (
-                <button className="signout-card__confirm" onClick={handleClose}>
+                <button className="signout-card-confirm" onClick={handleClose}>
                   Luk
                 </button>
               ) : (
                 <>
                   <button
-                    className="signout-card__cancel"
+                    className="signout-card-cancel"
                     onClick={handleClose}
                   >
                     Annuller
                   </button>
                   {isTilmeldt ? (
                     <button
-                      className="signout-card__confirm"
+                      className="signout-card-confirm"
                       onClick={handleDeleteTilmeld}
                     >
                       Afmeld
                     </button>
                   ) : (
                     <button
-                      className="signout-card__confirm"
+                      className="signout-card-confirm"
                       onClick={handleConfirmTilmeld}
                     >
                       Tilmeld
