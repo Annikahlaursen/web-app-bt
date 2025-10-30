@@ -43,7 +43,21 @@ export default function SignInCard() {
       }
 
       if (profile) {
-        const currentUser = { uid: user.uid, mail: user.email, profile };
+        const currentUser = {
+          uid: user.uid,
+          mail: user.email,
+          profile: {
+            ...profile,
+            hid:
+              Array.isArray(profile.hid) && profile.hid.length > 0
+                ? profile.hid[0].value
+                : profile.hid,
+            kid:
+              Array.isArray(profile.kid) && profile.kid.length > 0
+                ? profile.kid[0].value
+                : profile.kid,
+          },
+        };
         setCurrentUserStorage(currentUser);
       } else {
         // fallback: store minimal info so UI still reacts

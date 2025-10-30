@@ -79,6 +79,9 @@ export default function FilterOverlay({
     const clubValues = selectedClubs
       ? selectedClubs.map((club) => club.value)
       : [];
+
+        console.log("Selected Clubs:", selectedClubs);
+        console.log("Club Values:", clubValues);
     updateFilterCriteria("clubs", clubValues);
 
     setTempFilters((prev) => ({
