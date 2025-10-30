@@ -63,8 +63,8 @@ export default function KampIdSearchPage() {
 
   return (
     <div>
+      <ArrowBack color="black" />
       <div className="search-pages">
-        <ArrowBack color="black" />
         <input
           className="searchbar"
           type="text"

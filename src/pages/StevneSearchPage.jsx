@@ -38,14 +38,14 @@ export default function StevneSearchPage() {
     }
   );
 
-   const sortedData = [...filteredData].sort(
-     (a, b) => new Date(a.dato) - new Date(b.dato)
-   );
+  const sortedData = [...filteredData].sort(
+    (a, b) => new Date(a.dato) - new Date(b.dato)
+  );
 
   return (
     <section>
+      <ArrowBack color="black" />
       <div className="search-pages">
-        <ArrowBack color="black" />
         <h1>Stævner</h1>
         <input
           type="text"

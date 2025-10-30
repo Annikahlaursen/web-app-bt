@@ -91,8 +91,8 @@ export default function HoldSearchPage() {
 
   return (
     <div>
+      <ArrowBack color="black" />
       <div className="search-pages">
-        <ArrowBack color="black" />
         <Select
           options={klubOptions}
           value={selectedOption}
