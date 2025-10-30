@@ -126,7 +126,13 @@ export default function Overlay({ isOpen, onClose }) {
               isClosing ? "overlay-container-closing" : ""
             }`}
           >
-            <NavLink to="/profile" className="navprofile" onClick={handleClose}>
+            <NavLink
+              to="/profile"
+              className={({ isActive }) =>
+                isActive ? "navprofile active" : "navprofile"
+              }
+              onClick={handleClose}
+            >
               <div className="profile-image">
                 <img src={displayImage || Placeholder} alt="Profilbillede" />
               </div>
@@ -157,7 +163,12 @@ export default function Overlay({ isOpen, onClose }) {
                 {open ? (
                   <ul>
                     <li className="menu-item">
-                      <NavLink to="/error">
+                      <NavLink
+                        to="/error"
+                        className={({ isActive }) =>
+                          isActive ? "overlay-link active" : "overlay-link"
+                        }
+                      >
                         <img
                           className="menu-rund"
                           src={displayKlub}
@@ -166,13 +177,23 @@ export default function Overlay({ isOpen, onClose }) {
                         />
                         <p style={{ marginTop: "4px" }}>Min klub</p>
                       </NavLink>
-                      <NavLink to="/error">
+                      <NavLink
+                        to="/error"
+                        className={({ isActive }) =>
+                          isActive ? "overlay-link active" : "overlay-link"
+                        }
+                      >
                         <button className="menu-rund">
                           <p>{displayHold || "Mit hold"}</p>
                         </button>
                         <p className="menu-text-flow">Mit hold</p>
                       </NavLink>
-                      <NavLink to="/error">
+                      <NavLink
+                        to="/error"
+                        className={({ isActive }) =>
+                          isActive ? "overlay-link active" : "overlay-link"
+                        }
+                      >
                         <button className="menu-rund">
                           <img src={Star} alt="" />
                         </button>
@@ -184,42 +205,60 @@ export default function Overlay({ isOpen, onClose }) {
               </div>
               <NavLink
                 to="/searchKampID"
-                className="overlay-link"
+                className={({ isActive }) =>
+                  isActive ? "overlay-link active" : "overlay-link"
+                }
                 onClick={handleClose}
               >
                 <span>Indskriv Kampresultat</span>
               </NavLink>
               <NavLink
                 to="/holdsearch"
-                className="overlay-link overlay-linkcolorchange"
+                className={({ isActive }) =>
+                  isActive
+                    ? "overlay-link overlay-linkcolorchange active"
+                    : "overlay-link overlay-linkcolorchange"
+                }
                 onClick={handleClose}
               >
                 <span>Find Hold</span>
               </NavLink>
               <NavLink
                 to="/stevnesearch"
-                className="overlay-link"
+                className={({ isActive }) =>
+                  isActive ? "overlay-link active" : "overlay-link"
+                }
                 onClick={handleClose}
               >
                 <span>Find Stævne</span>
               </NavLink>
               <NavLink
                 to="/error"
-                className="overlay-link overlay-linkcolorchange"
+                className={({ isActive }) =>
+                  isActive
+                    ? "overlay-link overlay-linkcolorchange active"
+                    : "overlay-link overlay-linkcolorchange"
+                }
                 onClick={handleClose}
               >
                 <span>Nyheder</span>
               </NavLink>
               <NavLink
                 to="/rating"
-                className="overlay-link"
+                className={({ isActive }) =>
+                  isActive ? "overlay-link active" : "overlay-link"
+                }
                 onClick={handleClose}
               >
                 <span>Ratings</span>
               </NavLink>
               <NavLink
                 to="/kalender"
-                className="overlay-link overlay-linkcolorchange"
+                className={({ isActive }) =>
+                  isActive
+                    ? "overlay-link overlay-linkcolorchange active"
+                    : "overlay-link overlay-linkcolorchange"
+                }
                 onClick={handleClose}
               >
                 <span>Kalender</span>
