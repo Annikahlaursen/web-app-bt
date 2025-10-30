@@ -5,12 +5,12 @@ import StevneCard from "../components/StevneCard";
 import KampCard from "../components/KampCard";
 import arrowForward from "/public/arrow-right-black.svg";
 
-
 export default function KalenderPage() {
   const [events, setEvents] = useState([]);
   const nextEventRef = useRef(null);
   const monthHeadersRef = useRef([]);
   const [activeFilter, setActiveFilter] = useState("alle");
+  const [userHid, setUserHid] = useState(null);
   const navigate = useNavigate();
 
   //----------------------------Henter Data----------------------------//
@@ -58,14 +58,9 @@ export default function KalenderPage() {
         const currentUser = JSON.parse(
           localStorage.getItem("currentUser") || "{}"
         );
-        const userHid = currentUser?.profile?.hid;
+        const userHid = currentUser?.profile?.hid || null;
         const tilmeldteStevner = currentUser?.profile?.tilmeldteStevner || [];
-
-        if (!userHid) {
-          console.error("User HID not found. Cannot filter events.");
-          setEvents([]);
-          return;
-        }
+        setUserHid(userHid);
 
         // Fetch and filter stevner and kampe
         const stevneEvents = await fetchAndFilterEvents(
@@ -74,7 +69,13 @@ export default function KalenderPage() {
           userHid,
           tilmeldteStevner
         );
-        const kampEvents = await fetchAndFilterEvents("kampe", "kamp", userHid);
+        let kampEvents = [];
+        if (userHid) {
+          // Only fetch kampe if userHid exists
+          kampEvents = await fetchAndFilterEvents("kampe", "kamp", userHid);
+        } else {
+          console.warn("User HID not found. Only stevner will be displayed.");
+        }
 
         // Combine and sort events
         const combinedEvents = [...stevneEvents, ...kampEvents].sort(
@@ -175,12 +176,37 @@ export default function KalenderPage() {
   return (
     <section className="kalender-page">
       <KalenderFilter setFilter={setActiveFilter} />
-      {activeFilter === "staevner" &&
+      {activeFilter === "holdkampe" &&
       Object.keys(filteredEvents).length === 0 ? (
+        userHid && userHid !== null ? (
+          // Scenario 1: Bruger har kid og hid, men ingen kommende kampe
+          <div className="empty-state-container">
+            <h2>Ingen Kommende Kampe</h2>
+            <p>Du har ingen planlagte holdkampe lige nu</p>
+          </div>
+        ) : (
+          // Scenario 2: Bruger har ikke kid og hid
+          <div className="empty-state-container">
+            <h2>Du her ikke tilknyttet et hold</h2>
+            <div
+              className="link-forward"
+              onClick={() => navigate("/update/:id")}
+            >
+              <p>Find din klub og dit hold her</p>
+              <img src={arrowForward} alt="gå til opdater profil"></img>
+            </div>
+          </div>
+        )
+      ) : activeFilter === "staevner" &&
+        Object.keys(filteredEvents).length === 0 ? (
+        // Empty State for stævner
         <div className="no-kamp-today stevne">
           <h2>Du er ikke tilmeldt nogen stævner lige nu</h2>
           <p>Find et stævne, der matcher dit spin!</p>
-          <div className="link-forward" onClick={() => navigate("/stevnesearch")}>
+          <div
+            className="link-forward"
+            onClick={() => navigate("/stevnesearch")}
+          >
             <p>Søg stævner</p>
             <img src={arrowForward} alt="gå til stævnesøgning"></img>
           </div>

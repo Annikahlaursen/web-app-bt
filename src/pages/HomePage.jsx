@@ -1,6 +1,5 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useState, useEffect } from "react";
-
 import KampCard from "../components/KampCard";
 import NyhedsCard from "../components/NyhedsCard";
 import photo from "/public/img/unsplash-photo.svg";
@@ -14,6 +13,7 @@ export default function HomePage() {
   const [loadingKamp, setLoadingKamp] = useState(true);
   const [kamp, setKamp] = useState([]);
   const [userHid, setUserHid] = useState(null);
+  const navigate = useNavigate();
 
   //-----------------Fetch current user's Hid (hold)-----------------
   useEffect(() => {
@@ -121,17 +121,44 @@ export default function HomePage() {
       <section className="forside">
         <section>
           <h1>Din Næste Kamp</h1>
-          {loadingKamp || userHid === null ? (
-            <p>Henter næste kamp...</p>
+          {loadingKamp ? (
+            <>
+              <p>Henter næste kamp...</p>
+              <Link className="flex-pil" to="/kalender">
+                <p>Kalender</p>
+                <img src={arrow} alt="Pil til kamp med id" />
+              </Link>
+            </>
           ) : nextKamp ? (
-            <KampCard key={nextKamp.id} kamp={nextKamp} />
+            <>
+              <KampCard key={nextKamp.id} kamp={nextKamp} />
+              <Link className="flex-pil" to="/kalender">
+                <p>Kalender</p>
+                <img src={arrow} alt="Pil til kamp med id" />
+              </Link>
+            </>
+          ) : userHid && userHid !== null ? (
+            // Scenario 1: Bruger har kid og hid, men ingen kommende kampe
+            <>
+              <p>Du har ingen planlagte holdkampe lige nu</p>
+              <Link className="flex-pil" to="/kalender">
+                <p>Kalender</p>
+                <img src={arrow} alt="Pil til kamp med id" />
+              </Link>
+            </>
           ) : (
-            <p>Ingen kommende kampe</p>
+            // Scenario 2: Bruger har ikke kid og hid
+            <div className="no-kamp-today">
+              <p>For at se holdkampe skal du tilføje en klub og et hold.</p>
+              <div
+                className="link-forward"
+                onClick={() => navigate("/update/:id")}
+              >
+                <p>Tilføj klub og hold</p>
+                <img src={arrow} alt="gå til opdater profil"></img>
+              </div>
+            </div>
           )}
-          <Link className="flex-pil" to="/kalender">
-            <p>Kalender</p>
-            <img src={arrow} alt="Pil til kamp med id" />
-          </Link>
         </section>
         <section className="forside-del">
           <h1>Rating</h1>
