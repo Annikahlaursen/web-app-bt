@@ -88,6 +88,12 @@ export default function SignInCard() {
       if (typeof code === "string") {
         code = code.replaceAll("-", " ").replaceAll("auth/", "");
       }
+      if (code === "invalid credential") {
+        code = "Forkert adgangskode eller email. Prøv igen.";
+      } else if (code === "user not found") {
+        code = "Brugeren blev ikke fundet. Tjek din email.";
+      }
+
       setErrorMessage(code);
     }
   }
@@ -118,9 +124,11 @@ export default function SignInCard() {
             placeholder="Adgangskode"
             autoComplete="current-password"
           />
-          <div className="error-message">
-            <p>{errorMessage}</p>
-          </div>
+          {errorMessage && (
+            <div className="error-message-light">
+              <p>{errorMessage}</p>
+            </div>
+          )}
           <div>
             <button
               className="profile-btns profile-btns-actions-seperat profile-btns-actions-white"
