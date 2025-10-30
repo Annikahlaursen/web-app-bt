@@ -24,11 +24,12 @@ export default function SearchSpiller({ holdId, klubId, onSpillerChange }) {
     fetchUsers();
   }, []);
 
-  // Filter users by holdId if provided
+  // Filter users by club
   const filteredByKlub = users.filter((u) =>
     klubId ? u.kid === klubId : true
   );
 
+  //filter club-users by team - to be displayed first - sort from a-b
   const onHold = filteredByKlub
     .filter((u) => u.hid === holdId)
     .sort((a, b) => {
@@ -37,6 +38,7 @@ export default function SearchSpiller({ holdId, klubId, onSpillerChange }) {
       return nameA.localeCompare(nameB);
     });
 
+  //filter club-users on other teams than the playing - sort from a-b
   const offHold = filteredByKlub
     .filter((u) => u.hid !== holdId)
     .sort((a, b) => {
@@ -45,6 +47,7 @@ export default function SearchSpiller({ holdId, klubId, onSpillerChange }) {
       return nameA.localeCompare(nameB);
     });
 
+  //combine onHold and offHold to be used in options
   const combined = [...onHold, ...offHold];
 
   const userOptions = combined.map((user) => ({
