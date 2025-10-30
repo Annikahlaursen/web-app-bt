@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Select from "react-select";
 
-export default function SearchSpiller({ holdId, onSpillerChange }) {
+export default function SearchSpiller({ holdId, klubId, onSpillerChange }) {
   const [users, setUsers] = useState([]); // set the initial state to an empty array
   const [selectedPlayers, setSelectedPlayers] = useState([]);
 
@@ -31,20 +31,39 @@ export default function SearchSpiller({ holdId, onSpillerChange }) {
   */
 
   // Filter users by holdId if provided
-  const filteredByHold = Array.isArray(users)
-    ? users.filter((user) => (holdId ? user.hid === holdId : true))
-    : [];
+  const filteredByKlub = users.filter((u) =>
+    klubId ? u.kid === klubId : true
+  );
 
-  // dynamiske options til react-select
-  const userOptions = filteredByHold.map((user) => ({
+  const onHold = filteredByKlub
+    .filter((u) => u.hid === holdId)
+    .sort((a, b) => {
+      const nameA = `${a.fornavn ?? ""} ${a.efternavn ?? ""}`.trim();
+      const nameB = `${b.fornavn ?? ""} ${b.efternavn ?? ""}`.trim();
+      return nameA.localeCompare(nameB);
+    });
+
+  const offHold = filteredByKlub
+    .filter((u) => u.hid !== holdId)
+    .sort((a, b) => {
+      const nameA = `${a.fornavn ?? ""} ${a.efternavn ?? ""}`.trim();
+      const nameB = `${b.fornavn ?? ""} ${b.efternavn ?? ""}`.trim();
+      return nameA.localeCompare(nameB);
+    });
+
+  const combined = [...onHold, ...offHold];
+
+  const userOptions = combined.map((user) => ({
     value: user.id,
     label: `${user.fornavn} ${user.efternavn ?? ""}`.trim(),
   }));
 
+  console.log(userOptions, klubId);
+
   useEffect(() => {
     setSelectedPlayers([]);
     if (onSpillerChange) onSpillerChange([]);
-  }, [holdId]);
+  }, [holdId, klubId]);
 
   function handleSelectChange(selectedOptions) {
     setSelectedPlayers(selectedOptions);

@@ -105,6 +105,8 @@ export default function KampResultatPage() {
     }
   }
 
+  console.log(kamp.hjemmeklub);
+
   return (
     <section className="resultat-page">
       <button className="btn" onClick={handleSave}>
@@ -116,14 +118,14 @@ export default function KampResultatPage() {
         <p>Vælg spillere ({hjemmeholdNavn})</p>
         <SearchSpiller
           key={`${kamp.id}-hjemme`}
-          kamp={kamp}
+          klubId={kamp?.hjemmeklub}
           holdId={kamp?.hjemmehold}
           onSpillerChange={(spillere) => setValgteSpillereHjem(spillere)}
         />
         <p>Vælg spillere ({udeholdNavn})</p>
         <SearchSpiller
           key={`${kamp.id}-ude`}
-          kamp={kamp}
+          klubId={kamp?.udeklub}
           holdId={kamp?.udehold}
           onSpillerChange={(spillere) => setValgteSpillereUde(spillere)}
         />
