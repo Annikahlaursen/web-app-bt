@@ -150,8 +150,11 @@ a:hover {
   border: 2px solid var(--darkred);
 }
 
-.navbtns a:hover {
-  background-color: var(--darkred);
+/* Active state for bottom nav buttons */
+.navcircle.active {
+  background-color: var(--darkestRed);
+  border: none;
+  transform: translateY(-4px);
 }
 
 .navbtns a .nav-icon {
@@ -528,6 +531,11 @@ a:hover {
   font-size: 1.1rem;
   font-weight: 500;
   width: 100%;
+}
+
+/* Active state for overlay links */
+.overlay-link.active {
+  background-color: var(--darkestRed);
 }
 
 .dropdown {

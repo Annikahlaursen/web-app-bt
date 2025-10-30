@@ -14,7 +14,12 @@ export default function Nav() {
 
   return (
     <nav className="navbtns">
-      <NavLink className="navcircle" to="/">
+      <NavLink
+        className={({ isActive }) =>
+          isActive ? "navcircle active" : "navcircle"
+        }
+        to="/"
+      >
         <img
           src={Home}
           alt="Home"
@@ -22,7 +27,12 @@ export default function Nav() {
           style={{ fontSize: "2rem" }}
         />
       </NavLink>
-      <NavLink className="navcircle" to="/kalender">
+      <NavLink
+        className={({ isActive }) =>
+          isActive ? "navcircle active" : "navcircle"
+        }
+        to="/kalender"
+      >
         <img
           src={Calender}
           alt="Calender"
