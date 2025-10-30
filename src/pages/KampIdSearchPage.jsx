@@ -92,7 +92,7 @@ export default function KampIdSearchPage() {
               Bemærk: Kampdata kan kun opdateres på den dag, kampen spilles.
             </p>
             <div className="tilbage-til-kalender" onClick={navigateBack}>
-              <img className="arrow" src={arrowBlack} alt="pil tilbage knap" />
+              <img src={arrowBlack} alt="pil tilbage knap" />
               <p>Gå til kalender</p>
             </div>
           </div>

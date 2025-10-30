@@ -1325,16 +1325,16 @@ a:hover {
   padding-bottom: 8rem;
 }
 
-.raekker{
-margin: 3rem 0 7rem;
+.raekker {
+  margin: 3rem 0 7rem;
 }
 
-.raekker > :nth-child(3){
-margin-top: 3rem;
+.raekker > :nth-child(3) {
+  margin-top: 3rem;
 }
 
-.tilmeldt-raekker{
-margin: 2rem 0 7rem;
+.tilmeldt-raekker {
+  margin: 2rem 0 7rem;
 }
 
 /* ---------- Button Styling ---------- */
@@ -1577,4 +1577,8 @@ div .css-1p3m7a8-multiValue {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.tilbage-til-kalender img {
+  width: 10%;
+  margin-right: 0.5rem;
 }
