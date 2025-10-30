@@ -39,19 +39,16 @@ export default function ProfileInfo() {
 
     const url = `${firebaseDbUrlBase}/users/${uid}.json`;
     const response = await fetch(url);
-
     const currentUserData = await response.json();
 
     // Brug først valgte hold/klub hvis flere er valgt
-    const firstKlub =
-      selectedKlub && selectedKlub.length > 0 ? selectedKlub[0] : null;
-    const firstHold =
-      selectedHold && selectedHold.length > 0 ? selectedHold[0] : null;
+    const klub = selectedKlub || null;
+    const hold = selectedHold || null;
 
-    // find the klub object to extract its image (try a few common fields)
+    // Find klubbens billede (hvis det findes)
     let kidImage = "";
-    if (firstKlub) {
-      const klubObj = klubber.find((k) => k.id === firstKlub.value);
+    if (klub) {
+      const klubObj = klubber.find((k) => k.id === klub.value);
       if (klubObj) {
         kidImage =
           klubObj.image ||
@@ -63,90 +60,27 @@ export default function ProfileInfo() {
       }
     }
 
+    // Opdater brugerdata
     const updatedUserData = {
       ...currentUserData,
-      kid: firstKlub ? firstKlub.value : null,
-      kidNavn: firstKlub ? firstKlub.label : "",
+      kid: klub ? klub.value : null,
+      kidNavn: klub ? klub.label : "",
       kidImage: kidImage,
-      hid: firstHold ? firstHold.value : null,
-      hidNavn: firstHold ? firstHold.label : "",
+      hid: hold ? hold.value : null,
+      hidNavn: hold ? hold.label : "",
       image: image || currentUserData.image || null,
     };
 
+    // Push opdaterede data til Firebase
     const patchResponse = await fetch(url, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updatedUserData),
     });
-    if (!patchResponse.ok) throw new Error("Failed to update user data.");
-    
-    try {
-      const response = await fetch(url);
-      const currentUserData = await response.json();
-
-      console.log("Current user data from Firebase:", currentUserData);
-
-      const updatedUserData = {
-        ...currentUserData,
-        kid: selectedKlub || null,
-        hid: selectedHold || null,
-      };
-
-      console.log("Updated user data to be patched:", updatedUserData);
-      // Push the updated data to Firebase
-      const patchResponse = await fetch(url, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updatedUserData),
-      });
-
-      if (!patchResponse.ok) throw new Error("Failed to update user data.");
-
-      // Update the currentUser object in localStorage
-      const currentUser = {
-        ...JSON.parse(localStorage.getItem("currentUser") || "{}"),
-        profile: {
-          ...(JSON.parse(localStorage.getItem("currentUser") || "{}").profile ||
-            {}),
-          kid: updatedUserData.kid,
-          hid: updatedUserData.hid,
-          image: updatedUserData.image,
-        },
-      };
-
-      console.log("Updated currentUser object for localStorage:", currentUser);
-      setCurrentUserStorage(currentUser); // Update localStorage and broadcast changes
-
-      console.log("klub og hold er tilføjet");
-      // update localStorage so Overlay and other components update immediately
-      try {
-        const raw = localStorage.getItem("currentUser");
-        if (raw) {
-          const cur = JSON.parse(raw);
-          cur.profile = cur.profile || {};
-          cur.profile.kid = updatedUserData.kid;
-          cur.profile.kidNavn = updatedUserData.kidNavn;
-          cur.profile.kidImage = updatedUserData.kidImage || "";
-          cur.profile.hid = updatedUserData.hid;
-          cur.profile.hidNavn = updatedUserData.hidNavn;
-          localStorage.setItem("currentUser", JSON.stringify(cur));
-          window.dispatchEvent(
-            new CustomEvent("currentUserChanged", { detail: cur })
-          );
-        }
-      } catch (err) {
-        console.warn("Could not update local currentUser after save:", err);
-      }
-      navigate("/");
-    } catch (error) {
-      console.error("Fejl ved opdatering af brugerdata:", error);
-    }
 
     if (!patchResponse.ok) throw new Error("Failed to update user data.");
 
-    console.log("Updated user data to be patched:", updatedUserData);
-
-    // Opdater currentUser object i localStorage
+    // Opdater currentUser i localStorage
     const currentUser = {
       ...JSON.parse(localStorage.getItem("currentUser") || "{}"),
       profile: {
@@ -154,14 +88,16 @@ export default function ProfileInfo() {
           {}),
         kid: updatedUserData.kid,
         kidNavn: updatedUserData.kidNavn,
+        kidImage: updatedUserData.kidImage,
         hid: updatedUserData.hid,
         hidNavn: updatedUserData.hidNavn,
         image: updatedUserData.image,
       },
     };
 
-    setCurrentUserStorage(currentUser); // opdater localStorage med currentUserEvents.js
+    setCurrentUserStorage(currentUser); // Opdater localStorage og broadcast ændringer
 
+    // Naviger tilbage til forsiden
     navigate("/");
   }
 
@@ -344,26 +280,18 @@ export default function ProfileInfo() {
                 <Select
                   options={klubOptions}
                   placeholder="Vælg klub"
-                  // onChange={(option) =>
-                  //   setSelectedKlub(option ? option.value : null)
-                  // }
+                  onChange={(selectedOption) => setSelectedKlub(selectedOption)}
                   isClearable
-                  isMulti
                   isSearchable
                   value={selectedKlub}
-                  onChange={(v) => setSelectedKlub(v || [])}
                 />
                 <Select
                   options={holdOptions}
                   placeholder="Vælg hold"
-                  // onChange={(option) =>
-                  //   setSelectedHold(option ? option.value : null)
-                  // }
+                  onChange={(selectedOption) => setSelectedHold(selectedOption)}
                   isClearable
-                  isMulti
                   isSearchable
                   value={selectedHold}
-                  onChange={(v) => setSelectedHold(v || [])}
                 />
               </div>
               <div className="profile-btns-actions">
