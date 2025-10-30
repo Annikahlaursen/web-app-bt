@@ -1,5 +1,5 @@
 import { Fragment, useState, useEffect, useRef } from "react";
-import { useNavigate, NavLink, data } from "react-router";
+import { useNavigate, NavLink } from "react-router";
 import { auth } from "../firebase-config";
 import {
   getStorage,
@@ -104,9 +104,13 @@ export default function ProfileInfo() {
     setIsSaving(true);
     setErrorMessage("");
 
+    const url = `${firebaseDbUrlBase}/users/${uid}.json`;
+    const response = await fetch(url);
+    const existingUser = (await response.json()) || {};
+
     //måske lav andet navn end user
-    const user = {
-      ...data,
+    const updatedUser = {
+      ...existingUser,
       fornavn,
       efternavn,
       gender,
@@ -127,7 +131,7 @@ export default function ProfileInfo() {
         const response = await fetch(url, {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(user),
+          body: JSON.stringify(updatedUser),
         });
         if (!response.ok) throw new Error("Failed to save user");
       } catch (err) {
@@ -144,6 +148,7 @@ export default function ProfileInfo() {
       if (currentUserRaw) {
         const currentUser = JSON.parse(currentUserRaw);
         currentUser.profile = {
+          ...existingUser,
           fornavn,
           efternavn,
           gender,

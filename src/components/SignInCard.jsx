@@ -48,16 +48,32 @@ export default function SignInCard() {
           mail: user.email,
           profile: {
             ...profile,
-            hid:
-              Array.isArray(profile.hid) && profile.hid.length > 0
-                ? profile.hid[0].value
-                : profile.hid,
-            kid:
-              Array.isArray(profile.kid) && profile.kid.length > 0
-                ? profile.kid[0].value
-                : profile.kid,
+            hid: profile.hid?.value || profile.hid,
+            kid: profile.kid?.value || profile.kid,
           },
         };
+
+        // Opdater Firebase database til at sikre hid og kid er opdateret
+        const firebaseDbUrlBase = import.meta.env.VITE_FIREBASE_DATABASE_URL;
+        if (firebaseDbUrlBase && user?.uid) {
+          const url = `${firebaseDbUrlBase}/users/${user.uid}.json`;
+          try {
+            await fetch(url, {
+              method: "PATCH",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                hid: currentUser.profile.hid,
+                kid: currentUser.profile.kid,
+              }),
+            });
+          } catch (err) {
+            console.warn(
+              "Failed to update Firebase database during login:",
+              err
+            );
+          }
+        }
+
         setCurrentUserStorage(currentUser);
       } else {
         // fallback: store minimal info so UI still reacts
