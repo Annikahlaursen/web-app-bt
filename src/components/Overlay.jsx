@@ -166,7 +166,7 @@ export default function Overlay({ isOpen, onClose }) {
                       <NavLink
                         to="/error"
                         className={({ isActive }) =>
-                          isActive ? "overlay-link active" : "overlay-link"
+                          isActive ? "active" : ""
                         }
                       >
                         <img
@@ -180,7 +180,7 @@ export default function Overlay({ isOpen, onClose }) {
                       <NavLink
                         to="/error"
                         className={({ isActive }) =>
-                          isActive ? "overlay-link active" : "overlay-link"
+                          isActive ? "active" : ""
                         }
                       >
                         <button className="menu-rund">
@@ -191,7 +191,7 @@ export default function Overlay({ isOpen, onClose }) {
                       <NavLink
                         to="/error"
                         className={({ isActive }) =>
-                          isActive ? "overlay-link active" : "overlay-link"
+                          isActive ? "active" : ""
                         }
                       >
                         <button className="menu-rund">
