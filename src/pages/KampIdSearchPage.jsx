@@ -58,7 +58,7 @@ export default function KampIdSearchPage() {
   const navigate = useNavigate();
 
   function navigateBack() {
-    navigate(-1);
+    navigate("/kalender");
   }
 
   return (
