@@ -1,18 +1,26 @@
 import { useEffect, useState, useRef, useLayoutEffect } from "react";
+import { useNavigate } from "react-router";
 import KalenderFilter from "../components/KalenderFilter";
 import StevneCard from "../components/StevneCard";
 import KampCard from "../components/KampCard";
+import arrowForward from "/public/arrow-right-black.svg";
 
 
- export default function KalenderPage() {
+export default function KalenderPage() {
   const [events, setEvents] = useState([]);
   const nextEventRef = useRef(null);
   const monthHeadersRef = useRef([]);
   const [activeFilter, setActiveFilter] = useState("alle");
+  const navigate = useNavigate();
 
   //----------------------------Henter Data----------------------------//
   useEffect(() => {
-    async function fetchAndFilterEvents(endpoint, type, userHid, tilmeldteStevner) {
+    async function fetchAndFilterEvents(
+      endpoint,
+      type,
+      userHid,
+      tilmeldteStevner
+    ) {
       try {
         const response = await fetch(
           `${import.meta.env.VITE_FIREBASE_DATABASE_URL}/${endpoint}.json`
@@ -31,7 +39,10 @@ import KampCard from "../components/KampCard";
               return tilmeldteStevner.includes(event.id); // Filter stevner where ertilmeldt is true
             }
             if (type === "kamp") {
-              return (event.udehold && event.udehold.includes(userHid)) || (event.hjemmehold && event.hjemmehold.includes(userHid)); // Filter kampe where hold contains userHid
+              return (
+                (event.udehold && event.udehold.includes(userHid)) ||
+                (event.hjemmehold && event.hjemmehold.includes(userHid))
+              ); // Filter kampe where hold contains userHid
             }
             return false;
           });
@@ -44,7 +55,9 @@ import KampCard from "../components/KampCard";
     async function fetchEvents() {
       try {
         // Get the current user's hid from localStorage
-        const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
+        const currentUser = JSON.parse(
+          localStorage.getItem("currentUser") || "{}"
+        );
         const userHid = currentUser?.profile?.hid;
         const tilmeldteStevner = currentUser?.profile?.tilmeldteStevner || [];
 
@@ -55,7 +68,12 @@ import KampCard from "../components/KampCard";
         }
 
         // Fetch and filter stevner and kampe
-        const stevneEvents = await fetchAndFilterEvents("staevner", "stevne", userHid, tilmeldteStevner);
+        const stevneEvents = await fetchAndFilterEvents(
+          "staevner",
+          "stevne",
+          userHid,
+          tilmeldteStevner
+        );
         const kampEvents = await fetchAndFilterEvents("kampe", "kamp", userHid);
 
         // Combine and sort events
@@ -72,7 +90,6 @@ import KampCard from "../components/KampCard";
 
     fetchEvents();
   }, []);
-
 
   //----------------------------Scroll til næste Event----------------------------//
 
@@ -158,41 +175,53 @@ import KampCard from "../components/KampCard";
   return (
     <section className="kalender-page">
       <KalenderFilter setFilter={setActiveFilter} />
-      {(() => {
-        let nextEventFound = false; // Track if the next event has been found across all months
-        return Object.keys(filteredEvents).map((month, index) => (
-          <div key={month}>
-            <h2
-              className="month-header"
-              ref={(el) => (monthHeadersRef.current[index] = el)}
-            >
-              {month}
-            </h2>
-            {filteredEvents[month].map((event) => {
-              const isNextEvent =
-                !nextEventFound &&
-                new Date(event.dato).setHours(0, 0, 0, 0) >=
-                  new Date().setHours(0, 0, 0, 0);
-              if (isNextEvent) {
-                nextEventFound = true; // Mark that the next event has been found
-              }
-              return event.type === "stevne" ? (
-                <StevneCard
-                  key={event.id}
-                  stevne={event}
-                  ref={isNextEvent ? nextEventRef : null} // Attach ref to the next event
-                />
-              ) : (
-                <KampCard
-                  key={event.id}
-                  kamp={event}
-                  ref={isNextEvent ? nextEventRef : null} // Attach ref to the next event
-                />
-              );
-            })}
+      {activeFilter === "staevner" &&
+      Object.keys(filteredEvents).length === 0 ? (
+        <div className="no-kamp-today stevne">
+          <h2>Du er ikke tilmeldt nogen stævner lige nu</h2>
+          <p>Find et stævne, der matcher dit spin!</p>
+          <div className="link-forward" onClick={() => navigate("/stevnesearch")}>
+            <p>Søg stævner</p>
+            <img src={arrowForward} alt="gå til stævnesøgning"></img>
           </div>
-        ));
-      })()}
+        </div>
+      ) : (
+        (() => {
+          let nextEventFound = false; // Track if the next event has been found across all months
+          return Object.keys(filteredEvents).map((month, index) => (
+            <div key={month}>
+              <h2
+                className="month-header"
+                ref={(el) => (monthHeadersRef.current[index] = el)}
+              >
+                {month}
+              </h2>
+              {filteredEvents[month].map((event) => {
+                const isNextEvent =
+                  !nextEventFound &&
+                  new Date(event.dato).setHours(0, 0, 0, 0) >=
+                    new Date().setHours(0, 0, 0, 0);
+                if (isNextEvent) {
+                  nextEventFound = true; // Mark that the next event has been found
+                }
+                return event.type === "stevne" ? (
+                  <StevneCard
+                    key={event.id}
+                    stevne={event}
+                    ref={isNextEvent ? nextEventRef : null} // Attach ref to the next event
+                  />
+                ) : (
+                  <KampCard
+                    key={event.id}
+                    kamp={event}
+                    ref={isNextEvent ? nextEventRef : null} // Attach ref to the next event
+                  />
+                );
+              })}
+            </div>
+          ));
+        })()
+      )}
     </section>
   );
 }

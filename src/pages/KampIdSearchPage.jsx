@@ -87,7 +87,7 @@ export default function KampIdSearchPage() {
               src={tableTennis}
               alt="bordtennis bat icon"
             />
-            <p id="kamp-error">Der er ingen kampe i dag.</p>
+            <h2 id="kamp-error">Der er ingen kampe i dag.</h2>
             <p>
               Bemærk: Kampdata kan kun opdateres på den dag, kampen spilles.
             </p>
