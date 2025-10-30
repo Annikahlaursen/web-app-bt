@@ -19,6 +19,7 @@ export default function ProfileInfo() {
   // Profile fields
   const [selectedKlub, setSelectedKlub] = useState(null);
   const [selectedHold, setSelectedHold] = useState(null);
+  const [filteredHoldOptions, setFilteredHoldOptions] = useState([]);
   const [image, setImage] = useState(""); // image download URL
   const [setStoragePath] = useState(""); // storage path used for deletion
   const [klubber, setKlubber] = useState([]);
@@ -222,14 +223,31 @@ export default function ProfileInfo() {
     fetchDropdownData();
   }, []);
 
+  useEffect(() => {
+    if (selectedKlub) {
+      const klub = klubber.find((k) => k.id === selectedKlub.value);
+
+      if (klub && klub.hold) {
+        // Filtrer hold baseret på hold-ID'er i klubbens hold-array
+        const filteredHold = hold.filter((h) => klub.hold.includes(h.id));
+
+        setFilteredHoldOptions(
+          filteredHold.map((h) => ({
+            value: h.id,
+            label: h.navn,
+          }))
+        );
+      } else {
+        setFilteredHoldOptions([]);
+      }
+    } else {
+      setFilteredHoldOptions([]);
+    }
+  }, [selectedKlub, klubber, hold]);
+
   const klubOptions = klubber.map((klub) => ({
     value: klub.id,
     label: klub.navn,
-  }));
-
-  const holdOptions = hold.map((hold) => ({
-    value: hold.id,
-    label: hold.navn,
   }));
 
   return (
@@ -286,7 +304,7 @@ export default function ProfileInfo() {
                   value={selectedKlub}
                 />
                 <Select
-                  options={holdOptions}
+                  options={filteredHoldOptions}
                   placeholder="Vælg hold"
                   onChange={(selectedOption) => setSelectedHold(selectedOption)}
                   isClearable
