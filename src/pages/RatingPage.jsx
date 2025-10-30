@@ -56,6 +56,11 @@ export default function RatingPage() {
         !criteria.clubs ||
         criteria.clubs.length === 0 ||
         (user.kid && criteria.clubs.includes(user.kid));
+
+      console.log("User:", user.fornavn, user.efternavn);
+      console.log("User Club ID:", user.kid);
+      console.log("Filter Criteria Clubs:", criteria.clubs);
+
       return matchesAge && matchesName && matchesClub;
     }
   );

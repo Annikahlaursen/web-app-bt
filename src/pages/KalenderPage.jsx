@@ -78,7 +78,7 @@ import KampCard from "../components/KampCard";
 
   useLayoutEffect(() => {
     if (events.length > 0 && nextEventRef.current) {
-      const offset = 155; // Juster denne værdi baseret på din layout
+      const offset = 155;
       const elementPosition = nextEventRef.current.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - offset;
 

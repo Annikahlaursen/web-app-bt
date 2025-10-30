@@ -79,6 +79,7 @@ export default function ProfileInfo() {
       body: JSON.stringify(updatedUserData),
     });
     if (!patchResponse.ok) throw new Error("Failed to update user data.");
+    
     try {
       const response = await fetch(url);
       const currentUserData = await response.json();
