@@ -93,6 +93,8 @@ export default function SignInCard() {
       } else if (code === "user not found") {
         code = "Brugeren blev ikke fundet. Tjek din email.";
       }
+
+      setErrorMessage(code);
     }
   }
 
@@ -122,9 +124,11 @@ export default function SignInCard() {
             placeholder="Adgangskode"
             autoComplete="current-password"
           />
-          <div className="error-message">
-            <p>{errorMessage}</p>
-          </div>
+          {errorMessage && (
+            <div className="error-message-light">
+              <p>{errorMessage}</p>
+            </div>
+          )}
           <div>
             <button
               className="profile-btns profile-btns-actions-seperat profile-btns-actions-white"

@@ -818,6 +818,12 @@ a:hover {
   grid-column: 2;
 }
 
+.error-message-light {
+  color: var(--white);
+  margin-top: 10px;
+  grid-column: 2;
+}
+
 .hide {
   display: none;
 }
