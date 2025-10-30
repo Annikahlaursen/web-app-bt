@@ -88,7 +88,11 @@ export default function SignInCard() {
       if (typeof code === "string") {
         code = code.replaceAll("-", " ").replaceAll("auth/", "");
       }
-      setErrorMessage(code);
+      if (code === "invalid credential") {
+        code = "Forkert adgangskode eller email. Prøv igen.";
+      } else if (code === "user not found") {
+        code = "Brugeren blev ikke fundet. Tjek din email.";
+      }
     }
   }
 
