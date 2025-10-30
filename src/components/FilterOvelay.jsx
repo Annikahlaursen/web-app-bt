@@ -37,7 +37,6 @@ export default function FilterOverlay({
 
   // Håndter ændring af aldersinterval
   const handleAgeIntervalChange = (selectedAgeGroups) => {
-    console.log("selectedAgeGroups", selectedAgeGroups);
 
     const selectedIntervals = (selectedAgeGroups || []).map((group) => {
       // Find the full object in ageIntervals
@@ -46,8 +45,6 @@ export default function FilterOverlay({
       );
       return matchingInterval || group; // Fallback to group if no match
     });
-
-    console.log("Mapped selectedIntervals:", selectedIntervals);
 
     // Update the filter criteria with the selected intervals
     updateFilterCriteria(
@@ -80,8 +77,6 @@ export default function FilterOverlay({
       ? selectedClubs.map((club) => club.value)
       : [];
 
-        console.log("Selected Clubs:", selectedClubs);
-        console.log("Club Values:", clubValues);
     updateFilterCriteria("clubs", clubValues);
 
     setTempFilters((prev) => ({
