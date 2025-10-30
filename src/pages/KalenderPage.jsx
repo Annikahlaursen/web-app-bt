@@ -179,9 +179,9 @@ export default function KalenderPage() {
       Object.keys(filteredEvents).length === 0 ? (
         <div className="no-kamp-today stevne">
           <h2>Du er ikke tilmeldt nogen stævner lige nu</h2>
-          <p>Find et stævne, der matcher dit spin.</p>
-          <div className="tilbage" onClick={() => navigate("/stevnesearch")}>
-            <p>Find stævner</p>
+          <p>Find et stævne, der matcher dit spin!</p>
+          <div className="link-forward" onClick={() => navigate("/stevnesearch")}>
+            <p>Søg stævner</p>
             <img src={arrowForward} alt="gå til stævnesøgning"></img>
           </div>
         </div>

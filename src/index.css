@@ -1584,6 +1584,16 @@ div .css-1p3m7a8-multiValue {
   margin-top: 13rem;
 }
 
+.link-forward{
+    display: flex;
+  justify-content: center;
+}
+
+.link-forward img{
+    width: 8%;
+    margin-left: 0.5rem;
+}
+
 .tilbage-til-kalender {
   display: flex;
   justify-content: center;
