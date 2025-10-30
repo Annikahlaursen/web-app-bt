@@ -1575,6 +1575,17 @@ div .css-1p3m7a8-multiValue {
 #kamp-error {
   color: var(--darkred);
 }
+
+.empty-state-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+  text-align: center;
+  padding: 0 2rem;
+}
+
 .no-kamp-today {
   text-align: center;
   margin-top: 1rem;
