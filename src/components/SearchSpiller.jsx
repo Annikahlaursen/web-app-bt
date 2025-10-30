@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Select from "react-select";
 
-export default function SearchSpiller({ onSpillerChange }) {
+export default function SearchSpiller({ holdId, klubId, onSpillerChange }) {
   const [users, setUsers] = useState([]); // set the initial state to an empty array
   const [selectedPlayers, setSelectedPlayers] = useState([]);
 
@@ -24,21 +24,42 @@ export default function SearchSpiller({ onSpillerChange }) {
     fetchUsers();
   }, []);
 
-  //Disse 2 linjer vil måske kunne bruges til at filtere og først vie dem der er på hjemmeholdet
-  /* Only users with hid: -HnAd4o6AtIlkW2SCf6R
-  const teamHid = kamp.hjemmehold;
-  const teamUsers = users.filter((user) => user.hid === teamHid);
-  */
+  // Filter users by holdId if provided
+  const filteredByKlub = users.filter((u) =>
+    klubId ? u.kid === klubId : true
+  );
 
-  // dynamiske options til react-select
-  const userOptions = users.map((user) => ({
+  const onHold = filteredByKlub
+    .filter((u) => u.hid === holdId)
+    .sort((a, b) => {
+      const nameA = `${a.fornavn ?? ""} ${a.efternavn ?? ""}`.trim();
+      const nameB = `${b.fornavn ?? ""} ${b.efternavn ?? ""}`.trim();
+      return nameA.localeCompare(nameB);
+    });
+
+  const offHold = filteredByKlub
+    .filter((u) => u.hid !== holdId)
+    .sort((a, b) => {
+      const nameA = `${a.fornavn ?? ""} ${a.efternavn ?? ""}`.trim();
+      const nameB = `${b.fornavn ?? ""} ${b.efternavn ?? ""}`.trim();
+      return nameA.localeCompare(nameB);
+    });
+
+  const combined = [...onHold, ...offHold];
+
+  const userOptions = combined.map((user) => ({
     value: user.id,
     label: `${user.fornavn} ${user.efternavn ?? ""}`.trim(),
   }));
 
+  useEffect(() => {
+    setSelectedPlayers([]);
+    if (onSpillerChange) onSpillerChange([]);
+  }, [holdId, klubId]);
+
   function handleSelectChange(selectedOptions) {
     setSelectedPlayers(selectedOptions);
-    if (onSpillerChange) onSpillerChange(selectedOptions); // 🔥 send data op
+    if (onSpillerChange) onSpillerChange(selectedOptions); // send data op
   }
 
   return (
