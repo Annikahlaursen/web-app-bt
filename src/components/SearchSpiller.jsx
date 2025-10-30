@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Select from "react-select";
 
-export default function SearchSpiller({ onSpillerChange }) {
+export default function SearchSpiller({ holdId, onSpillerChange }) {
   const [users, setUsers] = useState([]); // set the initial state to an empty array
   const [selectedPlayers, setSelectedPlayers] = useState([]);
 
@@ -30,11 +30,21 @@ export default function SearchSpiller({ onSpillerChange }) {
   const teamUsers = users.filter((user) => user.hid === teamHid);
   */
 
+  // Filter users by holdId if provided
+  const filteredByHold = Array.isArray(users)
+    ? users.filter((user) => (holdId ? user.hid === holdId : true))
+    : [];
+
   // dynamiske options til react-select
-  const userOptions = users.map((user) => ({
+  const userOptions = filteredByHold.map((user) => ({
     value: user.id,
     label: `${user.fornavn} ${user.efternavn ?? ""}`.trim(),
   }));
+
+  useEffect(() => {
+    setSelectedPlayers([]);
+    if (onSpillerChange) onSpillerChange([]);
+  }, [holdId]);
 
   function handleSelectChange(selectedOptions) {
     setSelectedPlayers(selectedOptions);

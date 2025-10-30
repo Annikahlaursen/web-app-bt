@@ -88,7 +88,7 @@ export default function KampResultatPage() {
     });
 
     if (response.ok) {
-      console.log("Tillykke, kamp er blevet opdateret");
+      console.log("Tillykke, din kamp er blevet opdateret");
 
       // event der notificerer Ratingpage om opdatering af ratings
       const event = new CustomEvent("ratingsUpdated", {
@@ -117,12 +117,14 @@ export default function KampResultatPage() {
         <SearchSpiller
           key={`${kamp.id}-hjemme`}
           kamp={kamp}
+          holdId={kamp?.hjemmehold}
           onSpillerChange={(spillere) => setValgteSpillereHjem(spillere)}
         />
         <p>Vælg spillere ({udeholdNavn})</p>
         <SearchSpiller
           key={`${kamp.id}-ude`}
           kamp={kamp}
+          holdId={kamp?.udehold}
           onSpillerChange={(spillere) => setValgteSpillereUde(spillere)}
         />
         <section className="result-number">
