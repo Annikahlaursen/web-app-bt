@@ -61,12 +61,6 @@ export default function KalenderPage() {
         const userHid = currentUser?.profile?.hid;
         const tilmeldteStevner = currentUser?.profile?.tilmeldteStevner || [];
 
-        if (!userHid) {
-          console.error("User HID not found. Cannot filter events.");
-          setEvents([]);
-          return;
-        }
-
         // Fetch and filter stevner and kampe
         const stevneEvents = await fetchAndFilterEvents(
           "staevner",
@@ -74,7 +68,15 @@ export default function KalenderPage() {
           userHid,
           tilmeldteStevner
         );
-        const kampEvents = await fetchAndFilterEvents("kampe", "kamp", userHid);
+            let kampEvents = [];
+            if (userHid) {
+              // Only fetch kampe if userHid exists
+              kampEvents = await fetchAndFilterEvents("kampe", "kamp", userHid);
+            } else {
+              console.warn(
+                "User HID not found. Only stevner will be displayed."
+              );
+            }
 
         // Combine and sort events
         const combinedEvents = [...stevneEvents, ...kampEvents].sort(
