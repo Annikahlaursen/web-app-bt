@@ -1,5 +1,5 @@
 import { Fragment, useState, useEffect, useRef } from "react";
-import { useNavigate, NavLink } from "react-router";
+import { useNavigate, NavLink, data } from "react-router";
 import { auth } from "../firebase-config";
 import {
   getStorage,
@@ -21,8 +21,8 @@ export default function ProfileInfo() {
   const [fornavn, setFornavn] = useState("");
   const [efternavn, setEfternavn] = useState("");
   const [gender, setGender] = useState("");
-  const [birthday, setBirthday] = useState("");
-  const [adress, setAdress] = useState("");
+  const [fødselsdato, setBirthday] = useState("");
+  const [adresse, setadresse] = useState("");
   const [city, setCity] = useState("");
   const [zip, setZip] = useState("");
   const [mail, setMail] = useState("");
@@ -54,8 +54,8 @@ export default function ProfileInfo() {
               setFornavn(data.fornavn || data.name || "");
               setEfternavn(data.efternavn || data.lastname || "");
               setGender(data.gender || "");
-              setBirthday(data.birthday || "");
-              setAdress(data.adress || "");
+              setBirthday(data.fødselsdato || "");
+              setadresse(data.adresse || "");
               setCity(data.city || "");
               setZip(data.zip || "");
               setMail(data.mail || "");
@@ -80,8 +80,8 @@ export default function ProfileInfo() {
           setFornavn(p.fornavn || "");
           setEfternavn(p.efternavn || "");
           setGender(p.gender || "");
-          setBirthday(p.birthday || "");
-          setAdress(p.adress || "");
+          setBirthday(p.fødselsdato || "");
+          setadresse(p.adresse || "");
           setCity(p.city || "");
           setZip(p.zip || "");
           setMail(p.email || "");
@@ -104,12 +104,14 @@ export default function ProfileInfo() {
     setIsSaving(true);
     setErrorMessage("");
 
+    //måske lav andet navn end user
     const user = {
+      ...data,
       fornavn,
       efternavn,
       gender,
-      birthday,
-      adress,
+      fødselsdato,
+      adresse,
       city,
       zip,
       mail,
@@ -145,8 +147,8 @@ export default function ProfileInfo() {
           fornavn,
           efternavn,
           gender,
-          birthday,
-          adress,
+          fødselsdato,
+          adresse,
           city,
           zip,
           mail,
@@ -564,19 +566,19 @@ export default function ProfileInfo() {
               <input
                 type="date"
                 className="profile-form-content"
-                id="birthday"
-                name="birthday"
-                value={birthday}
+                id="fødselsdato"
+                name="fødselsdato"
+                value={fødselsdato}
                 onChange={(e) => setBirthday(e.target.value)}
               />
               <input
                 type="text"
                 className="profile-form-content"
-                id="adress"
-                name="adress"
-                value={adress}
-                onChange={(e) => setAdress(e.target.value)}
-                placeholder="Adresse"
+                id="adresse"
+                name="adresse"
+                value={adresse}
+                onChange={(e) => setadresse(e.target.value)}
+                placeholder="adressee"
               />
               <input
                 type="text"
