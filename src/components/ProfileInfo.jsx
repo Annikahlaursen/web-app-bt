@@ -11,8 +11,9 @@ import {
 import pen from "/pen-solid-full.svg";
 import trash from "/trash-solid-full.svg";
 import Placeholder from "/image-solid-full.svg";
+import DeleteProfileCard from "./DeleteProfileCard";
 import SignOutCard from "./SignOutCard";
-import { signOut } from "firebase/auth";
+import DeleteProfilePhotoCard from "./DeleteProfilePhotoCard";
 
 export default function ProfileInfo() {
   const navigate = useNavigate();
@@ -32,6 +33,8 @@ export default function ProfileInfo() {
   const [errorMessage, setErrorMessage] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [showSignOutCard, setShowSignOutCard] = useState(false);
+  const [showDeleteProfileCard, setShowDeleteProfileCard] = useState(false);
+  const [showDeletePhotoCard, setShowDeletePhotoCard] = useState(false);
 
   const fileInputRef = useRef(null);
 
@@ -319,90 +322,22 @@ export default function ProfileInfo() {
     navigate("/");
   } */
 
-  // Delete profile from Realtime Database and sign the user out locally
-  async function handleDeleteProfile() {
-    const confirmed = window.confirm(
-      "Er du sikker på, at du vil slette din profil? Denne handling kan ikke fortrydes."
-    );
-    if (!confirmed) return;
+  const handleShowDeleteProfile = (e) => {
+    e.preventDefault();
+    setShowDeleteProfileCard(true);
+  };
 
-    setErrorMessage("");
+  const handleShowDeletePhoto = (e) => {
+    e?.preventDefault();
+    setShowDeletePhotoCard(true);
+  };
 
-    // If the user has an uploaded profile image, try to delete it from Storage first
-    if (storagePath) {
-      try {
-        const storage = getStorage();
-        const imgRef = storageRef(storage, storagePath);
-        await deleteObject(imgRef);
-      } catch (err) {
-        console.warn("Failed to delete profile image from Storage:", err);
-        // we continue even if deleting the image failed
-      }
-    } else if (image) {
-      // try to parse a firebase storage URL and delete by decoded path
-      try {
-        const parsed = new URL(image);
-        if (
-          parsed.hostname.includes("firebasestorage.googleapis.com") &&
-          parsed.pathname.includes("/o/")
-        ) {
-          const encodedPath = parsed.pathname.split("/o/")[1];
-          const path = decodeURIComponent(encodedPath);
-          const storage = getStorage();
-          const imgRef = storageRef(storage, path);
-          await deleteObject(imgRef);
-        }
-      } catch (err) {
-        console.warn(
-          "Failed to parse or delete storage object for image:",
-          err
-        );
-      }
-    }
+  const handleCloseDeleteProfile = () => {
+    setShowDeleteProfileCard(false);
+  };
 
-    // Attempt to delete the DB record when we have a uid and DB base URL
-    if (uid && firebaseDbUrlBase) {
-      try {
-        const url = `${firebaseDbUrlBase}/users/${uid}.json`;
-        const resp = await fetch(url, { method: "DELETE" });
-        if (!resp.ok) {
-          const text = await resp.text();
-          console.error("Failed to delete user record:", resp.status, text);
-          setErrorMessage("Kunne ikke slette profilen på serveren.");
-          return;
-        }
-      } catch (err) {
-        console.error("Delete profile request failed:", err);
-        setErrorMessage("Kunne ikke slette profilen. Prøv igen senere.");
-        return;
-      }
-    }
-
-    // Clear local session and sign out from Firebase auth
-    try {
-      try {
-        await signOut(auth);
-      } catch (err) {
-        // If signOut fails, continue to clear local data anyway
-        console.warn("Sign out after delete failed:", err);
-      }
-
-      try {
-        localStorage.removeItem("currentUser");
-      } catch (err) {
-        console.warn("Could not clear local currentUser after delete:", err);
-      }
-    } finally {
-      // Redirect to sign-in page
-      navigate("/sign-in");
-    }
-  }
-
-  // Remove profile image: delete storage object when possible, clear DB/local state and UI
+  // actual removal routine - callable from modal confirm
   async function handleRemoveImage() {
-    const confirmRemove = window.confirm("Vil du fjerne dit profilbillede?");
-    if (!confirmRemove) return;
-
     setErrorMessage("");
 
     // Try deleting the storage object using stored storagePath first
@@ -485,6 +420,8 @@ export default function ProfileInfo() {
     // finally update component state so UI shows placeholder
     setImage("");
     setStoragePath("");
+    // close any open modal
+    setShowDeletePhotoCard(false);
   }
 
   return (
@@ -525,7 +462,10 @@ export default function ProfileInfo() {
               <img src={pen} alt="Edit icon" style={{ width: "1.5rem" }} />
               Rediger
             </a>
-            <a id="profile-card-actions-seperat" onClick={handleRemoveImage}>
+            <a
+              id="profile-card-actions-seperat"
+              onClick={handleShowDeletePhoto}
+            >
               <img src={trash} alt="Delete icon" style={{ width: "1.5rem" }} />
               Fjern
             </a>
@@ -659,14 +599,23 @@ export default function ProfileInfo() {
             <br />
             <button
               className="profile-btns-actions-seperat profile-btn-actions-blackborder"
-              onClick={handleDeleteProfile}
+              onClick={handleShowDeleteProfile}
             >
               Slet profil
             </button>
           </div>
         </div>
       </div>
+      <DeleteProfilePhotoCard
+        isOpen={showDeletePhotoCard}
+        onClose={() => setShowDeletePhotoCard(false)}
+        onConfirm={handleRemoveImage}
+      />
       <SignOutCard isOpen={showSignOutCard} onClose={handleCloseSignOut} />
+      <DeleteProfileCard
+        isOpen={showDeleteProfileCard}
+        onClose={handleCloseDeleteProfile}
+      />
     </Fragment>
   );
 }
