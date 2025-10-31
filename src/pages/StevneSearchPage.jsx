@@ -43,9 +43,9 @@ export default function StevneSearchPage() {
   );
 
   return (
-    <section>
+    <section className="kalender-page" >
       <ArrowBack color="black" />
-      <div className="search-pages">
+      <div className="stevne-search">
         <h1>Stævner</h1>
         <input
           type="text"
@@ -56,7 +56,7 @@ export default function StevneSearchPage() {
           style={{ flex: 1, padding: "10px" }}
         />
       </div>
-      <div className="holdkampe-background">
+      <div >
         {sortedData.map((stevne) => (
           <StevneCard
             stevne={stevne}

@@ -1351,6 +1351,10 @@ a:hover {
   margin: 2rem 0 7rem;
 }
 
+.stevne-search{
+  margin-bottom: 2rem;
+}
+
 /* ---------- Button Styling ---------- */
 .btn {
   background-color: var(--lightred);
