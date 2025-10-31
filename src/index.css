@@ -1515,6 +1515,8 @@ a:hover {
 /*default styling name - fix to rounded corners on Select*/
 div .css-13cymwt-control {
   border-radius: var(--border-radius);
+  background-color: var(--light-grey);
+  border: none;
 }
 
 /*default styling name - fix to rounded corners on picked item*/
