@@ -1351,7 +1351,7 @@ a:hover {
   margin: 2rem 0 7rem;
 }
 
-.stevne-search{
+.stevne-search {
   margin-bottom: 2rem;
 }
 
@@ -1488,6 +1488,8 @@ a:hover {
   border-radius: var(--border-radius);
   padding: 1rem;
   font-size: large;
+  background-color: var(--light-grey);
+  border: 0px;
 }
 
 .number-hold {
