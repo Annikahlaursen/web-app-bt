@@ -30,11 +30,7 @@ export default function NumberPick({ kamp, onChangeH, onChangeU }) {
 
   return (
     <>
-      {showError && (
-        <p style={{ color: "red", textAlign: "center" }}>
-          Summen skal være 10!
-        </p>
-      )}
+      {showError && <p className="show-error">Summen skal være 10!</p>}
       <div className="number-picker">
         <div className="number-hold">
           <select

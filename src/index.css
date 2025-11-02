@@ -1472,6 +1472,11 @@ a:hover {
 }
 
 /* ---------- Number picker component Styling ---------- */
+.show-error {
+  color: red;
+  text-align: center;
+}
+
 .number-picker {
   display: flex;
   justify-content: center;
@@ -1605,18 +1610,18 @@ div .css-1p3m7a8-multiValue {
   margin-top: 1rem;
 }
 
-.no-kamp-today.stevne{
+.no-kamp-today.stevne {
   margin-top: 13rem;
 }
 
-.link-forward{
-    display: flex;
+.link-forward {
+  display: flex;
   justify-content: center;
 }
 
-.link-forward img{
-    width: 8%;
-    margin-left: 0.5rem;
+.link-forward img {
+  width: 8%;
+  margin-left: 0.5rem;
 }
 
 .tilbage-til-kalender {
