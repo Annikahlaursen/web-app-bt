@@ -101,11 +101,9 @@ export default function KampResultatPage() {
         state: { spillere: valgteSpillereHjem },
       });
     } else {
-      console.log("Error updating kamp resultat");
+      alert("Error updating kamp resultat");
     }
   }
-
-  console.log(kamp.hjemmeklub);
 
   return (
     <section className="resultat-page">
