@@ -36,13 +36,13 @@ export default function KalenderPage() {
           }))
           .filter((event) => {
             if (type === "stevne") {
-              return tilmeldteStevner.includes(event.id); // Filter stevner where ertilmeldt is true
+              return tilmeldteStevner.includes(event.id); // Filtrer stævner der indgår i currentusers tilmeldteStevner
             }
             if (type === "kamp") {
               return (
                 (event.udehold && event.udehold.includes(userHid)) ||
                 (event.hjemmehold && event.hjemmehold.includes(userHid))
-              ); // Filter kampe where hold contains userHid
+              ); // Filter kampe hvor hold har userHid
             }
             return false;
           });
@@ -212,8 +212,9 @@ export default function KalenderPage() {
           </div>
         </div>
       ) : (
+        //Både stævner og kampe eksisterer for den aktuelle bruger
         (() => {
-          let nextEventFound = false; // Track if the next event has been found across all months
+          let nextEventFound = false;
           return Object.keys(filteredEvents).map((month, index) => (
             <div key={month}>
               <h2
@@ -228,19 +229,19 @@ export default function KalenderPage() {
                   new Date(event.dato).setHours(0, 0, 0, 0) >=
                     new Date().setHours(0, 0, 0, 0);
                 if (isNextEvent) {
-                  nextEventFound = true; // Mark that the next event has been found
+                  nextEventFound = true;
                 }
                 return event.type === "stevne" ? (
                   <StevneCard
                     key={event.id}
                     stevne={event}
-                    ref={isNextEvent ? nextEventRef : null} // Attach ref to the next event
+                    ref={isNextEvent ? nextEventRef : null}
                   />
                 ) : (
                   <KampCard
                     key={event.id}
                     kamp={event}
-                    ref={isNextEvent ? nextEventRef : null} // Attach ref to the next event
+                    ref={isNextEvent ? nextEventRef : null}
                   />
                 );
               })}

@@ -45,8 +45,7 @@ export default function KalenderFilter({ setFilter }) {
 
       setPillProps({ left, width, color });
     }
-setFilter(active);
-
+    setFilter(active);
   }, [active, setFilter]);
 
   return (
