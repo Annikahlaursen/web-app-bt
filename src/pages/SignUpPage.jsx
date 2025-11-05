@@ -80,7 +80,7 @@ export default function SignUpPage() {
       try {
         code = String(code).replaceAll("-", " ").replaceAll("auth/", "");
       } catch {
-        /* noop */
+        // ignore
       }
       // revert optimistic UI if signup failed
       setErrorMessage(code);
