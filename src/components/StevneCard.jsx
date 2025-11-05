@@ -34,7 +34,7 @@ const StevneCard = forwardRef(({ stevne }, ref) => {
           <p>{stevne.beskrivelse}</p>
           <div className="location">
             <img src={location} alt="Location pin icon" />
-            <p>{stevne?.lokation ?? "Brabrand hallerne"}</p>
+            <p>{stevne?.lokation ?? "Ingen Lokation offentliggjort"}</p>
           </div>
         </div>
       </Link>
